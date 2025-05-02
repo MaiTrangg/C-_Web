@@ -6,6 +6,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.cloudinary.utils.StringUtils;
 import com.example.be_shopbangiay.Client.service.UploadImageFileService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,8 +19,9 @@ import java.nio.file.Path;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+//@AllArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class UploadImageFileServiceImpl implements UploadImageFileService {
     private final Cloudinary cloudinary;
     @Override

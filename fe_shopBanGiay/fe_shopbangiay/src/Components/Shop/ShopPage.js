@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Footer from "../Footer/Footer";
 import HeaderShop from "../Header/HeaderShop";
 import ProductCard from "./ProductCard";
 
 const ShopPage = () => {
-    const products = [
-        { image: 'img/product-1.jpg', name: 'Colorful Stylish Shirt', price: 123.00, oldPrice: 123.00 },
-        { image: 'img/product-2.jpg', name: 'Colorful Stylish Shirt', price: 123.00, oldPrice: 123.00 },
-        { image: 'img/product-3.jpg', name: 'Colorful Stylish Shirt', price: 123.00, oldPrice: 123.00 },
-        { image: 'img/product-4.jpg', name: 'Colorful Stylish Shirt', price: 123.00, oldPrice: 123.00 },
-        { image: 'img/product-5.jpg', name: 'Colorful Stylish Shirt', price: 123.00, oldPrice: 123.00 },
-        { image: 'img/product-6.jpg', name: 'Colorful Stylish Shirt', price: 123.00, oldPrice: 123.00 },
-        { image: 'img/product-7.jpg', name: 'Colorful Stylish Shirt', price: 123.00, oldPrice: 123.00 },
-        { image: 'img/product-8.jpg', name: 'Colorful Stylish Shirt', price: 123.00, oldPrice: 123.00 },
-        { image: 'img/product-1.jpg', name: 'Colorful Stylish Shirt', price: 123.00, oldPrice: 123.00 },
-    ];
+    const [products, setProducts] = useState([]); // Lưu trữ sản phẩm
+    const [loading, setLoading] = useState(true);  // Kiểm tra trạng thái tải
+
+    // Lấy dữ liệu sản phẩm từ API
+    useEffect(() => {
+        axios.get('/api/products')
+            .then((response) => {
+                console.log(response.data); // Kiểm tra có dữ liệu không
+                setProducts(response.data); // Lưu sản phẩm vào state
+                setLoading(false);           // Đặt trạng thái tải là false khi dữ liệu đã nhận
+            })
+            .catch((error) => {
+                console.error('There was an error fetching the products!', error);
+                setLoading(false); // Nếu có lỗi thì cũng dừng trạng thái tải
+            });
+    }, []); // Chạy một lần khi component được mount
+
+    if (loading) {
+        return <div>Loading...</div>; // Hiển thị thông báo khi đang tải dữ liệu
+    }
+
     return (
         <div>
             <HeaderShop/>
@@ -201,15 +212,18 @@ const ShopPage = () => {
                                 </div>
                             </div>
                             <div className="row">
-                                {products.map((product, index) => (
+                                {products.map((product, index) => {
+                                    // Giả sử API trả về ảnh chính trong trường `mainImage`
+                                    const mainImage = product.colorImages.find(img => img.isMain);
+                                    return (
                                     <ProductCard
                                         key={index}
-                                        image={product.image}
+                                        image={mainImage ? mainImage.url : 'default-image.jpg'}
                                         name={product.name}
                                         price={product.price}
-                                        oldPrice={product.oldPrice}
+                                        oldPrice={product.price}
                                     />
-                                ))}
+                                );})}
                             </div>
                             <div className="col-12 pb-1">
                                 <nav aria-label="Page navigation">

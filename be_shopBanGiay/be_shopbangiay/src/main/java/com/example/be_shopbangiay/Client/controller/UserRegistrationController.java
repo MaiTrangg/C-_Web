@@ -6,6 +6,7 @@ import com.example.be_shopbangiay.Client.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserRegistrationController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 //    @ModelAttribute("userdto")
 //    public UserDto userResgistrationDto(){
 //        return new UserDto();
@@ -48,6 +51,10 @@ public class UserRegistrationController {
         if (userService.checkUsernameExists(userDto.getUsername())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
+
+        // Mã hóa mật khẩu
+        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+        userDto.setPassword(encodedPassword);
 
         userService.save(userDto);
         return ResponseEntity.ok("User registered successfully");

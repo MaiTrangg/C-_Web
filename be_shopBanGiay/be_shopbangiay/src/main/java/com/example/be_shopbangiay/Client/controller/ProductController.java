@@ -2,13 +2,13 @@ package com.example.be_shopbangiay.Client.controller;
 
 import com.example.be_shopbangiay.Client.dto.ProductDTO;
 import com.example.be_shopbangiay.Client.entity.Product;
+import com.example.be_shopbangiay.Client.repository.CategoryRepository;
 import com.example.be_shopbangiay.Client.service.ProductService;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,8 +17,15 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductController {
     ProductService productService;
+    CategoryRepository categoryRepository;
+
     @GetMapping
     public List<ProductDTO> getProductList(){
         return productService.getAllProducts();
+    }
+
+    @GetMapping("/categories/{categoryId}")
+    public List<ProductDTO> getProductsByCategoryAndSub(@PathVariable Long categoryId) {
+        return productService.getProductsByCategoryAndSub(categoryId);
     }
 }

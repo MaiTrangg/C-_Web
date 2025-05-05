@@ -17,7 +17,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductController {
     ProductService productService;
-    CategoryRepository categoryRepository;
 
     @GetMapping
     public List<ProductDTO> getProductList(){
@@ -28,4 +27,9 @@ public class ProductController {
     public List<ProductDTO> getProductsByCategoryAndSub(@PathVariable Long categoryId) {
         return productService.getProductsByCategoryAndSub(categoryId);
     }
+    @GetMapping("/{productId}")
+    public ProductDTO getProductsByProductId(@PathVariable Long productId) {
+        return productService.getProductsByProductId(productId);
+    }
+
 }

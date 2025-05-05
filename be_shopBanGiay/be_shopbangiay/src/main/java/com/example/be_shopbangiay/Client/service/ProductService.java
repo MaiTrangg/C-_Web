@@ -37,4 +37,13 @@ public class ProductService {
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
     }
+
+    public ProductDTO getProductsByProductId(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+      return productMapper.toProductDTO(product);
+
+
+    }
 }

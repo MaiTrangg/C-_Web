@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Footer from "../Footer/Footer";
 import HeaderShop from "../Header/HeaderShop";
@@ -7,6 +8,7 @@ import ProductCard from "./ProductCard";
 const ShopPage = () => {
     const [products, setProducts] = useState([]); // Lưu trữ sản phẩm
     const [loading, setLoading] = useState(true);  // Kiểm tra trạng thái tải
+    const { categoryId } = useParams();
 
     // Lấy dữ liệu sản phẩm từ API
     useEffect(() => {
@@ -21,6 +23,11 @@ const ShopPage = () => {
                 setLoading(false); // Nếu có lỗi thì cũng dừng trạng thái tải
             });
     }, []); // Chạy một lần khi component được mount
+    useEffect(() => {
+        axios.get(`/api/products/categories/${categoryId}`)
+            .then(res => setProducts(res.data))
+            .catch(err => console.error(err));
+    }, [categoryId]);
 
     if (loading) {
         return <div>Loading...</div>; // Hiển thị thông báo khi đang tải dữ liệu
@@ -218,12 +225,15 @@ const ShopPage = () => {
                                     return (
                                     <ProductCard
                                         key={index}
+                                        productId = {product.id}
                                         image={mainImage ? mainImage.url : 'default-image.jpg'}
                                         name={product.name}
                                         price={product.price}
                                         oldPrice={product.price}
                                     />
+
                                 );})}
+
                             </div>
                             <div className="col-12 pb-1">
                                 <nav aria-label="Page navigation">

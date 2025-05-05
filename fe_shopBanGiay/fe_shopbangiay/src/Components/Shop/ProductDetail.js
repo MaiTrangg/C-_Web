@@ -1,8 +1,58 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import HeaderShop from "../Header/HeaderShop";
 import Footer from "../Footer/Footer";
+import {useParams} from "react-router-dom";
+import axios from "axios";
 
 const ProductDetail = () => {
+    const { productId } = useParams();
+    console.log(productId)
+    const [product, setProduct] = useState(null);
+    const [availableColors, setAvailableColors] = useState([]);
+    const [selectedColor, setSelectedColor] = useState('');
+    const [availableSizes, setAvailableSizes] = useState([]);
+
+
+
+    useEffect(() => {
+        axios.get(`/api/products/${productId}`)
+            .then(res => setProduct(res.data))
+            .catch(err => console.error(err));
+    }, [productId]);
+    // const sizes = [...new Set(product.variants.map(v => v.size))];
+    // const colors = [...new Set(product.variants.map(v => v.color))];
+
+
+    useEffect(() => {
+        // Lấy thông tin sản phẩm từ API
+        axios.get(`/api/products/${productId}`)
+            .then(res => setProduct(res.data))
+            .catch(err => console.error(err));
+    }, [productId]);
+
+    useEffect(() => {
+        if (product && product.variants && product.variants.length > 0) {
+            // Lấy danh sách màu không trùng
+            const uniqueColors = [...new Set(product.variants.map(v => v.color))];
+            setAvailableColors(uniqueColors);
+            setSelectedColor(uniqueColors[0]); // Gán mặc định là màu đầu tiên
+        }
+    }, [product]);
+
+    useEffect(() => {
+        if (selectedColor && product && product.variants) {
+            // Lọc các size theo màu đã chọn
+            const sizesForColor = product.variants
+                .filter(v => v.color === selectedColor)
+                .map(v => v.size);
+            setAvailableSizes(sizesForColor);
+        }
+    }, [selectedColor, product]);
+
+    if (!product) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div>
             <HeaderShop/>
@@ -22,18 +72,18 @@ const ProductDetail = () => {
                     <div className="col-lg-5 pb-5">
                         <div id="product-carousel" className="carousel slide" data-ride="carousel">
                             <div className="carousel-inner border">
-                                <div className="carousel-item active">
-                                    <img className="w-100 h-100" src="img/product-1.jpg" alt="Image"/>
-                                </div>
-                                <div className="carousel-item">
-                                    <img className="w-100 h-100" src="img/product-2.jpg" alt="Image"/>
-                                </div>
-                                <div className="carousel-item">
-                                    <img className="w-100 h-100" src="img/product-3.jpg" alt="Image"/>
-                                </div>
-                                <div className="carousel-item">
-                                    <img className="w-100 h-100" src="img/product-4.jpg" alt="Image"/>
-                                </div>
+                                {product.colorImages && product.colorImages.map((image, index) => (
+                                    <div
+                                        className={`carousel-item ${index === 0 ? 'active' : ''}`}
+                                        key={index}
+                                    >
+                                        <img
+                                            className="w-100 h-100"
+                                            src={image.url}
+                                            alt={`Product image ${index + 1}`}
+                                        />
+                                    </div>
+                                ))}
                             </div>
                             <a className="carousel-control-prev" href="#product-carousel" data-slide="prev">
                                 <i className="fa fa-2x fa-angle-left text-dark"></i>
@@ -61,56 +111,54 @@ const ProductDetail = () => {
                             sit clita ea. Sanc invidunt ipsum et, labore clita lorem magna lorem ut. Erat lorem duo
                             dolor no sea nonumy. Accus labore stet, est lorem sit diam sea et justo, amet at lorem et
                             eirmod ipsum diam et rebum kasd rebum.</p>
-                        <div className="d-flex mb-3">
-                            <p className="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
-                            <form>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="size-1" name="size"/>
-                                    <label className="custom-control-label" htmlFor="size-1">XS</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="size-2" name="size"/>
-                                    <label className="custom-control-label" htmlFor="size-2">S</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="size-3" name="size"/>
-                                    <label className="custom-control-label" htmlFor="size-3">M</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="size-4" name="size"/>
-                                    <label className="custom-control-label" htmlFor="size-4">L</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="size-5" name="size"/>
-                                    <label className="custom-control-label" htmlFor="size-5">XL</label>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="d-flex mb-4">
-                            <p className="text-dark font-weight-medium mb-0 mr-3">Colors:</p>
-                            <form>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="color-1" name="color"/>
-                                    <label className="custom-control-label" htmlFor="color-1">Black</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="color-2" name="color"/>
-                                    <label className="custom-control-label" htmlFor="color-2">White</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="color-3" name="color"/>
-                                    <label className="custom-control-label" htmlFor="color-3">Red</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="color-4" name="color"/>
-                                    <label className="custom-control-label" htmlFor="color-4">Blue</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="color-5" name="color"/>
-                                    <label className="custom-control-label" htmlFor="color-5">Green</label>
-                                </div>
-                            </form>
-                        </div>
+                        {/*return (*/}
+                        <>
+                            {/* Colors */}
+                            <div className="d-flex mb-4">
+                                <p className="text-dark font-weight-medium mb-0 mr-3">Colors:</p>
+                                <form>
+                                    {availableColors.map((color, index) => (
+                                        <div className="custom-control custom-radio custom-control-inline" key={index}>
+                                            <input
+                                                type="radio"
+                                                className="custom-control-input"
+                                                id={`color-${index}`}
+                                                name="color"
+                                                value={color}
+                                                checked={selectedColor === color}
+                                                onChange={() => setSelectedColor(color)}
+                                            />
+                                            <label className="custom-control-label" htmlFor={`color-${index}`}>
+                                                {color}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </form>
+                            </div>
+
+                            {/* Sizes */}
+                            <div className="d-flex mb-3">
+                                <p className="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
+                                <form>
+                                    {availableSizes.map((size, index) => (
+                                        <div className="custom-control custom-radio custom-control-inline" key={index}>
+                                            <input
+                                                type="radio"
+                                                className="custom-control-input"
+                                                id={`size-${index}`}
+                                                name="size"
+                                                value={size}
+                                            />
+                                            <label className="custom-control-label" htmlFor={`size-${index}`}>
+                                                {size}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </form>
+                            </div>
+                        </>
+                        {/*);*/}
+
                         <div className="d-flex align-items-center mb-4 pt-2">
                             <div className="input-group quantity mr-3" style={{width: "130px"}}>
                                 <div className="input-group-btn">

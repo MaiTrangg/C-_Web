@@ -44,6 +44,7 @@ public class UserRegistrationController {
 //    }
 
     // test trên REST api
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/registration")
     public ResponseEntity<String> registerUserAccount(@RequestBody UserDto userDto){
         if(userService.checkUserByEmail(userDto.getEmail())) {

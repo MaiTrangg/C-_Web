@@ -8,18 +8,24 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userID;
+
     @Column(nullable = false, length = 255)
     private String username;
-    @Column(nullable = false, length = 255)
+
+    @Column(nullable = false, length = 255, unique = true) // Email thường nên là unique
     private String email;
+
     @Column(length = 20)
     private String telephone;
+
     @Column(nullable = false, length = 255)
     private String password;
-    @Column(nullable = false, columnDefinition = "ENUM('user', 'admin') DEFAULT 'user'")
-    private String role;
 
-    public User(int userID, String username, String email, String telephone, String password, String role) {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    public User(int userID, String username, String email, String telephone, String password, Role role) {
         this.userID = userID;
         this.username = username;
         this.email = email;
@@ -28,7 +34,7 @@ public class User {
         this.role = role;
     }
 
-    public User(String username, String email, String telephone, String password, String role) {
+    public User(String username, String email, String telephone, String password, Role role) {
         this.username = username;
         this.email = email;
         this.telephone = telephone;
@@ -37,7 +43,6 @@ public class User {
     }
 
     public User() {
-
     }
 
     public int getUserID() {
@@ -80,11 +85,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

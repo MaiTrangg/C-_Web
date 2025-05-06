@@ -15,8 +15,12 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+  jwt:
+    secret: f0wqYKZ899yByVqnngHHtgJ11jAQuIJanMaOh6FSfH8=  # 256-bit base64 encoded
+    expiration: 86400000 # 1 ngày (ms)
+
 server:
-  port: 8080
+  port: 8443
   ssl:
     key-store: classpath:myshop.p12
     key-store-password: 123456

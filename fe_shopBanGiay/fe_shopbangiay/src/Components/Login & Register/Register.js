@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import * as Components from './Components';
 
-const API_URL = 'https://localhost:8080/api';
+const API_URL = 'https://localhost:8443/api/user';
 
 const Register = ({ toggle }) => {
     const [username, setUsername] = useState('');
@@ -32,6 +32,7 @@ const Register = ({ toggle }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(userData),
+                credentials: 'include' // 👈 thêm dòng này nếu backend gửi cookie JWT/session
             });
 
             const responseBodyText = await response.text();

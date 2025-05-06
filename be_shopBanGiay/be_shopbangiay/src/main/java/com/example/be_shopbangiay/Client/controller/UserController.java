@@ -13,35 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 //@Controller
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserRegistrationController {
     @Autowired
     private UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-//    @ModelAttribute("userdto")
-//    public UserDto userResgistrationDto(){
-//        return new UserDto();
-//    }
-//    @GetMapping("/registration")
-//    public String showRegistrationForm(){
-//        return "/registration";
-//    }
-
-    //test trên giao diện
-//    @PostMapping("/registration")
-//    public String registerUserAccount(@ModelAttribute("userdto") UserDto userDto){
-//        if(userService.checkUserByEmail(userDto.getEmail()))
-//        {
-//            return "redirect:/registration?emailexist";
-//        }
-//        if (userService.checkUsernameExists(userDto.getUsername())) {
-//            return "redirect:/registration?usernameexist";
-//        }
-//
-//        userService.save(userDto);
-//        return "redirect:/registration?success";
-//    }
 
     // test trên REST api
     @CrossOrigin(origins = "http://localhost:3000")
@@ -64,16 +41,18 @@ public class UserRegistrationController {
 
 
     // Lấy thông tin user theo email
-    @GetMapping("/user/email/{email}")
+    @GetMapping("/email/{email}")
     @ResponseBody
     public User getUserByEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);
     }
 
     // Lấy thông tin user theo username
-    @GetMapping("/user/username/{username}")
+    @GetMapping("/username/{username}")
     @ResponseBody
     public User getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
+
+
 }

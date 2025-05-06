@@ -2,7 +2,12 @@
 #spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 #
 server:
-  port: 8080
+  port: 8443
+  ssl:
+    key-store: classpath:myshop.p12
+    key-store-password: 123456
+    key-store-type: PKCS12
+    key-alias: myshop
   servlet:
     context-path: /
 
@@ -12,3 +17,11 @@ spring:
     username: root
     password: 123456
 
+  jwt:
+    secret: f0wqYKZ899yByVqnngHHtgJ11jAQuIJanMaOh6FSfH8=  # 256-bit base64 encoded
+    expiration: 86400000 # 1 ngày (ms)
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.example.be_shopbangiay: DEBUG

@@ -30,6 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 ||path.matches("^/api/products/categories(/.*)?$")
                 ||path.matches("^/api/products(/.*)?$")
                 ||path.matches("/api/categories")
+                ||path.matches("/api/auth/facebook")
         ) {
             filterChain.doFilter(request, response);
             return;

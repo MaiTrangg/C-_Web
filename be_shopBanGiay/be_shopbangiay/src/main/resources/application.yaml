@@ -25,3 +25,6 @@ logging:
   level:
     org.springframework.security: DEBUG
     com.example.be_shopbangiay: DEBUG
+facebook:
+  app-id: 1062399375781932
+  app-secret: 453b6082e14e4beb2322cfb98dfb69d5

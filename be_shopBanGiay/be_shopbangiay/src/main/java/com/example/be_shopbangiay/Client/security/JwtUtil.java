@@ -22,7 +22,17 @@ public class JwtUtil {
         this.expiration = expiration;
     }
 
-    // ✅ Dùng cho đăng nhập thường - subject là username
+        public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+
+    // Dùng cho đăng nhập thường - subject là username
     public String generateTokenWithUsername(String username) {
         return Jwts.builder()
                 .setSubject(username)

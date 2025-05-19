@@ -1,5 +1,7 @@
-package com.example.be_shopbangiay.Client.config;//package com.example.be_shopbangiay.Client.config;
-import com.example.be_shopbangiay.Client.dto.UserDto;
+
+package com.example.be_shopbangiay.Client.config;
+
+
 import com.example.be_shopbangiay.Client.security.JwtAuthenticationFilter;
 import com.example.be_shopbangiay.Client.security.JwtUtil;
 import com.example.be_shopbangiay.Client.service.UserService;
@@ -15,7 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 @Configuration
@@ -43,8 +44,12 @@ public class SecurityConfig {
                 }))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/products/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/categories").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/registration").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/facebook").permitAll()
                         .requestMatchers("/oauth2/**", "/login/**", "/oauth2/success").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -52,6 +57,7 @@ public class SecurityConfig {
                         .loginPage("/oauth2/authorization/google")
                         .defaultSuccessUrl("/oauth2/success", true)
                 )
+
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

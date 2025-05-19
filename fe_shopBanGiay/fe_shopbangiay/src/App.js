@@ -18,6 +18,11 @@ function App() {
                 <Route path="/productDetail" element={<ProductDetail />} />
                 <Route path="/login" element={<AuthPage />} />
                 <Route path="/register" element={<AuthPage />} />
+                <Route path="/shop/:categoryId" element={<ShopPage />} />
+                <Route path="/productDetail/:productId" element={<ProductDetail />} />
+                {/*<Route path="/productDetail/:id" element={<ProductDetail />} />*/}
+
+
             </Routes>
         </BrowserRouter>
     );

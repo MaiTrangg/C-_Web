@@ -1,4 +1,4 @@
-package com.example.be_shopbangiay.Client.service.Impl;
+package com.example.be_shopbangiay.Client.service.impl;
 import com.example.be_shopbangiay.Client.dto.UserDto;
 import com.example.be_shopbangiay.Client.entity.Role; // Import entity Role
 import com.example.be_shopbangiay.Client.entity.User;
@@ -8,8 +8,6 @@ import com.example.be_shopbangiay.Client.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {

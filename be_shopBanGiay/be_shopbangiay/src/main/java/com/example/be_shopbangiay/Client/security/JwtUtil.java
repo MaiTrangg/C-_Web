@@ -22,7 +22,8 @@ public class JwtUtil {
         this.expiration = expiration;
     }
 
-    public String generateToken(String username) {
+    // ✅ Dùng cho đăng nhập thường - subject là username
+    public String generateTokenWithUsername(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
@@ -31,7 +32,20 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String extractUsername(String token) {
+    public String generateTokenWithUsernameAndEmail(String username, String email) {
+        return Jwts.builder()
+                .setSubject(username) // subject là username
+                .claim("email", email) // email vẫn có trong claims
+                .claim("username", username) // thêm rõ ràng để frontend đọc
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+
+    // mới
+    public String extractEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
@@ -39,6 +53,21 @@ public class JwtUtil {
                 .getBody()
                 .getSubject();
     }
+
+    public String extractUsername(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        if (claims.containsKey("username")) {
+            return claims.get("username", String.class);
+        } else {
+            return claims.getSubject();
+        }
+    }
+
 
     public boolean validateToken(String token) {
         try {

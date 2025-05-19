@@ -82,6 +82,7 @@ public class UserController {
         return userService.getUserByUsername(username);
     }
 
+    // api dang nhap
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDto loginDto) {

@@ -2,6 +2,25 @@ spring:
   application:
     name: be_shopbangiay
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 607810290755-teur38f5l573k25gue4e9igo3kav3l3u.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+
   datasource:
     url: jdbc:mysql://localhost:3306/storegiay
     username: root

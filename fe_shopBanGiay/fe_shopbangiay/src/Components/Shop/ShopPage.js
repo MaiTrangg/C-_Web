@@ -9,11 +9,12 @@ const ShopPage = () => {
     const itemsPerPage = 6;
     //search
     const [searchTerm, setSearchTerm] = useState("");
-
-    //loc theo mau
+    //tao mang de luu nhung mau duoc chon
     const [selectedColors, setSelectedColors] = useState([]);
+    //tao mang de luu nhung kich thuoc duoc chon
+    const [selectedSizes, setSelectedSizes] = useState([]);
 
-
+//loc theo mau
     const handleColorChange = (e) => {
         const color = e.target.value;
         const checked = e.target.checked;
@@ -24,6 +25,18 @@ const ShopPage = () => {
             checked
                 ? [...prev, color]
                 : prev.filter(c => c !== color)
+        );
+    };
+
+    //loc theo kich thuoc
+    const handleSizeChange = (e) => {
+        const size = e.target.value;
+        const checked = e.target.checked;
+
+        setSelectedSizes(prev =>
+            checked
+                ? [...prev, size] // thêm vào nếu được chọn
+                : prev.filter(s => s !== size) // loại ra nếu bỏ chọn
         );
     };
 
@@ -191,46 +204,53 @@ const ShopPage = () => {
                         <div className="mb-5">
                             <h5 className="font-weight-semi-bold mb-4">Filter by size</h5>
                             <form>
-                            <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" defaultChecked={true}
-                                           id="size-all"/>
-                                    <label className="custom-control-label" htmlFor="size-all">All Size</label>
-                                    <span className="badge border font-weight-normal">1000</span>
-                                </div>
+                            {/*<div*/}
+                            {/*        className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">*/}
+                            {/*        <input type="checkbox" className="custom-control-input" defaultChecked={true}*/}
+                            {/*               id="size-all"/>*/}
+                            {/*        <label className="custom-control-label" htmlFor="size-all">All Size</label>*/}
+                            {/*        <span className="badge border font-weight-normal">1000</span>*/}
+                            {/*    </div>*/}
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="size-1"/>
+                                    <input type="checkbox" className="custom-control-input" id="size-1"
+                                    value={"36"} onChange={handleSizeChange}
+                                    />
                                     <label className="custom-control-label" htmlFor="size-1">36</label>
                                     <span className="badge border font-weight-normal">150</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="size-2"/>
+                                    <input type="checkbox" className="custom-control-input" id="size-2"
+                                           value={"37"} onChange={handleSizeChange}/>
                                     <label className="custom-control-label" htmlFor="size-2">37</label>
                                     <span className="badge border font-weight-normal">295</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="size-3"/>
+                                    <input type="checkbox" className="custom-control-input" id="size-3"
+                                           value={"38"} onChange={handleSizeChange}/>
                                     <label className="custom-control-label" htmlFor="size-3">38</label>
                                     <span className="badge border font-weight-normal">246</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="size-4"/>
+                                    <input type="checkbox" className="custom-control-input" id="size-4"
+                                           value={"39"} onChange={handleSizeChange}/>
                                     <label className="custom-control-label" htmlFor="size-4">39</label>
                                     <span className="badge border font-weight-normal">145</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="size-5"/>
+                                    <input type="checkbox" className="custom-control-input" id="size-5"
+                                           value={"40"} onChange={handleSizeChange}/>
                                     <label className="custom-control-label" htmlFor="size-5">40</label>
                                     <span className="badge border font-weight-normal">168</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                    <input type="checkbox" className="custom-control-input" id="size-6"/>
+                                    <input type="checkbox" className="custom-control-input" id="size-6"
+                                           value={"41"} onChange={handleSizeChange}/>
                                     <label className="custom-control-label" htmlFor="size-6">41</label>
                                     <span className="badge border font-weight-normal">191</span>
                                 </div>
@@ -290,6 +310,7 @@ const ShopPage = () => {
                         searchTerm={searchTerm}
                         itemsPerPage={itemsPerPage}
                         selectedColors={selectedColors}
+                        selectedSizes={selectedSizes}
                     />
 
                         </div>

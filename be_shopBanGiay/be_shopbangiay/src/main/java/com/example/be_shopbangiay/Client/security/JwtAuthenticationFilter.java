@@ -25,6 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         // Cho phép các API không cần xác thực
+
         String path = request.getRequestURI();
         if (path.contains("/api/user/login") || path.contains("/api/user/registration")
                 ||path.matches("^/api/products/categories(/.*)?$")
@@ -32,6 +33,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 ||path.matches("/api/categories")
                 ||path.matches("/api/upload/image")
                 ||path.matches("/api/auth/facebook")
+                || path.contains("/oauth2")
+                || path.startsWith("/login")
+                || path.startsWith("/oauth2/success")
+                || path.equals("/favicon.ico")
+
         ) {
             filterChain.doFilter(request, response);
             return;
@@ -39,13 +45,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
+
             if (jwtUtil.validateToken(token)) {
-                // TODO: Có thể đặt Authentication vào SecurityContext nếu cần
+                //  Token hợp lệ → cho phép đi tiếp, không cần đặt vào SecurityContext
                 filterChain.doFilter(request, response);
                 return;
             }
         }
 
+        //  Không có token hoặc token không hợp lệ
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or missing token");
     }
 }

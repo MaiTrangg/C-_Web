@@ -73,7 +73,7 @@ const Categories = () => {
 
                             {/* ✅ CẬP NHẬT: subcategories giữ nguyên */}
                             {openDropdown === category.id && category.subcategories?.length > 0 && (
-                                <div className="dropdown-menu bg-secondary position-absolute border-0 rounded-0 w-100 m-0 show">
+                                <div className="dropdown-menu  position-absolute border-0 rounded-0 w-100 m-0 show">
                                     {category.subcategories.map(sub => (
                                         <Link
                                             key={sub.id}

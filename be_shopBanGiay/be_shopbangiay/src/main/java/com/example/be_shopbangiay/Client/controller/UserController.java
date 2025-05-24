@@ -91,8 +91,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
 
-        // ✅ In ra thông tin user
-        System.out.println("🟢 User logged in successfully:");
+        //  In ra thông tin user
+        System.out.println(" User logged in successfully:");
         System.out.println("Username: " + user.getUsername());
         System.out.println("Email: " + user.getEmail());
         System.out.println("Role: " + user.getRole().getName());

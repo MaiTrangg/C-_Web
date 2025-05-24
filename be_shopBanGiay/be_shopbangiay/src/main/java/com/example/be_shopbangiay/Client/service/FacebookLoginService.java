@@ -27,6 +27,7 @@ public class FacebookLoginService {
 
     public String loginWithFacebook(String accessToken) {
         String url = "https://graph.facebook.com/me?fields=id,name,email&access_token=" + accessToken;
+        System.out.println("url: "+url);
         RestTemplate restTemplate = new RestTemplate();
 
         Map<String, Object> fbData;
@@ -37,7 +38,9 @@ public class FacebookLoginService {
         }
 
         String email = (String) fbData.get("email");
+        System.out.println("email: "+email);
         String name = (String) fbData.get("name");
+        System.out.println("name: "+name);
 
         if (email == null || name == null) {
             throw new RuntimeException("Facebook email permission required");

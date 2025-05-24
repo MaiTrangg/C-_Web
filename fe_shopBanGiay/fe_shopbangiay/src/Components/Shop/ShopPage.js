@@ -10,15 +10,34 @@ const ShopPage = () => {
     //search
     const [searchTerm, setSearchTerm] = useState("");
 
+    //loc theo mau
+    const [selectedColors, setSelectedColors] = useState([]);
+
+
+    const handleColorChange = (e) => {
+        const color = e.target.value;
+        const checked = e.target.checked;
+
+
+
+        setSelectedColors(prev =>
+            checked
+                ? [...prev, color]
+                : prev.filter(c => c !== color)
+        );
+    };
+
+
+
+
+
 
     const handleSearchSubmit = (e) => {
         e.preventDefault(); // Ngăn reload trang
         // Không cần gì thêm nếu searchTerm đang được lắng nghe bởi useEffect
     };
 
-    // if (loading) {
-    //     return <div>Loading...</div>; // Hiển thị thông báo khi đang tải dữ liệu
-    // }
+
 
     return (
         <div>
@@ -89,51 +108,90 @@ const ShopPage = () => {
                         <div className="border-bottom mb-4 pb-4">
                             <h5 className="font-weight-semi-bold mb-4">Filter by color</h5>
                             <form>
+                                {/*<div*/}
+                                {/*    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">*/}
+                                {/*    <input type="checkbox" className="custom-control-input" */}
+                                {/*           id="color-all"*/}
+                                {/*           checked={isAllColorSelected}*/}
+                                {/*           onChange={handleAllColorChange}/>*/}
+
+                                {/*    <label className="custom-control-label" htmlFor="color-all">All Color</label>*/}
+                                {/*    <span className="badge border font-weight-normal">1000</span>*/}
+                                {/*</div>*/}
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" defaultChecked={true} id="color-all"/>
-                                    <label className="custom-control-label" htmlFor="price-all">All Color</label>
-                                    <span className="badge border font-weight-normal">1000</span>
-                                </div>
-                                <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-1"/>
+                                    {/*<input type="checkbox" className="custom-control-input" id="color-1"/>*/}
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="color-1"
+                                        value="Đen"
+                                        onChange={handleColorChange}
+                                    />
                                     <label className="custom-control-label" htmlFor="color-1">Đen</label>
                                     <span className="badge border font-weight-normal">150</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-2"/>
+                                    {/*<input type="checkbox" className="custom-control-input" id="color-2"/>*/}
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="color-2"
+                                        value="Trắng"
+                                        onChange={handleColorChange}
+                                    />
                                     <label className="custom-control-label" htmlFor="color-2">Trắng</label>
                                     <span className="badge border font-weight-normal">295</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-3"/>
+                                    {/*<input type="checkbox" className="custom-control-input" id="color-3"/>*/}
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="color-3"
+                                        value="Xám"
+                                        onChange={handleColorChange}
+                                    />
                                     <label className="custom-control-label" htmlFor="color-3">Xám</label>
                                     <span className="badge border font-weight-normal">246</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-4"/>
+                                    {/*<input type="checkbox" className="custom-control-input" id="color-4"/>*/}
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="color-4"
+                                        value="Nâu"
+                                        onChange={handleColorChange}
+                                    />
                                     <label className="custom-control-label" htmlFor="color-4">Nâu</label>
                                     <span className="badge border font-weight-normal">145</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                    <input type="checkbox" className="custom-control-input" id="color-5"/>
+                                    {/*<input type="checkbox" className="custom-control-input" id="color-5"/>*/}
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="color-5"
+                                        value="Be"
+                                        onChange={handleColorChange}
+                                    />
                                     <label className="custom-control-label" htmlFor="color-5">Be</label>
                                     <span className="badge border font-weight-normal">168</span>
                                 </div>
                             </form>
                         </div>
-                         {/*Color End -->*/}
+                        {/*Color End -->*/}
 
-                         {/*Size Start -->*/}
+                        {/*Size Start -->*/}
                         <div className="mb-5">
                             <h5 className="font-weight-semi-bold mb-4">Filter by size</h5>
                             <form>
-                                <div
+                            <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                     <input type="checkbox" className="custom-control-input" defaultChecked={true}
                                            id="size-all"/>
@@ -227,7 +285,12 @@ const ShopPage = () => {
                                 </div>
                             </div>
                     {/*        /!* Hiển thị sản phẩm *!/*/}
-                    <ProductList categoryId={categoryId} searchTerm={searchTerm} itemsPerPage={itemsPerPage} />
+                    <ProductList
+                        categoryId={categoryId}
+                        searchTerm={searchTerm}
+                        itemsPerPage={itemsPerPage}
+                        selectedColors={selectedColors}
+                    />
 
                         </div>
                     </div>

@@ -2,10 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProductCard from "./ProductCard";
 
-const ProductList = ({ categoryId, searchTerm, itemsPerPage }) => {
+const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors}) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+    // const colors = selectedColors || [];
+    if (selectedColors && selectedColors.length > 0) {
+        console.log("Có màu được chọn:", selectedColors);
+    } else {
+        console.log("Chưa có màu nào được chọn");
+    }
+
 
     useEffect(() => {
         setLoading(true);
@@ -20,7 +27,18 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage }) => {
                     url = `/api/products`;
                 }
                 const response = await axios.get(url);
-                setProducts(response.data);
+                // setProducts(response.data);
+                // Lọc theo màu ở đây
+                let filtered = response.data;
+                if (selectedColors && selectedColors.length > 0) {
+                    filtered = filtered.filter(product =>
+                        product.colorImages.some(ci =>
+                            selectedColors.includes(ci.color)
+                        )
+                    );
+                }
+                console.log("filtered: ",filtered)
+                setProducts(filtered);
                 setCurrentPage(1);
             } catch (error) {
                 console.error("Error fetching products:", error);
@@ -29,7 +47,7 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage }) => {
             }
         };
         fetchData();
-    }, [categoryId, searchTerm]);
+    }, [categoryId, searchTerm, selectedColors]);
 
     const totalPages = Math.ceil(products.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProductCard from "./ProductCard";
 
-const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors}) => {
+const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, selectedSizes}) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -11,6 +11,11 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors}) =>
         console.log("Có màu được chọn:", selectedColors);
     } else {
         console.log("Chưa có màu nào được chọn");
+    }
+    if (selectedSizes && selectedSizes.length > 0) {
+        console.log("Có size được chọn:", selectedSizes);
+    } else {
+        console.log("Chưa có size nào được chọn");
     }
 
 
@@ -28,15 +33,19 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors}) =>
                 }
                 const response = await axios.get(url);
                 // setProducts(response.data);
-                // Lọc theo màu ở đây
+                // // Lọc theo màu, theo size
                 let filtered = response.data;
-                if (selectedColors && selectedColors.length > 0) {
+                if ((selectedColors && selectedColors.length > 0) || (selectedSizes && selectedSizes.length > 0)) {
+                    const normalizedSizes = selectedSizes?.map(size => size.toString()) || [];
+
                     filtered = filtered.filter(product =>
-                        product.colorImages.some(ci =>
-                            selectedColors.includes(ci.color)
+                        product.variants.some(variant =>
+                            (selectedColors.length === 0 || selectedColors.includes(variant.color)) &&
+                            (normalizedSizes.length === 0 || normalizedSizes.includes(variant.size))
                         )
                     );
                 }
+
                 console.log("filtered: ",filtered)
                 setProducts(filtered);
                 setCurrentPage(1);
@@ -47,7 +56,7 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors}) =>
             }
         };
         fetchData();
-    }, [categoryId, searchTerm, selectedColors]);
+    }, [categoryId, searchTerm, selectedColors, selectedSizes]);
 
     const totalPages = Math.ceil(products.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;

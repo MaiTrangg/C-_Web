@@ -9,25 +9,42 @@ const ShopPage = () => {
     const [products, setProducts] = useState([]); // Lưu trữ sản phẩm
     const [loading, setLoading] = useState(true);  // Kiểm tra trạng thái tải
     const { categoryId } = useParams();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6;
 
-    // Lấy dữ liệu sản phẩm từ API
+    // Tính tổng số trang
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+
+    // Cắt mảng sản phẩm theo trang
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
+    const handlePageClick = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+
     useEffect(() => {
-        axios.get('/api/products')
-            .then((response) => {
-                console.log(response.data); // Kiểm tra có dữ liệu không
-                setProducts(response.data); // Lưu sản phẩm vào state
-                setLoading(false);           // Đặt trạng thái tải là false khi dữ liệu đã nhận
-            })
-            .catch((error) => {
-                console.error('There was an error fetching the products!', error);
-                setLoading(false); // Nếu có lỗi thì cũng dừng trạng thái tải
-            });
-    }, []); // Chạy một lần khi component được mount
-    useEffect(() => {
-        axios.get(`/api/products/categories/${categoryId}`)
-            .then(res => setProducts(res.data))
-            .catch(err => console.error(err));
+        setLoading(true);
+        const fetchData = async () => {
+            try {
+                let url = categoryId
+                    ? `/api/products/categories/${categoryId}`
+                    : `/api/products`;
+
+                const response = await axios.get(url);
+                setProducts(response.data);
+                setCurrentPage(1);
+            } catch (error) {
+                console.error("Lỗi khi lấy sản phẩm:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, [categoryId]);
+
 
     if (loading) {
         return <div>Loading...</div>; // Hiển thị thông báo khi đang tải dữ liệu
@@ -218,40 +235,44 @@ const ShopPage = () => {
                                     </div>
                                 </div>
                             </div>
+                            {/* Hiển thị sản phẩm */}
                             <div className="row">
-                                {products.map((product, index) => {
-                                    // Giả sử API trả về ảnh chính trong trường `mainImage`
-                                    const mainImage = product.colorImages.find(img => img.isMain);
+                                {currentProducts.map((product, index) => {
+                                    const mainImage = product.colorImages.find((img) => img.isMain);
                                     return (
-                                    <ProductCard
-                                        key={index}
-                                        productId = {product.id}
-                                        image={mainImage ? mainImage.url : 'default-image.jpg'}
-                                        name={product.name}
-                                        price={product.price}
-                                        oldPrice={product.price}
-                                    />
-
-                                );})}
-
+                                        <ProductCard
+                                            key={index}
+                                            productId={product.id}
+                                            image={mainImage ? mainImage.url : "default-image.jpg"}
+                                            name={product.name}
+                                            price={product.price}
+                                            oldPrice={product.oldPrice || product.price}
+                                        />
+                                    );
+                                })}
                             </div>
+                            {/* Phân trang */}
                             <div className="col-12 pb-1">
                                 <nav aria-label="Page navigation">
                                     <ul className="pagination justify-content-center mb-3">
-                                        <li className="page-item disabled">
-                                            <a className="page-link" href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                                <span className="sr-only">Previous</span>
-                                            </a>
+                                        <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                                            <button className="page-link" onClick={() => handlePageClick(currentPage - 1)}>
+                                                &laquo;
+                                            </button>
                                         </li>
-                                        <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                                        <li className="page-item"><a className="page-link" href="#">2</a></li>
-                                        <li className="page-item"><a className="page-link" href="#">3</a></li>
-                                        <li className="page-item">
-                                            <a className="page-link" href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                                <span className="sr-only">Next</span>
-                                            </a>
+
+                                        {[...Array(totalPages)].map((_, i) => (
+                                            <li key={i} className={`page-item ${currentPage === i + 1 ? "active" : ""}`}>
+                                                <button className="page-link" onClick={() => handlePageClick(i + 1)}>
+                                                    {i + 1}
+                                                </button>
+                                            </li>
+                                        ))}
+
+                                        <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                                            <button className="page-link" onClick={() => handlePageClick(currentPage + 1)}>
+                                                &raquo;
+                                            </button>
                                         </li>
                                     </ul>
                                 </nav>

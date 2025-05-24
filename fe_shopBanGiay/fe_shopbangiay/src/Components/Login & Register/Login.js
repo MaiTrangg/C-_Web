@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import * as Components from './Components';
+import FacebookLoginButton from "./FacebookLoginButton";
 
 const API_URL = 'https://localhost:8443/api/user';
 
@@ -16,7 +17,7 @@ const Login = ({ toggle }) => {
     const [isGoogleLogin, setIsGoogleLogin] = useState(false);
     const navigate = useNavigate();
 
-    // ✅ Xử lý Google OAuth2
+    //  Xử lý Google OAuth2
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
@@ -26,7 +27,7 @@ const Login = ({ toggle }) => {
             const decoded = jwtDecode(token);
             const oauthUsername = decoded.username || decoded.sub || 'User';
 
-            console.log("✅ Decoded from Google login:", decoded);
+            console.log(" Decoded from Google login:", decoded);
             setIsGoogleLogin(true);
 
             // Xoá token khỏi URL
@@ -93,6 +94,25 @@ const Login = ({ toggle }) => {
             setIsLoading(false);
         }
     };
+    //Truyen prop cho login Facebook
+    const handleFacebookLoginSuccess = (data) => {
+        if (data.token) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Login with Facebook successful!',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                localStorage.setItem('token', data.token);
+                navigate('/home');
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Facebook login failed!',
+                text: data.message || 'Unknown error',
+            });
+        }
+    };
 
     return (
         <Components.SignInContainer signinIn={true}>
@@ -109,9 +129,11 @@ const Login = ({ toggle }) => {
                     >
                         <i className="fab fa-google"></i>
                     </Components.SocialButton>
-                    <Components.SocialButton provider="facebook" onClick={() => alert('Login with Facebook')}>
-                        <i className="fab fa-facebook-f"></i>
-                    </Components.SocialButton>
+                    {/*<Components.SocialButton provider="facebook" onClick={() => alert('Login with Facebook')}>*/}
+                    {/*    <i className="fab fa-facebook-f"></i>*/}
+                    {/*</Components.SocialButton>*/}
+                    <FacebookLoginButton
+                        onFacebookLoginSuccess={handleFacebookLoginSuccess} />
                 </Components.SocialContainer>
 
                 <Components.Input

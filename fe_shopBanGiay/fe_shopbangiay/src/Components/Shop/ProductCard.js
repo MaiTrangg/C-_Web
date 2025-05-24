@@ -11,9 +11,9 @@ const ProductCard = ({ productId,image, name, price, oldPrice }) => {
                 <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
                     <h6 className="text-truncate mb-3">{name}</h6>
                     <div className="d-flex justify-content-center">
-                        <h6>${price}</h6>
+                        <h6> {price}đ</h6>
                         <h6 className="text-muted ml-2">
-                            <del>${oldPrice}</del>
+                            <del>{oldPrice}đ</del>
                         </h6>
                     </div>
                 </div>

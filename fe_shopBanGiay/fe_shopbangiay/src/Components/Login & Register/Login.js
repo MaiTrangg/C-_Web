@@ -123,7 +123,7 @@ const Login = ({ toggle }) => {
                     <Components.SocialButton
                         provider="google"
                         onClick={() => {
-                            // ✅ Gọi tới endpoint OAuth2 của backend
+                            //  Gọi tới endpoint OAuth2 của backend
                             window.location.href = 'https://localhost:8443/oauth2/authorization/google';
                         }}
                     >

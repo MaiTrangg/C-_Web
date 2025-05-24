@@ -32,4 +32,12 @@ public class ProductController {
         return productService.getProductsByProductId(productId);
     }
 
+    @GetMapping("/search")
+    public List<ProductDTO> searchProducts(@RequestParam(required = false) String name) {
+        // Nếu không truyền tên, trả về tất cả sản phẩm
+        if (name == null || name.isBlank()) {
+            return productService.getAllProducts();
+        }
+        return productService.searchProductsByName(name);
+    }
 }

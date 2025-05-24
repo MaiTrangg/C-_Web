@@ -43,9 +43,9 @@ public class OAuth2Controller {
 
 //        response.sendRedirect("http://localhost:3000/home?token=" + token);
         response.sendRedirect("http://localhost:3000/login?token=" + token);
-        System.out.println("🔁 [OAuth2] name: " + name);
-        System.out.println("🔁 [OAuth2] email: " + email);
-        System.out.println("🔁 [OAuth2] token: " + token);
+        System.out.println(" [OAuth2] name: " + name);
+        System.out.println(" [OAuth2] email: " + email);
+        System.out.println(" [OAuth2] token: " + token);
 
     }
 

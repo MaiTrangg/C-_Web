@@ -1,6 +1,10 @@
+
 package com.example.be_shopbangiay.Client.config;
 
+
 import com.example.be_shopbangiay.Client.security.JwtAuthenticationFilter;
+import com.example.be_shopbangiay.Client.security.JwtUtil;
+import com.example.be_shopbangiay.Client.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -19,6 +24,12 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,8 +51,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/registration").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/facebook").permitAll()
+                        .requestMatchers("/oauth2/**", "/login/**", "/oauth2/success").permitAll()
                         .anyRequest().authenticated()
                 )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/oauth2/authorization/google")
+                        .defaultSuccessUrl("/oauth2/success", true)
+                )
+
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

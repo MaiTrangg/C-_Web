@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Sử dụng useNavigate thay cho useHistory
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import * as Components from './Components';
+import FacebookLoginButton from "./FacebookLoginButton";
 
 const API_URL = 'https://localhost:8443/api/user';
 
@@ -10,7 +13,38 @@ const Login = ({ toggle }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate(); // Sử dụng useNavigate
+    const [showPassword, setShowPassword] = useState(false);
+    const [isGoogleLogin, setIsGoogleLogin] = useState(false);
+    const navigate = useNavigate();
+
+    //  Xử lý Google OAuth2
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (token) {
+            localStorage.setItem('token', token);
+            const decoded = jwtDecode(token);
+            const oauthUsername = decoded.username || decoded.sub || 'User';
+
+            console.log(" Decoded from Google login:", decoded);
+            setIsGoogleLogin(true);
+
+            // Xoá token khỏi URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            Swal.fire({
+                icon: 'success',
+                title: `Welcome, ${oauthUsername}!`,
+                text: 'Google login successful!',
+                confirmButtonText: 'Go to Home'
+            }).then(() => {
+                navigate('/home');
+            });
+        }
+    }, [navigate]);
+
+
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -29,15 +63,12 @@ const Login = ({ toggle }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(loginData),
-                credentials: 'include', // Đảm bảo backend gửi cookie JWT/session nếu cần thiết
+                credentials: 'include',
             });
 
             const responseBody = await response.json();
 
-            if (response.ok) {
-                console.log('Login Success:', responseBody);
-
-                // ✅ Hiển thị thông báo đăng nhập thành công bằng SweetAlert2
+            if (response.ok && !isGoogleLogin) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Login successful!',
@@ -45,15 +76,11 @@ const Login = ({ toggle }) => {
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Sau khi người dùng bấm OK, chuyển hướng đến /home
                         navigate('/home');
                     }
                 });
 
-                // Lưu token vào localStorage hoặc state để dùng cho các API yêu cầu xác thực
                 localStorage.setItem('token', responseBody.token);
-
-                // Reset form
                 setUsername('');
                 setPassword('');
             } else {
@@ -67,6 +94,25 @@ const Login = ({ toggle }) => {
             setIsLoading(false);
         }
     };
+    //Truyen prop cho login Facebook
+    const handleFacebookLoginSuccess = (data) => {
+        if (data.token) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Login with Facebook successful!',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                localStorage.setItem('token', data.token);
+                navigate('/home');
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Facebook login failed!',
+                text: data.message || 'Unknown error',
+            });
+        }
+    };
 
     return (
         <Components.SignInContainer signinIn={true}>
@@ -74,12 +120,20 @@ const Login = ({ toggle }) => {
                 <Components.Title>Sign in</Components.Title>
 
                 <Components.SocialContainer>
-                    <Components.SocialButton provider="google" onClick={() => alert('Login with Google')}>
+                    <Components.SocialButton
+                        provider="google"
+                        onClick={() => {
+                            // ✅ Gọi tới endpoint OAuth2 của backend
+                            window.location.href = 'https://localhost:8443/oauth2/authorization/google';
+                        }}
+                    >
                         <i className="fab fa-google"></i>
                     </Components.SocialButton>
-                    <Components.SocialButton provider="facebook" onClick={() => alert('Login with Facebook')}>
-                        <i className="fab fa-facebook-f"></i>
-                    </Components.SocialButton>
+                    {/*<Components.SocialButton provider="facebook" onClick={() => alert('Login with Facebook')}>*/}
+                    {/*    <i className="fab fa-facebook-f"></i>*/}
+                    {/*</Components.SocialButton>*/}
+                    <FacebookLoginButton
+                        onFacebookLoginSuccess={handleFacebookLoginSuccess} />
                 </Components.SocialContainer>
 
                 <Components.Input
@@ -88,12 +142,30 @@ const Login = ({ toggle }) => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
-                <Components.Input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <div style={{ position: 'relative' }}>
+                    <Components.Input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        style={{ paddingRight: '40px' }}
+                    />
+                    <span
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={{
+                            position: 'absolute',
+                            right: '10px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            cursor: 'pointer',
+                            color: '#999',
+                            fontSize: '18px',
+                        }}
+                    >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </span>
+                </div>
+
                 <Components.Anchor href="#">Forgot your password?</Components.Anchor>
                 <Components.Button disabled={isLoading}>
                     {isLoading ? 'Signing in...' : 'Sign In'}

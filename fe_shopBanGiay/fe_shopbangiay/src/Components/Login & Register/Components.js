@@ -9,7 +9,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); 
-  width: 678px;
+  width: 680px;
+  height: 565px;
   max-width: 100%;
   min-height: 435px;
  `;

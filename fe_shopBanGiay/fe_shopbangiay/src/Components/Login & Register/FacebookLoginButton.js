@@ -7,7 +7,7 @@ const FacebookLoginButton = ({ onFacebookLoginSuccess }) => {
         if (!window.FB) {
             window.fbAsyncInit = function () {
                 window.FB.init({
-                    appId: '1062399375781932', // Thay bằng App ID thật
+                    appId: '1062399375781932',
                     cookie: true,
                     xfbml: false,
                     version: 'v15.0',
@@ -23,6 +23,10 @@ const FacebookLoginButton = ({ onFacebookLoginSuccess }) => {
     }, []);
 
     const handleFacebookLogin = () => {
+        if (!window.FB) {
+            console.error("Facebook SDK not loaded yet.");
+            return;
+        }
         window.FB.login(
             (response) => {
                 if (response.authResponse) {

@@ -1,5 +1,8 @@
 package com.example.be_shopbangiay.Client.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,10 +13,23 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto implements Serializable {
+
+    @NotBlank(message = "Username is required")
+    @Size(min = 2, max = 20, message = "Username must be 2-20 characters")
     private String username;
+
+    @NotBlank(message = "Email is required")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@gmail\\.com$", message = "Email must be a valid @gmail.com address")
     private String email;
+
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
     private String telephone;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
+
     private String role;
 
     public String getUsername() {

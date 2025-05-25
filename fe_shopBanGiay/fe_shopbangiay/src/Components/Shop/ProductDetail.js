@@ -72,18 +72,24 @@ const ProductDetail = () => {
                     <div className="col-lg-5 pb-5">
                         <div id="product-carousel" className="carousel slide" data-ride="carousel">
                             <div className="carousel-inner border">
-                                {product.colorImages && product.colorImages.map((image, index) => (
-                                    <div
-                                        className={`carousel-item ${index === 0 ? 'active' : ''}`}
-                                        key={index}
-                                    >
-                                        <img
-                                            className="w-100 h-100"
-                                            src={image.url}
-                                            alt={`Product image ${index + 1}`}
-                                        />
-                                    </div>
-                                ))}
+                                {product.colorImages && (() => {
+                                    const selectedImages = product.colorImages.filter(img => img.color === selectedColor);
+                                    const otherImages = product.colorImages.filter(img => img.color !== selectedColor);
+                                    const allImages = [...selectedImages, ...otherImages];
+
+                                    return allImages.map((image, index) => (
+                                        <div
+                                            className={`carousel-item ${index === 0 ? 'active' : ''}`}
+                                            key={index}
+                                        >
+                                            <img
+                                                className="w-100 h-100"
+                                                src={image.url}
+                                                alt={`Product image ${index + 1}`}
+                                            />
+                                        </div>
+                                    ));
+                                })()}
                             </div>
                             <a className="carousel-control-prev" href="#product-carousel" data-slide="prev">
                                 <i className="fa fa-2x fa-angle-left text-dark"></i>
@@ -93,6 +99,7 @@ const ProductDetail = () => {
                             </a>
                         </div>
                     </div>
+
 
                     <div className="col-lg-7 pb-5">
                         <h3 className="font-weight-semi-bold">Colorful Stylish Shirt</h3>

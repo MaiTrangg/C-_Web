@@ -1,54 +1,75 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import Footer from "../Footer/Footer";
 import HeaderShop from "../Header/HeaderShop";
-import ProductCard from "./ProductCard";
+import ProductList from "./ProductList";
+
 
 const ShopPage = () => {
-    const [products, setProducts] = useState([]); // Lưu trữ sản phẩm
-    const [loading, setLoading] = useState(true);  // Kiểm tra trạng thái tải
     const { categoryId } = useParams();
-    const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6;
+    //search
+    const [searchTerm, setSearchTerm] = useState("");
+    //tao mang de luu nhung mau duoc chon
+    const [selectedColors, setSelectedColors] = useState([]);
+    //tao mang de luu nhung kich thuoc duoc chon
+    const [selectedSizes, setSelectedSizes] = useState([]);
 
-    // Tính tổng số trang
-    const totalPages = Math.ceil(products.length / itemsPerPage);
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
+    //bien dung de luu khoang giá
+    const [inputMinPrice, setInputMinPrice] = useState('');
+    const [inputMaxPrice, setInputMaxPrice] = useState('');
 
-    // Cắt mảng sản phẩm theo trang
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
-    const handlePageClick = (pageNumber) => {
-        setCurrentPage(pageNumber);
+
+
+//loc theo mau
+    const handleColorChange = (e) => {
+        const color = e.target.value;
+        const checked = e.target.checked;
+
+
+
+        setSelectedColors(prev =>
+            checked
+                ? [...prev, color]
+                : prev.filter(c => c !== color)
+        );
+    };
+
+    //loc theo kich thuoc
+    const handleSizeChange = (e) => {
+        const size = e.target.value;
+        const checked = e.target.checked;
+
+        setSelectedSizes(prev =>
+            checked
+                ? [...prev, size] // thêm vào nếu được chọn
+                : prev.filter(s => s !== size) // loại ra nếu bỏ chọn
+        );
+    };
+
+    //loc theo gia
+    const handlePriceSubmit = (e) => {
+        e.preventDefault();
+        setMinPrice(inputMinPrice);
+        setMaxPrice(inputMaxPrice);
     };
 
 
-    useEffect(() => {
-        setLoading(true);
-        const fetchData = async () => {
-            try {
-                let url = categoryId
-                    ? `/api/products/categories/${categoryId}`
-                    : `/api/products`;
-
-                const response = await axios.get(url);
-                setProducts(response.data);
-                setCurrentPage(1);
-            } catch (error) {
-                console.error("Lỗi khi lấy sản phẩm:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [categoryId]);
 
 
-    if (loading) {
-        return <div>Loading...</div>; // Hiển thị thông báo khi đang tải dữ liệu
-    }
+
+
+
+
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault(); // Ngăn reload trang
+        // Không cần gì thêm nếu searchTerm đang được lắng nghe bởi useEffect
+    };
+
+
 
     return (
         <div>
@@ -71,156 +92,260 @@ const ShopPage = () => {
                 <div className="row px-xl-5">
                      {/*Shop Sidebar Start -->*/}
                     <div className="col-lg-3 col-md-12">
-                         {/*Price Start -->*/}
+                        {/*Price Start -->*/}
+                        {/*<div className="border-bottom mb-4 pb-4">*/}
+                        {/*    <h5 className="font-weight-semi-bold mb-4">Filter by price</h5>*/}
+                        {/*    <form>*/}
+                        {/*        <div*/}
+                        {/*            className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">*/}
+                        {/*            <input type="checkbox" className="custom-control-input" defaultChecked={true} id="price-all"/>*/}
+                        {/*            <label className="custom-control-label" htmlFor="price-all">All Price</label>*/}
+                        {/*            <span className="badge border font-weight-normal">1000</span>*/}
+                        {/*        </div>*/}
+                        {/*        <div*/}
+                        {/*            className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">*/}
+                        {/*            <input type="checkbox" className="custom-control-input" id="price-1"/>*/}
+                        {/*            <label className="custom-control-label" htmlFor="price-1">$0 - $100</label>*/}
+                        {/*            <span className="badge border font-weight-normal">150</span>*/}
+                        {/*        </div>*/}
+                        {/*        <div*/}
+                        {/*            className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">*/}
+                        {/*            <input type="checkbox" className="custom-control-input" id="price-2"/>*/}
+                        {/*            <label className="custom-control-label" htmlFor="price-2">$100 - $200</label>*/}
+                        {/*            <span className="badge border font-weight-normal">295</span>*/}
+                        {/*        </div>*/}
+                        {/*        <div*/}
+                        {/*            className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">*/}
+                        {/*            <input type="checkbox" className="custom-control-input" id="price-3"/>*/}
+                        {/*            <label className="custom-control-label" htmlFor="price-3">$200 - $300</label>*/}
+                        {/*            <span className="badge border font-weight-normal">246</span>*/}
+                        {/*        </div>*/}
+                        {/*        <div*/}
+                        {/*            className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">*/}
+                        {/*            <input type="checkbox" className="custom-control-input" id="price-4"/>*/}
+                        {/*            <label className="custom-control-label" htmlFor="price-4">$300 - $400</label>*/}
+                        {/*            <span className="badge border font-weight-normal">145</span>*/}
+                        {/*        </div>*/}
+                        {/*        <div*/}
+                        {/*            className="custom-control custom-checkbox d-flex align-items-center justify-content-between">*/}
+                        {/*            <input type="checkbox" className="custom-control-input" id="price-5"/>*/}
+                        {/*            <label className="custom-control-label" htmlFor="price-5">$400 - $500</label>*/}
+                        {/*            <span className="badge border font-weight-normal">168</span>*/}
+                        {/*        </div>*/}
+                        {/*    </form>*/}
+                        {/*</div>*/}
                         <div className="border-bottom mb-4 pb-4">
                             <h5 className="font-weight-semi-bold mb-4">Filter by price</h5>
-                            <form>
-                                <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" defaultChecked={true} id="price-all"/>
-                                    <label className="custom-control-label" htmlFor="price-all">All Price</label>
-                                    <span className="badge border font-weight-normal">1000</span>
+                            <form onSubmit={handlePriceSubmit} >
+                                <div className="d-flex gap-3">
+                                    <div className="form-group flex-grow-1">
+                                        <label htmlFor="minPrice">Min Price ($)</label>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="minPrice"
+                                            placeholder="e.g. 0"
+                                            min="0"
+                                            value={inputMinPrice}
+                                            onChange={(e) => setInputMinPrice(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="form-group flex-grow-1">
+                                        <label htmlFor="maxPrice">Max Price ($)</label>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="maxPrice"
+                                            placeholder="e.g. 500"
+                                            min="0"
+                                            value={inputMaxPrice}
+                                            onChange={(e) => setInputMaxPrice(e.target.value)}
+                                        />
+                                    </div>
                                 </div>
-                                <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="price-1"/>
-                                    <label className="custom-control-label" htmlFor="price-1">$0 - $100</label>
-                                    <span className="badge border font-weight-normal">150</span>
-                                </div>
-                                <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="price-2"/>
-                                    <label className="custom-control-label" htmlFor="price-2">$100 - $200</label>
-                                    <span className="badge border font-weight-normal">295</span>
-                                </div>
-                                <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="price-3"/>
-                                    <label className="custom-control-label" htmlFor="price-3">$200 - $300</label>
-                                    <span className="badge border font-weight-normal">246</span>
-                                </div>
-                                <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="price-4"/>
-                                    <label className="custom-control-label" htmlFor="price-4">$300 - $400</label>
-                                    <span className="badge border font-weight-normal">145</span>
-                                </div>
-                                <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                    <input type="checkbox" className="custom-control-input" id="price-5"/>
-                                    <label className="custom-control-label" htmlFor="price-5">$400 - $500</label>
-                                    <span className="badge border font-weight-normal">168</span>
-                                </div>
-                            </form>
-                        </div>
-                         {/*Price End -->*/}
 
-                         {/*Color Start -->*/}
+                                <button type="submit" className="btn btn-primary btn-sm mt-2">
+                                    Apply Filter
+                                </button>
+                            </form>
+
+                        </div>
+
+                        {/*Price End -->*/}
+
+                        {/*Color Start -->*/}
                         <div className="border-bottom mb-4 pb-4">
                             <h5 className="font-weight-semi-bold mb-4">Filter by color</h5>
                             <form>
+                                {/*<div*/}
+                                {/*    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">*/}
+                                {/*    <input type="checkbox" className="custom-control-input" */}
+                                {/*           id="color-all"*/}
+                                {/*           checked={isAllColorSelected}*/}
+                                {/*           onChange={handleAllColorChange}/>*/}
+
+                                {/*    <label className="custom-control-label" htmlFor="color-all">All Color</label>*/}
+                                {/*    <span className="badge border font-weight-normal">1000</span>*/}
+                                {/*</div>*/}
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" defaultChecked={true} id="color-all"/>
-                                    <label className="custom-control-label" htmlFor="price-all">All Color</label>
-                                    <span className="badge border font-weight-normal">1000</span>
-                                </div>
-                                <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-1"/>
-                                    <label className="custom-control-label" htmlFor="color-1">Black</label>
+                                    {/*<input type="checkbox" className="custom-control-input" id="color-1"/>*/}
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="color-1"
+                                        value="Đen"
+                                        onChange={handleColorChange}
+                                    />
+                                    <label className="custom-control-label" htmlFor="color-1">Đen</label>
                                     <span className="badge border font-weight-normal">150</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-2"/>
-                                    <label className="custom-control-label" htmlFor="color-2">White</label>
+                                    {/*<input type="checkbox" className="custom-control-input" id="color-2"/>*/}
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="color-2"
+                                        value="Trắng"
+                                        onChange={handleColorChange}
+                                    />
+                                    <label className="custom-control-label" htmlFor="color-2">Trắng</label>
                                     <span className="badge border font-weight-normal">295</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-3"/>
-                                    <label className="custom-control-label" htmlFor="color-3">Red</label>
+                                    {/*<input type="checkbox" className="custom-control-input" id="color-3"/>*/}
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="color-3"
+                                        value="Xám"
+                                        onChange={handleColorChange}
+                                    />
+                                    <label className="custom-control-label" htmlFor="color-3">Xám</label>
                                     <span className="badge border font-weight-normal">246</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="color-4"/>
-                                    <label className="custom-control-label" htmlFor="color-4">Blue</label>
+                                    {/*<input type="checkbox" className="custom-control-input" id="color-4"/>*/}
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="color-4"
+                                        value="Nâu"
+                                        onChange={handleColorChange}
+                                    />
+                                    <label className="custom-control-label" htmlFor="color-4">Nâu</label>
                                     <span className="badge border font-weight-normal">145</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                    <input type="checkbox" className="custom-control-input" id="color-5"/>
-                                    <label className="custom-control-label" htmlFor="color-5">Green</label>
+                                    {/*<input type="checkbox" className="custom-control-input" id="color-5"/>*/}
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="color-5"
+                                        value="Be"
+                                        onChange={handleColorChange}
+                                    />
+                                    <label className="custom-control-label" htmlFor="color-5">Be</label>
                                     <span className="badge border font-weight-normal">168</span>
                                 </div>
                             </form>
                         </div>
-                         {/*Color End -->*/}
+                        {/*Color End -->*/}
 
-                         {/*Size Start -->*/}
+                        {/*Size Start -->*/}
                         <div className="mb-5">
                             <h5 className="font-weight-semi-bold mb-4">Filter by size</h5>
                             <form>
+                                {/*<div*/}
+                                {/*        className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">*/}
+                                {/*        <input type="checkbox" className="custom-control-input" defaultChecked={true}*/}
+                                {/*               id="size-all"/>*/}
+                                {/*        <label className="custom-control-label" htmlFor="size-all">All Size</label>*/}
+                                {/*        <span className="badge border font-weight-normal">1000</span>*/}
+                                {/*    </div>*/}
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" defaultChecked={true} id="size-all"/>
-                                    <label className="custom-control-label" htmlFor="size-all">All Size</label>
-                                    <span className="badge border font-weight-normal">1000</span>
-                                </div>
-                                <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="size-1"/>
-                                    <label className="custom-control-label" htmlFor="size-1">XS</label>
+                                    <input type="checkbox" className="custom-control-input" id="size-1"
+                                           value={"36"} onChange={handleSizeChange}
+                                    />
+                                    <label className="custom-control-label" htmlFor="size-1">36</label>
                                     <span className="badge border font-weight-normal">150</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="size-2"/>
-                                    <label className="custom-control-label" htmlFor="size-2">S</label>
+                                    <input type="checkbox" className="custom-control-input" id="size-2"
+                                           value={"37"} onChange={handleSizeChange}/>
+                                    <label className="custom-control-label" htmlFor="size-2">37</label>
                                     <span className="badge border font-weight-normal">295</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="size-3"/>
-                                    <label className="custom-control-label" htmlFor="size-3">M</label>
+                                    <input type="checkbox" className="custom-control-input" id="size-3"
+                                           value={"38"} onChange={handleSizeChange}/>
+                                    <label className="custom-control-label" htmlFor="size-3">38</label>
                                     <span className="badge border font-weight-normal">246</span>
                                 </div>
                                 <div
                                     className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" className="custom-control-input" id="size-4"/>
-                                    <label className="custom-control-label" htmlFor="size-4">L</label>
+                                    <input type="checkbox" className="custom-control-input" id="size-4"
+                                           value={"39"} onChange={handleSizeChange}/>
+                                    <label className="custom-control-label" htmlFor="size-4">39</label>
                                     <span className="badge border font-weight-normal">145</span>
                                 </div>
                                 <div
-                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                    <input type="checkbox" className="custom-control-input" id="size-5"/>
-                                    <label className="custom-control-label" htmlFor="size-5">XL</label>
+                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                    <input type="checkbox" className="custom-control-input" id="size-5"
+                                           value={"40"} onChange={handleSizeChange}/>
+                                    <label className="custom-control-label" htmlFor="size-5">40</label>
                                     <span className="badge border font-weight-normal">168</span>
+                                </div>
+                                <div
+                                    className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                                    <input type="checkbox" className="custom-control-input" id="size-6"
+                                           value={"41"} onChange={handleSizeChange}/>
+                                    <label className="custom-control-label" htmlFor="size-6">41</label>
+                                    <span className="badge border font-weight-normal">191</span>
                                 </div>
                             </form>
                         </div>
-                         {/*Size End -->*/}
+                        {/*Size End -->*/}
                     </div>
-                     {/*Shop Sidebar End -->*/}
+                    {/*Shop Sidebar End -->*/}
 
 
-                     {/*Shop Product Start -->*/}
+                    {/*Shop Product Start -->*/}
+
                     <div className="col-lg-9 col-md-12">
                         <div className="row pb-3">
                             <div className="col-12 pb-1">
                                 <div className="d-flex align-items-center justify-content-between mb-4">
-                                    <form action="">
-                                        <div className="input-group">
-                                            <input type="text" className="form-control" placeholder="Search by name"/>
+                                    <form onSubmit={handleSearchSubmit}>
+                                        <div className="input-group mb-3">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Search by name"
+                                                value={searchTerm}
+                                                onChange={e => {
+                                                    console.log("Typed:", e.target.value);
+                                                    setSearchTerm(e.target.value);
+                                                }}
+                                                // onChange={e => setSearchTerm(e.target.value)}
+                                            />
                                             <div className="input-group-append">
-                                        <span className="input-group-text bg-transparent text-primary">
-                                            <i className="fa fa-search"></i>
-                                        </span>
+                                                <button className="input-group-text bg-transparent text-primary"
+                                                        type="submit">
+                                                    <i className="fa fa-search"></i>
+                                                </button>
+
                                             </div>
                                         </div>
                                     </form>
+
                                     <div className="dropdown ml-4">
                                         <button className="btn border dropdown-toggle" type="button" id="triggerId"
                                                 data-toggle="dropdown" aria-haspopup="true"
@@ -228,58 +353,27 @@ const ShopPage = () => {
                                             Sort by
                                         </button>
                                         <div className="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                            <a className="dropdown-item" href="#">Latest</a>
+                                            <a className="dropdown-item" href="#" >Latest</a>
                                             <a className="dropdown-item" href="#">Popularity</a>
                                             <a className="dropdown-item" href="#">Best Rating</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {/* Hiển thị sản phẩm */}
-                            <div className="row">
-                                {currentProducts.map((product, index) => {
-                                    const mainImage = product.colorImages.find((img) => img.isMain);
-                                    return (
-                                        <ProductCard
-                                            key={index}
-                                            productId={product.id}
-                                            image={mainImage ? mainImage.url : "default-image.jpg"}
-                                            name={product.name}
-                                            price={product.price}
-                                            oldPrice={product.oldPrice || product.price}
-                                        />
-                                    );
-                                })}
-                            </div>
-                            {/* Phân trang */}
-                            <div className="col-12 pb-1">
-                                <nav aria-label="Page navigation">
-                                    <ul className="pagination justify-content-center mb-3">
-                                        <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-                                            <button className="page-link" onClick={() => handlePageClick(currentPage - 1)}>
-                                                &laquo;
-                                            </button>
-                                        </li>
+                    {/*        /!* Hiển thị sản phẩm *!/*/}
+                    <ProductList
+                        categoryId={categoryId}
+                        searchTerm={searchTerm}
+                        itemsPerPage={itemsPerPage}
+                        selectedColors={selectedColors}
+                        selectedSizes={selectedSizes}
+                        minPrice={minPrice}
+                        maxPrice={maxPrice}
+                    />
 
-                                        {[...Array(totalPages)].map((_, i) => (
-                                            <li key={i} className={`page-item ${currentPage === i + 1 ? "active" : ""}`}>
-                                                <button className="page-link" onClick={() => handlePageClick(i + 1)}>
-                                                    {i + 1}
-                                                </button>
-                                            </li>
-                                        ))}
-
-                                        <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
-                                            <button className="page-link" onClick={() => handlePageClick(currentPage + 1)}>
-                                                &raquo;
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
                         </div>
                     </div>
-                    {/*Shop Product End -->*/}
+                    {/*/!*Shop Product End -->*!/*/}
                 </div>
             </div>
             {/*Shop End */}

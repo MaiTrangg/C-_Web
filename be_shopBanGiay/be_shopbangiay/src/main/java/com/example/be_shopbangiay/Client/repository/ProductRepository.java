@@ -14,4 +14,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
 
     List<Product> findByCategoryIdIn(List<Long> categoryIds);
 
+    // Tìm sản phẩm theo tên chứa chuỗi (không phân biệt hoa thường), và sản phẩm còn active
+    List<Product> findByNameContainingIgnoreCaseAndIsActiveTrue(String name);
+
 }

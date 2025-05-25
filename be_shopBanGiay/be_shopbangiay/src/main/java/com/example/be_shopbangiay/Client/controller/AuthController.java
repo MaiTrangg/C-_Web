@@ -23,6 +23,7 @@ public class AuthController {
     @PostMapping("/facebook")
     public ResponseEntity<?> facebookLogin(@RequestBody Map<String, String> body) {
         String accessToken = body.get("accessToken");
+        System.out.println("Token nhận được: " + accessToken);
         if (accessToken == null || accessToken.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Missing Facebook access token"));
         }

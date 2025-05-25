@@ -7,6 +7,10 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ShopPage from "./Components/Shop/ShopPage";
 import ProductDetail from "./Components/Shop/ProductDetail";
 import AuthPage from './Components/Login & Register/AuthPage';
+import ResetPassword from './Components/Login & Register/ResetPassword';
+import ForgotPassword from './Components/Login & Register/ForgotPassword';
+
+
 
 function App() {
     return (
@@ -20,6 +24,10 @@ function App() {
                 <Route path="/register" element={<AuthPage />} />
                 <Route path="/shop/:categoryId" element={<ShopPage />} />
                 <Route path="/productDetail/:productId" element={<ProductDetail />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+
+
                 {/*<Route path="/productDetail/:id" element={<ProductDetail />} />*/}
 
 

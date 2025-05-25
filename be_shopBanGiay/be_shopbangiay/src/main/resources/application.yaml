@@ -41,6 +41,18 @@ spring:
     secret: f0wqYKZ899yByVqnngHHtgJ11jAQuIJanMaOh6FSfH8=
     expiration: 86400000 # 1 ngày (ms)
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 21130582@st.hcmuaf.edu.vn
+    password: cdgr oskp fdhi mbqj
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 server:
   port: 8443
   ssl:

@@ -1,5 +1,6 @@
 package com.example.be_shopbangiay.Client.dto;
 
+import com.example.be_shopbangiay.Client.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -31,6 +32,13 @@ public class UserDto implements Serializable {
     private String password;
 
     private String role;
+
+    public UserDto(User user) {
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.telephone = user.getTelephone();
+        this.role = user.getRole().getName();
+    }
 
     public String getUsername() {
         return username;

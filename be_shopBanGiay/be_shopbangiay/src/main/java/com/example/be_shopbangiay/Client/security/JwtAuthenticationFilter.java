@@ -28,6 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
         if (path.contains("/api/user/login") || path.contains("/api/user/registration")
+                || path.contains("/api/user/forgot-password")
+                || path.contains("/api/user/reset-password")
                 ||path.matches("^/api/products/categories(/.*)?$")
                 ||path.matches("^/api/products(/.*)?$")
                 ||path.matches("/api/categories")

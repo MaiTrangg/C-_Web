@@ -14,8 +14,8 @@ const ForgotPassword = () => {
         try {
             const response = await fetch('https://localhost:8443/api/user/forgot-password', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ email }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
                 mode: 'cors'
             });
 

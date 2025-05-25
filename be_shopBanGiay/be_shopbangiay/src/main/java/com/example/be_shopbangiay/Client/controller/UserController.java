@@ -3,6 +3,7 @@ package com.example.be_shopbangiay.Client.controller;
 import com.example.be_shopbangiay.Client.dto.UserDto;
 import com.example.be_shopbangiay.Client.entity.User;
 import com.example.be_shopbangiay.Client.security.JwtUtil;
+import com.example.be_shopbangiay.Client.service.EmailService;
 import com.example.be_shopbangiay.Client.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.Map;
 
 //@Controller
 @CrossOrigin(origins = "http://localhost:3000")
@@ -26,6 +28,9 @@ public class UserController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private EmailService emailService;
 
     // test trên REST api
     @CrossOrigin(origins = "http://localhost:3000")
@@ -67,7 +72,6 @@ public class UserController {
     }
 
 
-
     // Lấy thông tin user theo email
     @GetMapping("/email/{email}")
     @ResponseBody
@@ -97,11 +101,61 @@ public class UserController {
         System.out.println("Email: " + user.getEmail());
         System.out.println("Role: " + user.getRole().getName());
 
-//        String token = jwtUtil.generateToken(user.getUsername());
         String token = jwtUtil.generateTokenWithUsername(user.getUsername());
 
-        return ResponseEntity.ok().body(Collections.singletonMap("token", token));
+        UserDto userInfo = new UserDto(user);
 
+//        return ResponseEntity.ok().body(Collections.singletonMap("token", token));
+        return ResponseEntity.ok().body(
+                new java.util.HashMap<>() {{
+                    put("token", token);
+                    put("user", userInfo);
+                }}
+        );
     }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        if (!userService.checkUserByEmail(email)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found");
+        }
+
+        String token = jwtUtil.generateToken(email); // subject = email
+        String resetLink = "http://localhost:3000/reset-password?token=" + token;
+
+        try {
+            emailService.sendResetPasswordEmail(email, resetLink);
+            return ResponseEntity.ok("Password reset link sent to your email.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send email.");
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> payload) {
+        String token = payload.get("token");
+        String newPassword = payload.get("newPassword");
+
+        if (!jwtUtil.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
+
+        String email = jwtUtil.extractEmail(token);
+        User user = userService.getUserByEmail(email);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userService.updateUser(user);
+
+        return ResponseEntity.ok("Password reset successful");
+    }
+
 
 }

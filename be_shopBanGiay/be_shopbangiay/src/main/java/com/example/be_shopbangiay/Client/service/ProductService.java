@@ -44,6 +44,11 @@ public class ProductService {
 
       return productMapper.toProductDTO(product);
 
+    }
 
+    // Tìm kiếm đơn giản
+    public List<ProductDTO> searchProductsByName(String name) {
+        List<Product> products = productRepository.findByNameContainingIgnoreCaseAndIsActiveTrue(name);
+        return products.stream().map(productMapper::toProductDTO).collect(Collectors.toList());
     }
 }

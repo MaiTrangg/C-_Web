@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProductCard from "./ProductCard";
 
-const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, selectedSizes}) => {
+const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, selectedSizes,minPrice, maxPrice}) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,6 +17,8 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, sel
     } else {
         console.log("Chưa có size nào được chọn");
     }
+    console.log("minPrice"+minPrice);
+    console.log("maxPrice"+maxPrice);
 
 
     useEffect(() => {
@@ -35,16 +37,23 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, sel
                 // setProducts(response.data);
                 // // Lọc theo màu, theo size
                 let filtered = response.data;
-                if ((selectedColors && selectedColors.length > 0) || (selectedSizes && selectedSizes.length > 0)) {
+                // if ((selectedColors && selectedColors.length > 0) || (selectedSizes && selectedSizes.length > 0)) {
                     const normalizedSizes = selectedSizes?.map(size => size.toString()) || [];
+                    const min = parseFloat(minPrice) || 0;
+                    const max = parseFloat(maxPrice) || Infinity;
 
                     filtered = filtered.filter(product =>
-                        product.variants.some(variant =>
-                            (selectedColors.length === 0 || selectedColors.includes(variant.color)) &&
-                            (normalizedSizes.length === 0 || normalizedSizes.includes(variant.size))
-                        )
+                        product.variants.some(variant => {
+                            const matchColor = !selectedColors?.length || selectedColors.includes(variant.color);
+                            const matchSize = !normalizedSizes.length || normalizedSizes.includes(variant.size?.toString());
+                            const price = parseFloat(variant.price);
+                            const matchPrice = price >= min && price <= max;
+
+                            return matchColor && matchSize && matchPrice;
+                        })
+
                     );
-                }
+                // }
 
                 console.log("filtered: ",filtered)
                 setProducts(filtered);
@@ -56,7 +65,7 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, sel
             }
         };
         fetchData();
-    }, [categoryId, searchTerm, selectedColors, selectedSizes]);
+    }, [categoryId, searchTerm, selectedColors, selectedSizes, minPrice, maxPrice]);
 
     const totalPages = Math.ceil(products.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;

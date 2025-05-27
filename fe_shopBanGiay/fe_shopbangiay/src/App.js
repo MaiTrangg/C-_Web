@@ -10,6 +10,7 @@ import ProductDetail from "./Components/Shop/ProductDetail";
 import AuthPage from './Components/Login & Register/AuthPage';
 import CartPage from "./Components/CartPage/CartPage";
 import {CartProvider} from "./contexts/CartContext";
+import CheckoutPage from "./CheckoutPage/CheckoutPage";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/shop" element={<ShopPage />} />
                     <Route path="/cart" element={<CartPage />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/productDetail" element={<ProductDetail />} />
                     <Route path="/login" element={<AuthPage />} />
                     <Route path="/register" element={<AuthPage />} />

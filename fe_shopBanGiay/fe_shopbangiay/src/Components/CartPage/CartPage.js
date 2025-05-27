@@ -1,12 +1,14 @@
 import React, {useContext} from 'react';
 import HeaderShop from "../Header/HeaderShop";
 import {CartContext} from "../../contexts/CartContext";
+import {Link} from "react-router-dom";
 
 const CartPage = () => {
     const { cart, updateQuantity, removeFromCart } = useContext(CartContext);
 
     // Tính tổng tiền 1 sản phẩm (price * quantity)
     const calcTotalPrice = (price, quantity) => price * quantity;
+    const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     return (
         <div>
             <HeaderShop/>
@@ -110,19 +112,19 @@ const CartPage = () => {
                             <div class="card-body">
                                 <div class="d-flex justify-content-between mb-3 pt-1">
                                     <h6 class="font-weight-medium">Subtotal</h6>
-                                    <h6 class="font-weight-medium">$150</h6>
+                                    <h6 class="font-weight-medium">{subtotal.toFixed(2)}đ</h6>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <h6 class="font-weight-medium">Shipping</h6>
-                                    <h6 class="font-weight-medium">$10</h6>
+                                    <h6 class="font-weight-medium">Miễn phí shipping</h6>
                                 </div>
                             </div>
                             <div class="card-footer border-secondary bg-transparent">
                                 <div class="d-flex justify-content-between mt-2">
                                     <h5 class="font-weight-bold">Total</h5>
-                                    <h5 class="font-weight-bold">$160</h5>
+                                    <h5 class="font-weight-bold">{subtotal.toFixed(2)}đ</h5>
                                 </div>
-                                <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                                <Link to={"/checkout"} class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</Link>
                             </div>
                         </div>
                     </div>

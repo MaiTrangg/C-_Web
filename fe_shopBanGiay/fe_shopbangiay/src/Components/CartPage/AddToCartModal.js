@@ -34,6 +34,7 @@ const AddToCartModal = ({ show, onHide, product, onAddToCart }) => {
 
         addToCart({
             id: product.id,
+            variant_id: selectedVariant.id,
             name: product.name,
             image: product.colorImages.find(img => img.color === selectedColor)?.url,
             price: selectedVariant.price,

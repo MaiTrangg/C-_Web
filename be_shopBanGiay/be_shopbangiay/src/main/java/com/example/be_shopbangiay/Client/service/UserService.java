@@ -4,6 +4,7 @@ import com.example.be_shopbangiay.Client.dto.UserDto;
 import com.example.be_shopbangiay.Client.entity.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +17,11 @@ public interface UserService {
     boolean checkUsernameExists(String username);
     User getUserByUsername(String username);
     void updateUser(User user);
+//    User getUserById(int id);
+//    List<User> getAllUsers();
+//    void deleteUser(int id);
+
+
 
 
 }

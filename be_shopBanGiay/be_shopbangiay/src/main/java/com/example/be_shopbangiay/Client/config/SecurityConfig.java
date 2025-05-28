@@ -5,6 +5,7 @@ package com.example.be_shopbangiay.Client.config;
 import com.example.be_shopbangiay.Client.security.JwtAuthenticationFilter;
 import com.example.be_shopbangiay.Client.security.JwtUtil;
 import com.example.be_shopbangiay.Client.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,8 +59,20 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/user/reset-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/facebook").permitAll()
                         .requestMatchers("/oauth2/**", "/login/**", "/oauth2/success").permitAll()
+
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+                        })
+                )
+
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/oauth2/authorization/google")
                         .defaultSuccessUrl("/oauth2/success", true)

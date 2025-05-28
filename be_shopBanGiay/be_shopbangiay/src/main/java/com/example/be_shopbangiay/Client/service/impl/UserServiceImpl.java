@@ -1,4 +1,4 @@
-package com.example.be_shopbangiay.Client.service.Impl;
+package com.example.be_shopbangiay.Client.service.impl;
 import com.example.be_shopbangiay.Client.dto.UserDto;
 import com.example.be_shopbangiay.Client.entity.Role; // Import entity Role
 import com.example.be_shopbangiay.Client.entity.User;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 //<<<<<<< HEAD:be_shopBanGiay/be_shopbangiay/src/main/java/com/example/be_shopbangiay/Client/service/Impl/UserServiceImpl.java
+import java.util.List;
 import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
@@ -84,6 +85,22 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         userRepository.save(user);
     }
+
+//    @Override
+//    public User getUserById(int id) {
+//        return userRepository.findById(id).orElse(null);
+//    }
+//
+//    @Override
+//    public List<User> getAllUsers() {
+//        return userRepository.findAll();
+//    }
+//
+//    @Override
+//    public void deleteUser(int id) {
+//        userRepository.deleteById(id);
+//    }
+
 
 
 }

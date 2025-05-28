@@ -9,6 +9,7 @@ import ProductDetail from "./Components/Shop/ProductDetail";
 import AuthPage from './Components/Login & Register/AuthPage';
 import ResetPassword from './Components/Login & Register/ResetPassword';
 import ForgotPassword from './Components/Login & Register/ForgotPassword';
+import Admin from './Components/Admin/Admin';
 
 
 
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/productDetail/:productId" element={<ProductDetail />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/admin" element={<Admin />} />
 
 
                 {/*<Route path="/productDetail/:id" element={<ProductDetail />} />*/}

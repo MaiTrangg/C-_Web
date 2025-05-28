@@ -5,16 +5,20 @@ package com.example.be_shopbangiay.Client.config;
 import com.example.be_shopbangiay.Client.security.JwtAuthenticationFilter;
 import com.example.be_shopbangiay.Client.security.JwtUtil;
 import com.example.be_shopbangiay.Client.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
@@ -51,10 +55,24 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/upload/image").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/registration").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/user/forgot-password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/user/reset-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/facebook").permitAll()
                         .requestMatchers("/oauth2/**", "/login/**", "/oauth2/success").permitAll()
+
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+                        })
+                )
+
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/oauth2/authorization/google")
                         .defaultSuccessUrl("/oauth2/success", true)
@@ -64,6 +82,19 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    public HttpFirewall allowSemicolonHttpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowSemicolon(true);
+        return firewall;
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(HttpFirewall firewall) {
+        return web -> web.httpFirewall(firewall);
+    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

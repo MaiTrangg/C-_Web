@@ -1,0 +1,203 @@
+.dashboard-main-content {
+    padding: 24px;
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: #F5F5F9;
+}
+
+.dashboard-grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    grid-auto-rows: minmax(auto, auto);
+}
+
+.dashboard-grid-col-span-2 {
+    grid-column: span 2 / auto;
+}
+
+.dashboard-grid-row-span-2 {
+    grid-row: span 2 / auto;
+}
+
+.dashboard-card-menu-dots-absolute {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    color: #A1ACB8;
+    cursor: pointer;
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.greeting-card.custom-card {
+}
+.greeting-card-inner-content {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+}
+
+.greeting-card-text-content { flex-grow: 1; padding-right: 1rem; display: flex; flex-direction: column; justify-content: center; }
+.greeting-card-title { font-size: 1.25rem; font-weight: 600; color: #696CFF; margin-bottom: 0.5rem; }
+.greeting-card-subtitle { font-size: 0.9375rem; color: #566A7F; line-height: 1.6; margin-bottom: 1.25rem; }
+.greeting-card-highlight { color: #696CFF; font-weight: 600; }
+.greeting-card-view-badges-button {
+    background-color: transparent;
+    color: #696CFF;
+    border: 1px solid #D2D1FF;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.2s, color 0.2s;
+}
+.greeting-card-view-badges-button:hover { background-color: #696cff1a; }
+.greeting-card-illustration-container { position: relative; flex-shrink: 0; width: 160px; align-self: flex-end; }
+.greeting-card-illustration { display: block; max-width: 100%; height: auto; }
+.greeting-card-clock-placeholder, .greeting-card-plant-placeholder {
+    position: absolute; background-color: #E0E0E0; border-radius: 50%; opacity: 0.5;
+}
+.greeting-card-clock-placeholder { width: 20px; height: 20px; top: 20%; right: 25%; }
+.greeting-card-plant-placeholder { width: 25px; height: 35px; bottom: 25%; right: 0; border-radius: 30% 30% 0 0; }
+
+
+.stat-card-content { display: flex; align-items: center; width: 100%; position: relative;}
+.stat-card-icon-container { margin-right: 1rem; }
+.stat-card-icon-background {
+    width: 42px; height: 42px;
+    border-radius: 0.375rem;
+    display: flex; align-items: center; justify-content: center;
+}
+.stat-card-icon { font-size: 1.25rem; }
+.stat-card-info { display: flex; flex-direction: column; }
+.stat-card-title-text { font-size: 0.8125rem; color: #A1ACB8; margin-bottom: 0.25rem; }
+.stat-card-value { font-size: 1.5rem; font-weight: 600; color: #435971; margin-bottom: 0.25rem; line-height: 1.2; }
+.stat-card-change { font-size: 0.8125rem; font-weight: 500; }
+.stat-card-change--positive { color: #28C76F; }
+.stat-card-change--negative { color: #EA5455; }
+
+.total-revenue-card .custom-card-header {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 1.5rem !important;
+}
+.total-revenue-card-header-actions { display: flex; align-items: center;  }
+.total-revenue-card-legend-item { display: flex; align-items: center; margin-left: 1rem; font-size: 0.8125rem; color: #566A7F; }
+.total-revenue-card-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 0.375rem; }
+.total-revenue-card-dot.dot-2021 { background-color: #696CFF; }
+.total-revenue-card-dot.dot-2020 { background-color: #03C3EC; }
+.total-revenue-card-chart-area { display: flex; height: 220px; flex-grow: 1; }
+.total-revenue-card-y-axis {
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-size: 0.75rem; color: #A1ACB8; padding-right: 0.75rem;
+    text-align: right; height: 100%; border-right: 1px solid #E7E7E7;
+}
+.total-revenue-card-y-axis span { transform: translateY(-50%); }
+.total-revenue-card-bars-container {
+    flex-grow: 1; display: flex; justify-content: space-around;
+    padding-left: 0.5rem; position: relative; height: 100%;
+}
+.total-revenue-card-bars-container::before {
+    content: ''; position: absolute; left: 0; right: 0;
+    top: 60%;
+    height: 1px; background-color: #E7E7E7; z-index: 0;
+}
+.total-revenue-card-month-group {
+    display: flex; flex-direction: column; align-items: center;
+    height: 100%; width: auto;
+    justify-content: flex-start;
+    position: relative; padding: 0 4px;
+}
+.total-revenue-card-bar {
+    width: 10px; border-radius: 3px; z-index: 1; position: absolute;
+}
+.total-revenue-card-bar.bar-2021 {
+    background-color: #696CFF; bottom: 40%; margin-right: 6px;
+}
+.total-revenue-card-bar.bar-2020 {
+    background-color: #03C3EC; margin-left: 6px;
+}
+.total-revenue-card-bar.bar-2020.bar-positive { bottom: 40%; }
+.total-revenue-card-bar.bar-2020.bar-negative { top: 60%; border-radius: 3px; }
+.total-revenue-card-month-label {
+    font-size: 0.75rem; color: #A1ACB8;
+    position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+}
+
+.order-stats-card .custom-card-body { justify-content: space-between; }
+.order-stats-card .custom-card-header .custom-card-title { }
+.order-stats-card-year-select {
+    border: 1px solid #D9DEE3; padding: 0.375rem 0.75rem; border-radius: 0.375rem;
+    font-size: 0.875rem; background-color: #fff; color: #696CFF; font-weight: 500;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.755356 0.944645L1.05536 0.644645C1.25302 0.446983 1.56959 0.446983 1.76725 0.644645L5 3.878L8.23275 0.644645C8.43041 0.446983 8.74698 0.446983 8.94464 0.644645L9.24464 0.944645C9.44231 1.14231 9.44231 1.45888 9.24464 1.65654L5.35302 5.54817C5.15536 5.74583 4.84464 5.74583 4.64698 5.54817L0.755356 1.65654C0.557694 1.45888 0.557694 1.14231 0.755356 0.944645Z' fill='%23696CFF'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem; -webkit-appearance: none; -moz-appearance: none; appearance: none;
+}
+.order-stats-card-chart-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 1.25rem; flex-grow: 1; justify-content: center; }
+.order-stats-card-radial-chart-placeholder { margin-bottom: 0.75rem; width: 130px; height: 130px; }
+.order-stats-radial-svg { display: block; margin: auto; max-width: 100%; max-height: 100%;}
+.order-stats-radial-bg { fill: none; stroke: #F1F1F2; stroke-width: 3.8; }
+.order-stats-radial-progress { fill: none; stroke: #696CFF; stroke-width: 3.8; stroke-linecap: round; transition: stroke-dasharray 0.3s ease; }
+.order-stats-radial-text-percent { font-size: 0.9em; font-weight: 600; fill: #435971; text-anchor: middle; }
+.order-stats-radial-text-label { font-size: 0.35em; fill: #A1ACB8; text-anchor: middle; }
+.order-stats-card-company-growth { font-size: 0.9375rem; color: #566A7F; font-weight: 500; margin-bottom: 1.25rem; }
+.order-stats-card-details-list { display: flex; justify-content: space-around; border-top: 1px solid #E7E7E7; padding-top: 1.25rem; }
+.order-stats-card-detail-item { display: flex; align-items: center; }
+.order-stats-card-detail-icon {
+    width: 38px; height: 38px; border-radius: 0.375rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; margin-right: 0.75rem; color: #fff;
+}
+.order-stats-card-detail-icon.icon-bg-2022 { background-color: #696CFF; }
+.order-stats-card-detail-icon.icon-bg-2021 { background-color: #03C3EC; }
+.order-stats-card-detail-item div { display: flex; flex-direction: column; }
+.order-stats-card-detail-label { font-size: 0.8125rem; color: #A1ACB8; margin-bottom: 2px; }
+.order-stats-card-detail-value { font-size: 1rem; font-weight: 600; color: #435971; }
+
+.profile-report-card .custom-card-body { justify-content: space-between; }
+.profile-report-card .custom-card-header { border-bottom: none !important; padding-bottom: 0 !important; margin-bottom: 0.5rem !important;}
+.profile-report-card-info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; }
+.profile-report-card-year-badge {
+    background-color: #FFF0D5; color: #FFAB00; padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;
+}
+.profile-report-card-change { font-size: 0.875rem; font-weight: 500; }
+.profile-report-card-change.positive { color: #28C76F; }
+.profile-report-card-arrow-up { margin-right: 2px; }
+.profile-report-card-main-value { font-size: 1.75rem; font-weight: 600; color: #435971; margin-bottom: 1rem; }
+.profile-report-card-line-chart-placeholder { width: 100%; height: 60px; margin-bottom: 1.25rem; flex-grow: 1; }
+.profile-report-card-line-chart-placeholder svg { width: 100%; height: 100%; }
+.profile-report-card-upgrade-button {
+    background-color: #EA5455; color: white; border: none;
+    padding: 0.625rem 1.25rem; border-radius: 0.375rem;
+    font-size: 0.9375rem; font-weight: 500; cursor: pointer;
+    display: block; width: 100%; text-align: center;
+    transition: background-color 0.2s ease;
+}
+.profile-report-card-upgrade-button:hover { background-color: #d44546; }
+
+
+@media (max-width: 1199px) {
+    .dashboard-grid-container { grid-template-columns: repeat(2, 1fr); }
+    .dashboard-grid-col-span-2 { grid-column: span 2 / auto; }
+    .dashboard-grid-row-span-2 { grid-row: span 1 / auto; }
+    .greeting-card-illustration-container { width: 120px; }
+}
+@media (max-width: 767px) {
+    .dashboard-main-content { padding: 16px; }
+    .dashboard-grid-container { grid-template-columns: 1fr; gap: 16px; }
+    .dashboard-grid-col-span-2 { grid-column: span 1 / auto; }
+    .greeting-card-inner-content { flex-direction: column; text-align: center; }
+    .greeting-card-text-content { padding-right: 0; margin-bottom: 1rem; }
+    .greeting-card-view-badges-button { align-self: center; }
+    .greeting-card-illustration-container { width: 150px; align-self: center; margin-top: 1rem; }
+    .total-revenue-card-chart-area { height: 180px; }
+    .order-stats-card-details-list { flex-direction: column; align-items: center; gap: 1rem; }
+}

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import {Link, useNavigate} from "react-router-dom";
 
 const Navbar = () => {
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
+    const [role, setRole] = useState('');
+
 
     // Đồng bộ tên đăng nhập từ localStorage
     const syncUser = () => {
@@ -12,6 +14,7 @@ const Navbar = () => {
             try {
                 const parsedUser = JSON.parse(storedUser);
                 setUsername(parsedUser.username);
+                setRole(parsedUser.role);
             } catch (e) {
                 setUsername('');
             }
@@ -98,6 +101,9 @@ const Navbar = () => {
                                         </div>
                                     </div>
                                     <a href="contact.html" className="nav-item nav-link">Contact</a>
+                                    {username && role === 'admin' && (
+                                        <Link to="/admin" className="nav-item nav-link">Dashboard</Link>
+                                    )}
                                 </div>
 
                                 <div className="navbar-nav ml-auto py-0">
@@ -120,6 +126,8 @@ const Navbar = () => {
                                         </>
                                     )}
                                 </div>
+
+
                             </div>
                         </nav>
 

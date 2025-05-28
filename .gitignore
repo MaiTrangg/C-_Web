@@ -4,6 +4,8 @@ node_modules/.cache
 
 # Logs
 *.log
+node_modules/.cache/
+
 
 # OS-specific files
 .DS_Store

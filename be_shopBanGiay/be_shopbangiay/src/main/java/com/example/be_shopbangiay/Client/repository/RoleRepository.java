@@ -11,4 +11,5 @@ public interface RoleRepository extends JpaRepository<Role, Integer> { // Kiểu
 
     // Optional: Thêm phương thức tìm theo tên nếu bạn muốn chuyển sang cách này sau này
     Optional<Role> findByName(String name);
+
 }

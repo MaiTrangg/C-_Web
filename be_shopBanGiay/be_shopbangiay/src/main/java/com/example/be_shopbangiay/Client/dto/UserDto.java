@@ -1,5 +1,9 @@
 package com.example.be_shopbangiay.Client.dto;
 
+import com.example.be_shopbangiay.Client.entity.User;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,11 +14,38 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto implements Serializable {
+
+    private int userID;
+
+    @NotBlank(message = "Username is required")
+    @Size(min = 2, max = 20, message = "Username must be 2-20 characters")
     private String username;
+
+    @NotBlank(message = "Email is required")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@gmail\\.com$", message = "Email must be a valid @gmail.com address")
     private String email;
+
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
     private String telephone;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
+
     private String role;
+
+    public UserDto(User user) {
+        this.userID = user.getUserID();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.telephone = user.getTelephone();
+        this.role = user.getRole().getName();
+    }
+
+    public int getUserID() {
+        return userID;
+    }
 
     public String getUsername() {
         return username;
@@ -34,6 +65,10 @@ public class UserDto implements Serializable {
 
     public String getRole() {
         return role;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public void setUsername(String username) {

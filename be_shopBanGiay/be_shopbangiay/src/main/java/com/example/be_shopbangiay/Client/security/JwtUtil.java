@@ -49,6 +49,7 @@ public class JwtUtil {
                 .compact();
     }
 
+
     // Dùng cho đăng nhập thường - subject là username
 //    public String generateTokenWithUsername(String username) {
 //        return Jwts.builder()

@@ -18,4 +18,6 @@ public class ProductVariantDTO {
      String color;
      BigDecimal price;
      Integer stock;
+     String url;
+
 }

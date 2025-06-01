@@ -11,6 +11,7 @@ const ProductDetail = () => {
     const [availableColors, setAvailableColors] = useState([]);
     const [selectedColor, setSelectedColor] = useState('');
     const [availableSizes, setAvailableSizes] = useState([]);
+    const [selectedSize, setSelectedSize] = useState('');
 
 
 
@@ -48,6 +49,16 @@ const ProductDetail = () => {
             setAvailableSizes(sizesForColor);
         }
     }, [selectedColor, product]);
+    // Khi availableSizes thay đổi, chọn mặc định size đầu tiên
+    useEffect(() => {
+        if (availableSizes.length > 0) {
+            setSelectedSize(availableSizes[0]);
+        }
+    }, [availableSizes]);
+
+    const handleSizeChange = (e) => {
+        setSelectedSize(e.target.value);
+    };
 
     if (!product) {
         return <div>Loading...</div>;
@@ -72,24 +83,21 @@ const ProductDetail = () => {
                     <div className="col-lg-5 pb-5">
                         <div id="product-carousel" className="carousel slide" data-ride="carousel">
                             <div className="carousel-inner border">
-                                {product.colorImages && (() => {
-                                    const selectedImages = product.colorImages.filter(img => img.color === selectedColor);
-                                    const otherImages = product.colorImages.filter(img => img.color !== selectedColor);
-                                    const allImages = [...selectedImages, ...otherImages];
+                                {product.variants && (() => {
+                                    // Lọc ra các biến thể theo màu đã chọn
+                                    const selectedVariants = product.variants.filter(v => v.color === selectedColor);
 
-                                    return allImages.map((image, index) => (
-                                        <div
-                                            className={`carousel-item ${index === 0 ? 'active' : ''}`}
-                                            key={index}
-                                        >
+                                    return selectedVariants.slice(0, 1).map((variant, index) => (
+                                        <div className="carousel-item active" key={variant.id}>
                                             <img
                                                 className="w-100 h-100"
-                                                src={image.url}
-                                                alt={`Product image ${index + 1}`}
+                                                src={variant.url}
+                                                alt={`Product image ${selectedColor}`}
                                             />
                                         </div>
                                     ));
                                 })()}
+
                             </div>
                             <a className="carousel-control-prev" href="#product-carousel" data-slide="prev">
                                 <i className="fa fa-2x fa-angle-left text-dark"></i>
@@ -155,6 +163,8 @@ const ProductDetail = () => {
                                                 id={`size-${index}`}
                                                 name="size"
                                                 value={size}
+                                                checked={selectedSize === size}
+                                                onChange={handleSizeChange}
                                             />
                                             <label className="custom-control-label" htmlFor={`size-${index}`}>
                                                 {size}

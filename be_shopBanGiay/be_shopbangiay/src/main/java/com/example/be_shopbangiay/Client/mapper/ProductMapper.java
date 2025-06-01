@@ -6,8 +6,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {
         CategoryMapper.class,
-        ProductVariantMapper.class,
-        ProductColorImageMapper.class
+        ProductVariantMapper.class
 })
 public interface ProductMapper {
     ProductDTO toProductDTO(Product product);

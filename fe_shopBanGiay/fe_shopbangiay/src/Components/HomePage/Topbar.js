@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
 import { useContext } from 'react';
-import { CartContext } from '../../contexts/CartContext';
+import { useCart} from '../../contexts/CartContext';
+import axios from "axios";
 
 const Topbar = () => {
-        const { cart } = useContext(CartContext);
-        const totalQuantity = cart.length;
+    const { totalQuantity } = useCart();
+    console.log("totalQuantity: ",totalQuantity)
+
 
 
     return (

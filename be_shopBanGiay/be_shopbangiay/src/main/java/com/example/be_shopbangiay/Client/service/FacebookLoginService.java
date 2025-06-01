@@ -56,7 +56,7 @@ public class FacebookLoginService {
             return userRepository.save(newUser);
         });
 
-        return jwtUtil.generateToken(user.getEmail());
+        return jwtUtil.generateTokenWithUsernameAndEmail(name,email);
     }
 }
 

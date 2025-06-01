@@ -26,12 +26,15 @@ public class OAuth2Controller {
                               HttpServletResponse response) throws IOException {
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
+        System.out.println("name: " +name);
         String username = (name != null) ? name : email.split("@")[0];
 
         if (!userService.checkUserByEmail(email)) {
             UserDto userDto = new UserDto();
             userDto.setEmail(email);
+            System.out.println("name: " +name);
             userDto.setUsername(name != null ? name : email.split("@")[0]);
+            System.out.println("name: " +name);
             userDto.setTelephone("0000000000");
             userDto.setPassword("OAuth2User123*");
             userDto.setRole("user");

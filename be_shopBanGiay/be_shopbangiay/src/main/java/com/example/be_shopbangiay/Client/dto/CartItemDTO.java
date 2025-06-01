@@ -8,6 +8,6 @@ import lombok.*;
 @Builder
 public class CartItemDTO {
     private Long id;
-    private Long productVariantId;
+    private ProductVariantDTO productVariant;
     private Integer quantity;
 }

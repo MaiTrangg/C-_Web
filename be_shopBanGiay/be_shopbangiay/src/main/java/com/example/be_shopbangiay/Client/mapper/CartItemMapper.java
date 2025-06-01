@@ -5,7 +5,8 @@ import com.example.be_shopbangiay.Client.dto.CartItemRequest;
 import com.example.be_shopbangiay.Client.entity.CartItem;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+//@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ProductVariantMapper.class})
 public interface CartItemMapper {
 
     CartItemDTO toDto(CartItem entity);

@@ -22,7 +22,7 @@ public class ProductVariant {
      * name = "product_id": Đây là tên cột trong bảng product_variants.
      * nullable = false: Không cho phép product_id null – tức là mỗi biến thể phải thuộc về một sản phẩm.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
@@ -44,5 +44,8 @@ public class ProductVariant {
 
     @Column(name = "stock")
     private int stock;
+
+    @Column(name = "url")
+    private String url;
 
 }

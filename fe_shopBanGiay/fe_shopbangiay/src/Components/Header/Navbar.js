@@ -1,7 +1,45 @@
-import React from 'react';
-import {Link} from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import {Link, useNavigate} from "react-router-dom";
 
 const Navbar = () => {
+    const [username, setUsername] = useState('');
+    const navigate = useNavigate();
+    const [role, setRole] = useState('');
+
+
+    // Đồng bộ tên đăng nhập từ localStorage
+    const syncUser = () => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                setUsername(parsedUser.username);
+                setRole(parsedUser.role);
+            } catch (e) {
+                setUsername('');
+            }
+        } else {
+            setUsername('');
+        }
+    };
+
+    useEffect(() => {
+        syncUser();
+
+        // Theo dõi thay đổi từ localStorage nếu login/logout ở tab khác
+        const handleStorage = () => syncUser();
+        window.addEventListener('storage', handleStorage);
+        return () => window.removeEventListener('storage', handleStorage);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('isGoogleLogin');
+        setUsername('');
+        navigate('/login');
+    };
+
     return (
         <div>
             <div className="container-fluid mb-5">
@@ -52,7 +90,7 @@ const Navbar = () => {
                             <div className="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                                 <div className="navbar-nav mr-auto py-0">
                                     <Link to={"/home"} className="nav-item nav-link active">Home</Link>
-                                    <Link to={"/shop"} className="nav-item nav-link ">Shop</Link>
+                                    <Link to={"/shop"} className="nav-item nav-link">Shop</Link>
                                     <a href="detail.html" className="nav-item nav-link">Shop Detail</a>
                                     <div className="nav-item dropdown">
                                         <a href="#" className="nav-link dropdown-toggle"
@@ -63,22 +101,44 @@ const Navbar = () => {
                                         </div>
                                     </div>
                                     <a href="contact.html" className="nav-item nav-link">Contact</a>
+                                    {username && role === 'admin' && (
+                                        <Link to="/admin" className="nav-item nav-link">Dashboard</Link>
+                                    )}
                                 </div>
+
                                 <div className="navbar-nav ml-auto py-0">
-                                    {/*<a href="" className="nav-item nav-link">Login</a>*/}
-                                    {/*<a href="" className="nav-item nav-link">Register</a>*/}
-                                    <Link to="/login" className="nav-item nav-link">Login</Link>
-                                    <Link to="/register" className="nav-item nav-link">Register</Link>
+                                    {username ? (
+                                        <>
+                                            <span className="nav-item nav-link">
+                                                👋 Chào mừng, <strong>{username}</strong>
+                                            </span>
+                                            <button
+                                                onClick={handleLogout}
+                                                className="nav-item nav-link btn btn-link text-danger p-0"
+                                            >
+                                                Logout
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Link to="/login" className="nav-item nav-link">Login</Link>
+                                            <Link to="/register" className="nav-item nav-link">Register</Link>
+                                        </>
+                                    )}
                                 </div>
+
+
                             </div>
                         </nav>
+
+                        {/* Carousel giữ nguyên */}
                         <div id="header-carousel" className="carousel slide" data-ride="carousel">
                             <div className="carousel-inner">
-                                <div className="carousel-item active" style={{height: '410px' }}>
+                                <div className="carousel-item active" style={{height: '410px'}}>
                                     <img className="img-fluid" src="img/carousel-1.jpg" alt="Image"/>
                                     <div
                                         className="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                                        <div className="p-3" style={{ maxwidth: '700px' }}>
+                                        <div className="p-3" style={{maxwidth: '700px'}}>
                                             <h4 className="text-light text-uppercase font-weight-medium mb-3">10% Off
                                                 Your First Order</h4>
                                             <h3 className="display-4 text-white font-weight-semi-bold mb-4">Fashionable
@@ -87,11 +147,11 @@ const Navbar = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="carousel-item" style={{ height: '410px'}}>
+                                <div className="carousel-item" style={{height: '410px'}}>
                                     <img className="img-fluid" src="img/carousel-2.jpg" alt="Image"/>
                                     <div
                                         className="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                                        <div className="p-3" style={{ maxwidth: '700px'}}>
+                                        <div className="p-3" style={{maxwidth: '700px'}}>
                                             <h4 className="text-light text-uppercase font-weight-medium mb-3">10% Off
                                                 Your First Order</h4>
                                             <h3 className="display-4 text-white font-weight-semi-bold mb-4">Reasonable
@@ -107,7 +167,7 @@ const Navbar = () => {
                                 </div>
                             </a>
                             <a className="carousel-control-next" href="#header-carousel" data-slide="next">
-                                <div className="btn btn-dark" style={{width: '45px', height: '45px'}} >
+                                <div className="btn btn-dark" style={{width: '45px', height: '45px'}}>
                                     <span className="carousel-control-next-icon mb-n2"></span>
                                 </div>
                             </a>

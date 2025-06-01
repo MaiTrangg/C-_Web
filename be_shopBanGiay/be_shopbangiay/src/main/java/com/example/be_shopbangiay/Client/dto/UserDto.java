@@ -1,5 +1,6 @@
 package com.example.be_shopbangiay.Client.dto;
 
+import com.example.be_shopbangiay.Client.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -13,6 +14,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto implements Serializable {
+
+    private int userID;
 
     @NotBlank(message = "Username is required")
     @Size(min = 2, max = 20, message = "Username must be 2-20 characters")
@@ -32,6 +35,18 @@ public class UserDto implements Serializable {
 
     private String role;
 
+    public UserDto(User user) {
+        this.userID = user.getUserID();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.telephone = user.getTelephone();
+        this.role = user.getRole().getName();
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -50,6 +65,10 @@ public class UserDto implements Serializable {
 
     public String getRole() {
         return role;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public void setUsername(String username) {

@@ -2,6 +2,7 @@ package com.example.be_shopbangiay.Client.controller;
 
 import com.example.be_shopbangiay.Client.dto.CartItemDTO;
 import com.example.be_shopbangiay.Client.dto.CartItemRequest;
+import com.example.be_shopbangiay.Client.dto.CustomUserDetails;
 import com.example.be_shopbangiay.Client.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -58,12 +59,14 @@ public class CartController {
         return ResponseEntity.ok().build();
     }
 
-    // Helper method giả sử lấy userId từ UserDetails
+
     private Integer extractUserIdFromUserDetails(UserDetails userDetails) {
-        // TODO: Thực tế bạn sẽ cast UserDetails thành class custom có chứa userId
-        // Ví dụ:
-        // return ((CustomUserDetails) userDetails).getUserId();
-        // Ở đây tạm return dummy userId để demo:
-        return 1;
+        System.out.println("UserDetails class: " + (userDetails == null ? "null" : userDetails.getClass().getName()));
+
+        if (userDetails instanceof CustomUserDetails custom) {
+            return custom.getUserID();
+        }
+        throw new IllegalArgumentException("Invalid user details");
     }
+
 }

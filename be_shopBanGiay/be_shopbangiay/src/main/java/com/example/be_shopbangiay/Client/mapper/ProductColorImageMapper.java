@@ -6,6 +6,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ProductColorImageMapper {
-    ProductColorImageDTO toProductColorImageDTO(ProductColorImage image);
+//    ProductColorImageDTO toProductColorImageDTO(ProductColorImage image);
 }
 

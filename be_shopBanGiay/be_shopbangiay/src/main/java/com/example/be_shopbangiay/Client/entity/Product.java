@@ -46,8 +46,8 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     List<ProductVariant> variants;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-     List<ProductColorImage> colorImages;
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+//     List<ProductColorImage> colorImages;
 
     // getters, setters
 }

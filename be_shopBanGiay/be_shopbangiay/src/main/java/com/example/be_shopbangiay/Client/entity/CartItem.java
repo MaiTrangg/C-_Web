@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
-
 @Entity
 @Table(name = "cart_items", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "product_variant_id"})
@@ -19,11 +18,13 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;  // entity User của bạn
 
-    @Column(name = "product_variant_id", nullable = false)
-    private Long productVariantId;
+    @ManyToOne
+    @JoinColumn(name = "product_variant_id", nullable = false)
+    private ProductVariant productVariant;
 
     @Column(nullable = false)
     private Integer quantity;

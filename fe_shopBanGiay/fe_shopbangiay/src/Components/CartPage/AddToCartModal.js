@@ -17,7 +17,61 @@ const AddToCartModal = ({ show, onHide, product, onAddToCart }) => {
         ? product.variants.filter(v => v.color === selectedColor).map(v => v.size)
         : [];
 
-    const handleSubmit = () => {
+    // const handleSubmit = async () => {
+    //     if (!selectedColor || !selectedSize) {
+    //         alert("Vui lòng chọn màu và size.");
+    //         return;
+    //     }
+    //
+    //     const selectedVariant = product.variants.find(
+    //         v => v.color === selectedColor && v.size === selectedSize
+    //     );
+    //
+    //     if (!selectedVariant) {
+    //         alert("Không tìm thấy biến thể sản phẩm.");
+    //         return;
+    //     }
+    //
+    //     try {
+    //         const token = localStorage.getItem("token"); // hoặc từ Context nếu bạn dùng AuthContext
+    //
+    //         const response = await fetch("/api/cart/add", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 Authorization: `Bearer ${token}`,
+    //             },
+    //             body: JSON.stringify({
+    //                 // productId: product.id,
+    //                 productVariantId: selectedVariant.id,
+    //                 quantity: 1
+    //             }),
+    //         });
+    //
+    //         if (!response.ok) {
+    //             throw new Error("Lỗi khi thêm vào giỏ hàng");
+    //         }
+    //
+    //         // Nếu bạn muốn cập nhật CartContext, gọi:
+    //         // addToCart({
+    //         //     id: product.id,
+    //         //     variant_id: selectedVariant.id,
+    //         //     name: product.name,
+    //         //     image: product.colorImages.find(img => img.color === selectedColor)?.url,
+    //         //     price: selectedVariant.price,
+    //         //     color: selectedColor,
+    //         //     size: selectedSize,
+    //         //     sku: selectedVariant.sku
+    //         // });
+    //
+    //         onHide();
+    //         // alert("Thêm vào giỏ hàng thành công!");
+    //     } catch (err) {
+    //         console.error(err);
+    //         alert("Không thể thêm vào giỏ hàng.");
+    //     }
+    // };
+    const handleSubmit = async () => {
         if (!selectedColor || !selectedSize) {
             alert("Vui lòng chọn màu và size.");
             return;
@@ -32,18 +86,16 @@ const AddToCartModal = ({ show, onHide, product, onAddToCart }) => {
             return;
         }
 
-        addToCart({
-            id: product.id,
-            variant_id: selectedVariant.id,
-            name: product.name,
-            image: product.colorImages.find(img => img.color === selectedColor)?.url,
-            price: selectedVariant.price,
-            color: selectedColor,
-            size: selectedSize,
-            sku: selectedVariant.sku
-        });
-        onHide();
+        try {
+            await addToCart(selectedVariant.id, 1); // ✅ dùng context thay vì fetch
+            onHide(); // đóng modal sau khi thêm thành công
+        } catch (err) {
+            console.error(err);
+            alert("Không thể thêm vào giỏ hàng.");
+        }
     };
+
+
 
     return (
         <div className="modal-overlay">

@@ -52,15 +52,21 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/products/categories/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categories").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products/search").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/cart/items").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/cart/add").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/orders/checkout").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/upload/image").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/registration").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/forgot-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/reset-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/facebook").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/cart/delete/**").authenticated()
                         .requestMatchers("/oauth2/**", "/login/**", "/oauth2/success").permitAll()
 
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/api/cart/add").authenticated()
+
 
                         .anyRequest().authenticated()
                 )

@@ -23,5 +23,5 @@ public class ProductDTO {
      Boolean isActive;
      LocalDateTime createdAt;
      List<ProductVariantDTO> variants;
-     List<ProductColorImageDTO> colorImages;
+//     List<ProductColorImageDTO> colorImages;
 }

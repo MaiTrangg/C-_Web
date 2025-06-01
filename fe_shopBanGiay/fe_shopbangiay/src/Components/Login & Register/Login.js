@@ -5,6 +5,8 @@ import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import * as Components from './Components';
 import FacebookLoginButton from "./FacebookLoginButton";
+import { useContext } from 'react';
+import { CartContext } from '../../contexts/CartContext';
 
 const API_URL = 'https://localhost:8443/api/user';
 
@@ -16,6 +18,10 @@ const Login = ({ toggle }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [isGoogleLogin, setIsGoogleLogin] = useState(false);
     const navigate = useNavigate();
+
+
+    const { setCart, setTotalQuantity, fetchCart } = useContext(CartContext);
+
 
 
     //  Xử lý Google OAuth2
@@ -90,6 +96,7 @@ const Login = ({ toggle }) => {
 
                 localStorage.setItem('token', responseBody.token);
                 localStorage.setItem('isGoogleLogin', 'false');
+                fetchCart();
 
                 const user = responseBody.user;
                 localStorage.setItem('user', JSON.stringify({
@@ -116,12 +123,28 @@ const Login = ({ toggle }) => {
     //Truyen prop cho login Facebook
     const handleFacebookLoginSuccess = (data) => {
         if (data.token) {
+            const decoded = jwtDecode(data.token);  // sửa ở đây
+            const fbUsername = decoded.username || decoded.sub || 'User';
             Swal.fire({
                 icon: 'success',
-                title: 'Login with Facebook successful!',
-                confirmButtonText: 'OK'
+                title: `Welcome, ${fbUsername}!`,
+                text: 'Facebook login successful!',
+                confirmButtonText: 'Go to Home',
             }).then(() => {
                 localStorage.setItem('token', data.token);
+
+
+
+                localStorage.setItem(
+                    'user',
+                    JSON.stringify({
+                        username: fbUsername,
+                        email: decoded.email || '',
+                        role: decoded.role || 'user',
+                    })
+                );
+
+                console.log('Decoded from Facebook login:', decoded);
                 navigate('/home');
             });
         } else {
@@ -133,10 +156,13 @@ const Login = ({ toggle }) => {
         }
     };
 
+
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         localStorage.removeItem('isGoogleLogin');
+        setCart([]); // reset giỏ hàng
+        setTotalQuantity(0); // reset tổng số lượng
         setUsername('');
         setPassword('');
         setIsGoogleLogin(false);
@@ -232,13 +258,13 @@ const Login = ({ toggle }) => {
                             cursor: 'pointer'
                         }}
                     >
-                        🔓 Logout current user
+                        Logout current user
                     </button>
                 )}
             </Components.Form>
         </Components.SignInContainer>
     );
 };
-
+// login cua truc
 export default Login;
 

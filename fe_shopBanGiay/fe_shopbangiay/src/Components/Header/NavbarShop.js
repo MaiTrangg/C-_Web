@@ -33,10 +33,10 @@ const Navbar = () => {
                                     </div>
                                     <a href="contact.html" className="nav-item nav-link">Contact</a>
                                 </div>
-                                <div className="navbar-nav ml-auto py-0">
-                                    <a href="" className="nav-item nav-link">Login</a>
-                                    <a href="" className="nav-item nav-link">Register</a>
-                                </div>
+                                {/*<div className="navbar-nav ml-auto py-0">*/}
+                                {/*    <a href="" className="nav-item nav-link">Login</a>*/}
+                                {/*    <a href="" className="nav-item nav-link">Register</a>*/}
+                                {/*</div>*/}
                             </div>
                         </nav>
                     </div>

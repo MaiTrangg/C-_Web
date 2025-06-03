@@ -56,6 +56,7 @@ public class OrderService {
                 .paymentMethod(request.getPaymentMethod())
                 .totalAmount(totalAmount)
                 .status("Chờ xác nhận")
+                .paymentStatus("cho thanh toan")
                 .build();
 
         Order savedOrder = orderRepository.save(order);
@@ -82,4 +83,15 @@ public class OrderService {
         // Map order entity sang response DTO trả về client
         return orderMapper.toResponse(savedOrder);
     }
+
+    @Transactional
+    public void updateOrderStatus(Long orderId, String status) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        order.setPaymentStatus(status);
+        orderRepository.save(order);
+    }
+
+
+
 }

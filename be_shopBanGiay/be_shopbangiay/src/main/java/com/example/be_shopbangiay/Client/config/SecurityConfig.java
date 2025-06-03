@@ -55,6 +55,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/cart/items").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/cart/add").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/orders/checkout").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/payment/create_payment").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/payment/vnpay_return").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/upload/image").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/registration").permitAll()

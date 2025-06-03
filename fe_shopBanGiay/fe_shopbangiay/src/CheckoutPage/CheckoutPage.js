@@ -3,10 +3,11 @@ import axios from 'axios';
 import HeaderShop from '../Components/Header/HeaderShop';
 import {CartContext, useCart} from '../contexts/CartContext';
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const CheckoutPage = () => {
     const { cart } = useCart();
+    const location = useLocation();
 
     const navigate = useNavigate();
 
@@ -49,6 +50,128 @@ const CheckoutPage = () => {
             .catch(err => console.error(err));
     };
 
+    const handlePlaceOrder = () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Bạn cần đăng nhập để đặt hàng.");
+            return;
+        }
+
+        const orderData = {
+            receiverName,
+            phone,
+            shippingAddress,
+            paymentMethod
+        };
+
+        if (paymentMethod === "COD") {
+            // Đặt hàng với COD
+            axios.post("/api/orders/checkout", orderData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(res => {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Đặt hàng thành công!",
+                        text: "Cảm ơn bạn đã mua hàng.",
+                        timer: 3000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        fetchCart();
+                        navigate("/shop");
+                    });
+                })
+                .catch(err => {
+                    console.error("Order failed:", err);
+                    Swal.fire("Lỗi", "Đặt hàng thất bại!", "error");
+                });
+        } else if (paymentMethod === "VNPAY") {
+            const data = {
+                amount: Math.round(subtotal),  // số nguyên
+                bankCode: "NCB",
+                language: "vn",
+                orderRequest: {
+                    receiverName: receiverName,
+                    phone: phone,
+                    shippingAddress: shippingAddress,
+                    paymentMethod: "VNPAY"
+                }};
+            // Tạo URL thanh toán VNPay từ backend
+            axios.post("/api/payment/create_payment",
+                data
+            , {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+
+                }
+
+            })
+                .then(res => {
+                    const { url } = res.data;
+                    if (url) {
+                        window.location.href = url; // Redirect sang trang VNPAY
+                    } else {
+                        Swal.fire("Lỗi", "Không thể tạo liên kết thanh toán.", "error");
+                    }
+                })
+                .catch(err => {
+                    console.error("VNPay failed:", err);
+                    console.log(token);
+                    Swal.fire("Lỗi", "Không thể thanh toán qua VNPay!", "error");
+                });
+        }
+    };
+
+
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Bạn cần đăng nhập để thanh toán");
+            return;
+        }
+
+        const queryParams = new URLSearchParams(location.search);
+        const paramsObj = {};
+        for (const [key, value] of queryParams.entries()) {
+            paramsObj[key] = value;
+        }
+        console.log("Params gửi về backend:", paramsObj);
+        console.log("paramsObj[\"vnp_TxnRef\"]: ", paramsObj["vnp_TxnRef"]);
+        if (paramsObj["vnp_TxnRef"]) {
+            // Gửi dữ liệu sang server để xác thực
+            axios
+                .post("/api/payment/vnpay_return", paramsObj, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                .then((res) => {
+                    // alert(res.data.message);
+                    // Thông báo hoặc chuyển hướng tuỳ bạn
+                    Swal.fire({
+                        icon: "success",
+                        title: "Đặt hàng thành công!",
+                        text: "Cảm ơn bạn đã mua hàng.",
+                        timer: 3000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        fetchCart();
+                        navigate("/shop");
+                    });
+                })
+                .catch((err) => {
+                    console.error("Lỗi khi xác minh thanh toán:", err);
+                    alert("Xác minh thanh toán thất bại");
+                });
+        }
+    }, [location]);
+
+
     const handleDistrictChange = (e) => {
         const districtCode = e.target.value;
         const selected = districts.find(d => d.code === +districtCode);
@@ -65,43 +188,43 @@ const CheckoutPage = () => {
         setSelectedWardName(selected?.name || "");
     };
 
-    const handlePlaceOrder = () => {
-        const token = localStorage.getItem("token"); // Lấy token từ localStorage (hoặc nơi bạn lưu)
-        if (!token) {
-            alert("Bạn cần đăng nhập để đặt hàng.");
-            return;
-        }
-
-        const orderData = {
-            receiverName,
-            phone,
-            shippingAddress,
-            paymentMethod
-        };
-
-        axios.post("/api/orders/checkout", orderData, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-        })
-            .then(res => {
-                Swal.fire({
-                    icon: "success",
-                    title: "Đặt hàng thành công!",
-                    text: "Cảm ơn bạn đã mua hàng.",
-                    timer: 3000,
-                    showConfirmButton: false
-                }).then(() => {
-                    fetchCart();
-                    navigate("/shop"); // chuyển về trang shop
-                });
-            })
-            .catch(err => {
-                console.error("Order failed:", err);
-                Swal.fire("Lỗi", "Đặt hàng thất bại!", "error");
-            });
-    };
+    // const handlePlaceOrder = () => {
+    //     const token = localStorage.getItem("token"); // Lấy token từ localStorage (hoặc nơi bạn lưu)
+    //     if (!token) {
+    //         alert("Bạn cần đăng nhập để đặt hàng.");
+    //         return;
+    //     }
+    //
+    //     const orderData = {
+    //         receiverName,
+    //         phone,
+    //         shippingAddress,
+    //         paymentMethod
+    //     };
+    //
+    //     axios.post("/api/orders/checkout", orderData, {
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //             "Content-Type": "application/json"
+    //         }
+    //     })
+    //         .then(res => {
+    //             Swal.fire({
+    //                 icon: "success",
+    //                 title: "Đặt hàng thành công!",
+    //                 text: "Cảm ơn bạn đã mua hàng.",
+    //                 timer: 3000,
+    //                 showConfirmButton: false
+    //             }).then(() => {
+    //                 fetchCart();
+    //                 navigate("/shop"); // chuyển về trang shop
+    //             });
+    //         })
+    //         .catch(err => {
+    //             console.error("Order failed:", err);
+    //             Swal.fire("Lỗi", "Đặt hàng thất bại!", "error");
+    //         });
+    // };
 
 
     return (
@@ -206,8 +329,8 @@ const CheckoutPage = () => {
                                 </div>
                                 <div className="form-group">
                                     <div className="custom-control custom-radio">
-                                        <input type="radio" className="custom-control-input" name="payment" value="VN Pay" id="vnpay"
-                                               checked={paymentMethod === "VN Pay"} onChange={e => setPaymentMethod(e.target.value)} />
+                                        <input type="radio" className="custom-control-input" name="payment" value="VNPAY" id="vnpay"
+                                               checked={paymentMethod === "VNPAY"} onChange={e => setPaymentMethod(e.target.value)} />
                                         <label className="custom-control-label" htmlFor="vnpay">VN Pay</label>
                                     </div>
                                 </div>

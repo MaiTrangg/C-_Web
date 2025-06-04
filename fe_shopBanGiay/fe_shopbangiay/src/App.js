@@ -10,6 +10,8 @@ import AuthPage from './Components/Login & Register/AuthPage';
 import ResetPassword from './Components/Login & Register/ResetPassword';
 import ForgotPassword from './Components/Login & Register/ForgotPassword';
 import Admin from './Components/Admin/Admin';
+import UserProfile from './Components/User/UserProfile';
+import OrderHistory from './Components/User/OrderHistory';
 
 
 
@@ -28,6 +30,8 @@ function App() {
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/profile" element={<UserProfile />} />
+                <Route path="/orders" element={<OrderHistory />} />
 
 
                 {/*<Route path="/productDetail/:id" element={<ProductDetail />} />*/}

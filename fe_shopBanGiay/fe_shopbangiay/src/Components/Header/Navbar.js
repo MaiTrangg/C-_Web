@@ -6,6 +6,8 @@ const Navbar = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState('');
 
+    const [language, setLanguage] = useState('vi');
+
 
     // Đồng bộ tên đăng nhập từ localStorage
     const syncUser = () => {
@@ -14,17 +16,24 @@ const Navbar = () => {
             try {
                 const parsedUser = JSON.parse(storedUser);
                 setUsername(parsedUser.username);
-                setRole(parsedUser.role);
+
+                // setRole(parsedUser.role);
+                setRole(parsedUser.role || '');
             } catch (e) {
                 setUsername('');
+                setRole('');
             }
         } else {
             setUsername('');
+            setRole('');
         }
     };
 
     useEffect(() => {
         syncUser();
+
+        const savedLang = localStorage.getItem('language');
+        if (savedLang) setLanguage(savedLang);
 
         // Theo dõi thay đổi từ localStorage nếu login/logout ở tab khác
         const handleStorage = () => syncUser();
@@ -37,8 +46,14 @@ const Navbar = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('isGoogleLogin');
         setUsername('');
+
+        setRole('');
         navigate('/login');
     };
+
+    useEffect(() => {
+        localStorage.setItem('language', language);
+    }, [language]);
 
     return (
         <div>
@@ -101,32 +116,76 @@ const Navbar = () => {
                                         </div>
                                     </div>
                                     <a href="contact.html" className="nav-item nav-link">Contact</a>
-                                    {username && role === 'admin' && (
+
+                                    {username && role.toUpperCase() === 'ADMIN' && (
+
                                         <Link to="/admin" className="nav-item nav-link">Dashboard</Link>
                                     )}
                                 </div>
 
                                 <div className="navbar-nav ml-auto py-0">
-                                    {username ? (
-                                        <>
-                                            <span className="nav-item nav-link">
-                                                👋 Chào mừng, <strong>{username}</strong>
-                                            </span>
-                                            <button
-                                                onClick={handleLogout}
-                                                className="nav-item nav-link btn btn-link text-danger p-0"
-                                            >
-                                                Logout
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Link to="/login" className="nav-item nav-link">Login</Link>
-                                            <Link to="/register" className="nav-item nav-link">Register</Link>
-                                        </>
-                                    )}
-                                </div>
 
+                                    {/* Dropdown chọn ngôn ngữ */}
+                                    <div className="nav-item dropdown mr-3">
+                                        <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">
+                                            <img
+                                                src={`/img/${language === 'vi' ? 'vi' : language === 'en' ? 'eng' : 'ja'}.jpg`}
+                                                alt="lang" style={{width: 24}}/>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right rounded-0 shadow">
+                                            <a onClick={() => setLanguage('vi')} className="dropdown-item"
+                                               style={{cursor: 'pointer'}}>
+                                                <img src="/img/vi.jpg" alt="vi" style={{width: 24, marginRight: 8}}/>
+                                                Tiếng Việt
+                                            </a>
+                                            <a onClick={() => setLanguage('en')} className="dropdown-item"
+                                               style={{cursor: 'pointer'}}>
+                                                <img src="/img/eng.jpg" alt="en" style={{width: 24, marginRight: 8}}/>
+                                                English
+                                            </a>
+                                            <a onClick={() => setLanguage('jp')} className="dropdown-item"
+                                               style={{cursor: 'pointer'}}>
+                                                <img src="/img/ja.jpg" alt="jp" style={{width: 24, marginRight: 8}}/>
+                                                日本語
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+                                    <div className="navbar-nav ml-auto py-0">
+                                        {username ? (
+                                            <>
+                                                <div className="nav-item dropdown">
+                                                    <a href="#" className="nav-link dropdown-toggle"
+                                                       data-toggle="dropdown">
+                                                        👋 Chào, <strong>{username}</strong>
+                                                    </a>
+                                                    <div className="dropdown-menu dropdown-menu-right rounded-0 m-0">
+                                                        <Link to="/profile" className="dropdown-item">Thông tin người
+                                                            dùng</Link>
+                                                        <Link to="/orders" className="dropdown-item">Lịch sử đơn
+                                                            hàng</Link>
+                                                        <div className="dropdown-divider"></div>
+                                                        <button
+                                                            onClick={handleLogout}
+                                                            className="dropdown-item text-danger"
+                                                        >
+                                                            Đăng xuất
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Link to="/login" className="nav-item nav-link">Login</Link>
+                                                <Link to="/register" className="nav-item nav-link">Register</Link>
+                                            </>
+                                        )}
+                                    </div>
+
+
+                                </div>
 
                             </div>
                         </nav>

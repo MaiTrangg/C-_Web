@@ -1,5 +1,6 @@
 # Node.js modules
 node_modules/
+<<<<<<< HEAD
 node_modules/.cache
 
 # Logs
@@ -10,3 +11,22 @@ node_modules/.cache/
 # OS-specific files
 .DS_Store
 Thumbs.db
+=======
+**/node_modules/
+.cache/
+**/.cache/
+
+# Large pack files
+*.pack
+**/*.pack
+
+# Logs
+*.log
+
+# JetBrains IDE config (WebStorm, IntelliJ, etc.)
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+>>>>>>> master

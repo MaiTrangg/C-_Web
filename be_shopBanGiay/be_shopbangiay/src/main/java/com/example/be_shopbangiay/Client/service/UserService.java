@@ -17,9 +17,7 @@ public interface UserService {
     boolean checkUsernameExists(String username);
     User getUserByUsername(String username);
     void updateUser(User user);
-//    User getUserById(int id);
-//    List<User> getAllUsers();
-//    void deleteUser(int id);
+
 
 
 

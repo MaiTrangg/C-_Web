@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* Dropdown hiện đại hơn */
+.nav-item.dropdown .dropdown-menu {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+}
+
+.dropdown-menu .dropdown-item {
+  padding: 10px 20px;
+  transition: background-color 0.2s;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-menu .dropdown-item.text-danger:hover {
+  background-color: #ffecec;
+  color: red;
+}

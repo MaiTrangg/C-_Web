@@ -158,4 +158,62 @@ public class UserController {
         return ResponseEntity.ok("Password reset successful");
     }
 
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/infoUser")
+    public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid Authorization header");
+        }
+
+        String token = authHeader.substring(7);
+        if (!jwtUtil.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
+
+        String username = jwtUtil.extractUsername(token);
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        return ResponseEntity.ok(user);
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody Map<String, String> updates) {
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid Authorization header");
+        }
+
+        String token = authHeader.substring(7);
+        if (!jwtUtil.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
+
+        String username = jwtUtil.extractUsername(token);
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        // Chỉ cho update email + telephone
+        if (updates.containsKey("email")) {
+            user.setEmail(updates.get("email"));
+        }
+        if (updates.containsKey("telephone")) {
+            user.setTelephone(updates.get("telephone"));
+        }
+
+        userService.updateUser(user);
+        return ResponseEntity.ok("User updated successfully");
+    }
+
+
+
 }

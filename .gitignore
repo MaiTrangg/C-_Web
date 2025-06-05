@@ -11,6 +11,9 @@ node_modules/
 # Logs
 *.log
 
+# JetBrains IDE config (WebStorm, IntelliJ, etc.)
+.idea/
+
 # OS-specific files
 .DS_Store
 Thumbs.db

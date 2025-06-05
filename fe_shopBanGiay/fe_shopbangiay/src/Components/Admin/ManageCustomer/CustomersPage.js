@@ -1,4 +1,4 @@
-// CustomersPage.jsx
+// CustomersPage.jsx page
 import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrash, FaSave } from 'react-icons/fa';
 import Swal from 'sweetalert2';

@@ -1,11 +1,18 @@
 # Node.js modules
 node_modules/
-node_modules/.cache
+**/node_modules/
+.cache/
+**/.cache/
+
+# Large pack files
+*.pack
+**/*.pack
 
 # Logs
 *.log
-node_modules/.cache/
 
+# JetBrains IDE config (WebStorm, IntelliJ, etc.)
+.idea/
 
 # OS-specific files
 .DS_Store

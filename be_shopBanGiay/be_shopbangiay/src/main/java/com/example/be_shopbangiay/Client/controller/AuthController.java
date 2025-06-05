@@ -36,4 +36,5 @@ public class AuthController {
                     .body(Map.of("error", e.getMessage()));
         }
     }
+
 }

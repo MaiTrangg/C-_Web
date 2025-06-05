@@ -26,9 +26,9 @@ spring:
             user-name-attribute: sub
 
   datasource:
-    url: jdbc:mysql://localhost:3306/storegiay
+    url: jdbc:mysql://localhost:3306/dulieugiay?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
-    password: tr21092003
+    password: 123456
 
   jpa:
     hibernate:

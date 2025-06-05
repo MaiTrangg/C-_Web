@@ -1,6 +1,15 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {Link} from "react-router-dom";
+import { useContext } from 'react';
+import { useCart} from '../../contexts/CartContext';
+import axios from "axios";
 
 const Topbar = () => {
+    const { totalQuantity } = useCart();
+    console.log("totalQuantity: ",totalQuantity)
+
+
+
     return (
         <div>
             <div className="container-fluid">
@@ -54,14 +63,14 @@ const Topbar = () => {
                         </form>
                     </div>
                     <div className="col-lg-3 col-6 text-right">
-                        <a href="" className="btn border">
+                        <Link href="" className="btn border">
                             <i className="fas fa-heart text-primary"></i>
                             <span className="badge">0</span>
-                        </a>
-                        <a href="" className="btn border">
+                        </Link>
+                        <Link to={"/cart"} href="" className="btn border">
                             <i className="fas fa-shopping-cart text-primary"></i>
-                            <span className="badge">0</span>
-                        </a>
+                            <span className="badge">{totalQuantity}</span>
+                        </Link>
                     </div>
                 </div>
             </div>

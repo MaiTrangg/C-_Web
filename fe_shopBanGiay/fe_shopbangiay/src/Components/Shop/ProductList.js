@@ -2,10 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProductCard from "./ProductCard";
 
-const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, selectedSizes,minPrice, maxPrice}) => {
+const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, selectedSizes,minPrice, maxPrice
+
+                                }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+
+
+
     // const colors = selectedColors || [];
     if (selectedColors && selectedColors.length > 0) {
         console.log("Có màu được chọn:", selectedColors);
@@ -19,6 +24,7 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, sel
     }
     console.log("minPrice"+minPrice);
     console.log("maxPrice"+maxPrice);
+
 
 
     useEffect(() => {
@@ -78,6 +84,9 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, sel
         }
     };
 
+
+
+
     if (loading) return <div>Loading products...</div>;
     return (
         <div>
@@ -85,19 +94,20 @@ const ProductList = ({ categoryId, searchTerm, itemsPerPage ,selectedColors, sel
                     {/* Hiển thị sản phẩm */}
                     <div className="row">
                         {currentProducts.map((product, index) => {
-                            const mainImage = product.colorImages.find((img) => img.isMain);
                             return (
                                 <ProductCard
                                     key={index}
-                                    productId={product.id}
-                                    image={mainImage ? mainImage.url : "default-image.jpg"}
-                                    name={product.name}
-                                    price={product.price}
-                                    oldPrice={product.oldPrice || product.price}
+                                    product={product}
                                 />
+
                             );
-                        })}
+
+                        }
+
+                        )}
                     </div>
+
+
                     {/* Phân trang */}
                     <div className="col-12 pb-1">
                         <nav aria-label="Page navigation">

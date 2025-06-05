@@ -1,5 +1,6 @@
 package com.example.be_shopbangiay.Client.security;
 
+import com.example.be_shopbangiay.Client.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,6 +21,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -58,15 +63,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //                filterChain.doFilter(request, response);
 //                return;
 //            }
+//            if (jwtUtil.validateToken(token)) {
+//                String username = jwtUtil.extractUsername(token);
+//                String role = jwtUtil.extractRole(token);
+//
+//                UsernamePasswordAuthenticationToken authToken =
+//                        new UsernamePasswordAuthenticationToken(
+//                                username,
+//                                null,
+//                                List.of(new SimpleGrantedAuthority(role))
+//                        );
+//
+//                SecurityContextHolder.getContext().setAuthentication(authToken);
+//                filterChain.doFilter(request, response);
+//                return;
+//            }
             if (jwtUtil.validateToken(token)) {
                 String username = jwtUtil.extractUsername(token);
-                String role = jwtUtil.extractRole(token);
+
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
-                                username,
+                                userDetails,
                                 null,
-                                List.of(new SimpleGrantedAuthority(role))
+                                userDetails.getAuthorities()
                         );
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -74,6 +95,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
         }
+
+
+//    }
+//        }
 
         //  Không có token hoặc token không hợp lệ
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or missing token");

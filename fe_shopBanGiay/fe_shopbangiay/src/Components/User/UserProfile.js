@@ -3,6 +3,7 @@ import NavbarOnly from '../Header/NavbarOnly';
 import Footer from '../Footer/Footer';
 import './UserProfile.css';
 
+// trang user profile
 const UserProfile = () => {
     const [user, setUser] = useState(null);
     const [editUser, setEditUser] = useState({ username: '', email: '', telephone: '', role: '' });

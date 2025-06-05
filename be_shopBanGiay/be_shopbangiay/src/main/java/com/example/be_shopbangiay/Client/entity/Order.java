@@ -38,6 +38,9 @@ public class Order {
     @Column(name = "payment_method", length = 50)
     private String paymentMethod;
 
+    @Column(name = "payment_status")
+    private String paymentStatus;
+
     @Column(name = "total_amount", precision = 10, scale = 2, nullable = false)
     private BigDecimal totalAmount;
 

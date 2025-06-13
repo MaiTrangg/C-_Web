@@ -21,6 +21,7 @@ const Sidebar = ({ activePage, setActivePage }) => {
             items: [
                 { id: 'Customers', iconName: '🧑‍🤝‍🧑', text: 'Customers', hasArrow: true },
                 { id: 'Products', iconName: '📦', text: 'Products', hasArrow: true },
+                { id: 'categories', iconName: '📁', text: 'categories', hasArrow: true },
                 { id: 'Orders', iconName: '🛒', text: 'Orders', hasArrow: true },
                 { id: 'Coupons', iconName: '🎟️', text: 'Coupons', hasArrow: true },
                 { id: 'Reviews', iconName: '⭐', text: 'Reviews', hasArrow: true },

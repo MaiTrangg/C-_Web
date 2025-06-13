@@ -19,6 +19,6 @@ public class CategoryService {
     CategoryMapper categoryMapper;
 
     public List<CategoryDTO> getAllCategories() {
-        return categoryMapper.toCategoryDTO(categoryRepository.findAll());
+        return categoryMapper.toCategoryDTO(categoryRepository.findByIsActiveTrue());
     }
 }

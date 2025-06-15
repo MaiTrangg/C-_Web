@@ -2,6 +2,7 @@ package com.example.be_shopbangiay.Client.service;
 
 import com.example.be_shopbangiay.Client.dto.ProductDTO;
 import com.example.be_shopbangiay.Client.entity.Product;
+import com.example.be_shopbangiay.Client.entity.ProductVariant;
 import com.example.be_shopbangiay.Client.mapper.ProductMapper;
 import com.example.be_shopbangiay.Client.repository.CategoryRepository;
 import com.example.be_shopbangiay.Client.repository.ProductRepository;
@@ -21,9 +22,22 @@ public class ProductService {
     ProductMapper productMapper;
     CategoryRepository categoryRepository;
     public List<ProductDTO> getAllProducts() {
-        return productRepository.findAll()
+//        return productRepository.findActiveProductsWithActiveVariants()
+//                .stream()
+//                .map(productMapper::toProductDTO)
+//                .collect(Collectors.toList());
+        return productRepository.findByIsActiveTrue()  // Lấy tất cả sản phẩm đang active
                 .stream()
-                .map(productMapper::toProductDTO)
+                .map(product -> {
+                    // Lọc chỉ những variant đang active
+                    product.setVariants(
+                            product.getVariants()
+                                    .stream()
+                                    .filter(ProductVariant::getIsActive)
+                                    .collect(Collectors.toList())
+                    );
+                    return productMapper.toProductDTO(product);
+                })
                 .collect(Collectors.toList());
     }
 

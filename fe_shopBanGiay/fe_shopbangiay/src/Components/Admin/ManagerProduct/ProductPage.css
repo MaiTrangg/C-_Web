@@ -8,7 +8,7 @@ body {
     color: #333;
 }
 
-.customers-page {
+.products-page {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -132,7 +132,7 @@ h1 {
     color: #333;
 }
 
-.add-customer-button {
+.add-product-button {
     background-color:  #39cb19 !important;
     color: white;
     border: 1px solid #39cb19 !important;
@@ -348,7 +348,7 @@ th:first-child, td:first-child {
     gap: 12px;
 }
 
-.add-category-form button {
+.add-product-form button {
     padding: 10px 16px;
     font-size: 16px;
     border: none;
@@ -374,4 +374,289 @@ th:first-child, td:first-child {
 .cancel-button:hover {
     background-color: #d93636;
 }
+/*css phan trang*/
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.pagination button.active {
+    background-color: #39cb19;
+    color: white;
+    font-weight: bold;
+}
+
+.pagination button:disabled {
+    background-color: #eee;
+    cursor: not-allowed;
+}
+/*css model show bien the*/
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* nền mờ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    animation: fadeInScale 0.3s ease;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.modal-content .close-btn {
+    position: absolute;
+    top: -14px;
+    right: 12px;
+    padding: 6px 10px;
+    font-size: 14px;
+    background-color: transparent;
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-content .close-btn:hover {
+    background-color: #f0f0f0;
+}
+
+
+.variants-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.variants-table th,
+.variants-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.variants-table th {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.variants-table img {
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content button {
+    margin-top: 20px;
+    padding: 8px 16px;
+    /*background-color: #d93636;*/
+    /*color: white;*/
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+
+.add-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.add-btn:hover {
+    background-color: #218838;
+}
+
+.input-cell {
+    font-size: 14px;
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+/*css form them san pham*/
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* nền mờ tối */
+    backdrop-filter: blur(4px);     /* làm mờ phần sau */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content-addProduct {
+    background: #f0f0f0;
+    border-radius: 12px;
+    padding: 24px 32px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.add-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.add-form input,
+.add-form select,
+.add-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.add-form button[type="submit"] {
+    grid-column: span 2;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.add-form button[type="submit"]:hover {
+    background-color: #218838;
+}
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+.blurred {
+    opacity: 0.4;
+    pointer-events: none;
+    filter: blur(1px);
+    transition: 0.3s ease;
+}
+
+.add-form-row {
+    background: #fff;
+    z-index: 10;
+    position: relative;
+}
+/*css model add bien the*/
+/* Lớp nền mờ */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); /* Mờ nền */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal form */
+.add-variant-modal {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    width: 600px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+}
+
+/* Các input trong modal */
+.add-variant-modal .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.add-variant-modal input {
+    flex: 1 1 45%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.form-buttons-save{
+    background: #28a745;
+    color: #FFFFFF;
+}
+.form-buttons-cancel{
+    background: #ff4d4d;
+    color: #FFFFFF;
+}
+
+
 

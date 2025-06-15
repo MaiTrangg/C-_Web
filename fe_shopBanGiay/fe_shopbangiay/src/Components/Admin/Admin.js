@@ -6,6 +6,7 @@ import Header from '../Admin/Header/Header';
 import Dashboard from '../Admin/Dashboard/Dashboard';
 import CustomersPage from './ManageCustomer/CustomersPage';
 import CategoriesPage from "./ManagerCategory/CategoriesPage";
+import ProductPage from "./ManagerProduct/ProductPage";
 
 function Admin() {
     const [activePage, setActivePage] = useState('Dashboard');
@@ -16,6 +17,8 @@ function Admin() {
                 return <CustomersPage />;
             case 'categories':
                 return <CategoriesPage />;
+            case 'Products':
+                return <ProductPage />;
             case 'Dashboard':
             default:
                 return <Dashboard />;

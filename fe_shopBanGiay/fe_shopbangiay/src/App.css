@@ -37,6 +37,7 @@
   }
 }
 
+
 /* Dropdown hiện đại hơn */
 .nav-item.dropdown .dropdown-menu {
   border-radius: 0.5rem;
@@ -57,4 +58,3 @@
   background-color: #ffecec;
   color: red;
 }
-

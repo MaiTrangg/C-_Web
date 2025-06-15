@@ -8,6 +8,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ShopPage from "./Components/Shop/ShopPage";
 import ProductDetail from "./Components/Shop/ProductDetail";
 import AuthPage from './Components/Login & Register/AuthPage';
+
 import CartPage from "./Components/CartPage/CartPage";
 // import {CartProvider} from "./contexts/CartContext";
 import CheckoutPage from "./CheckoutPage/CheckoutPage";
@@ -25,24 +26,7 @@ import {CartProvider} from "./contexts/CartContext";
 
 function App() {
     return (
-// <<<<<<< HEAD
-//         <BrowserRouter>
-//             <Routes>
-//                 <Route path="/" element={<HomePage />} />
-//                 <Route path="/home" element={<HomePage />} />
-//                 <Route path="/shop" element={<ShopPage />} />
-//                 <Route path="/productDetail" element={<ProductDetail />} />
-//                 <Route path="/login" element={<AuthPage />} />
-//                 <Route path="/register" element={<AuthPage />} />
-//                 <Route path="/shop/:categoryId" element={<ShopPage />} />
-//                 <Route path="/productDetail/:productId" element={<ProductDetail />} />
-//                 <Route path="/reset-password" element={<ResetPassword />} />
-//                 <Route path="/forgot-password" element={<ForgotPassword />} />
-//                 <Route path="/admin" element={<Admin />} />
-//                 <Route path="/profile" element={<UserProfile />} />
-//                 <Route path="/orders" element={<OrderHistory />} />
-// =======
-// // <<<<<<< HEAD
+
         <CartProvider>
              <BrowserRouter>
                  <Routes>
@@ -59,6 +43,7 @@ function App() {
                      <Route path="/reset-password" element={<ResetPassword />} />
                      <Route path="/forgot-password" element={<ForgotPassword />} />
                      <Route path="/admin" element={<Admin />} />
+
                      <Route path="/profile" element={<UserProfile />} />
                      <Route path="/orders" element={<OrderHistory />} />
 

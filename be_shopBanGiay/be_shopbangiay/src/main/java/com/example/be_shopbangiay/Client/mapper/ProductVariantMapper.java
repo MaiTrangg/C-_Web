@@ -9,4 +9,5 @@ import org.mapstruct.Mapping;
 public interface ProductVariantMapper {
 
     ProductVariantDTO toProductVariantDTO(ProductVariant variant);
+    ProductVariant toEntity(ProductVariantDTO dto);
 }

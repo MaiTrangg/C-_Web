@@ -57,6 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
+            System.out.println("Token: " + token);
 
 //            if (jwtUtil.validateToken(token)) {
 //                //  Token hợp lệ → cho phép đi tiếp, không cần đặt vào SecurityContext

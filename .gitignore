@@ -1,5 +1,17 @@
 # Node.js modules
 node_modules/
+<<<<<<< HEAD
+node_modules/.cache
+
+# Logs
+*.log
+node_modules/.cache/
+
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+=======
 **/node_modules/
 .cache/
 **/.cache/
@@ -17,3 +29,4 @@ node_modules/
 # OS-specific files
 .DS_Store
 Thumbs.db
+>>>>>>> master

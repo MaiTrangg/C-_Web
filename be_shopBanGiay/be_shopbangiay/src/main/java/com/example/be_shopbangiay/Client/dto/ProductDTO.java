@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,6 +23,7 @@ public class ProductDTO {
      BigDecimal discount;
      Boolean isActive;
      LocalDateTime createdAt;
-     List<ProductVariantDTO> variants;
+     @Builder.Default
+     List<ProductVariantDTO> variants = new ArrayList<>();
 //     List<ProductColorImageDTO> colorImages;
 }

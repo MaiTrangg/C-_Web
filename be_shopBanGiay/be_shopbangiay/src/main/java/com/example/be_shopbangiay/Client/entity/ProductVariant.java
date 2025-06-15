@@ -48,4 +48,7 @@ public class ProductVariant {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "is_active")
+    Boolean isActive;
+
 }

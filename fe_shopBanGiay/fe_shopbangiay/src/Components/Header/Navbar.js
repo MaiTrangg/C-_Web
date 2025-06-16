@@ -35,10 +35,6 @@ const Navbar = () => {
     useEffect(() => {
         syncUser();
 
-        const savedLang = localStorage.getItem('language');
-        if (savedLang) setLanguage(savedLang);
-
-
         const savedLang = localStorage.getItem('i18nextLng') || 'vi';
         if (savedLang !== i18n.language) {
             i18n.changeLanguage(savedLang);

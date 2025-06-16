@@ -48,7 +48,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 || path.contains("/oauth2")
                 || path.startsWith("/login")
                 || path.startsWith("/oauth2/success")
+                || path.contains("/api/voucher/list")
                 || path.equals("/favicon.ico")
+
 
         ) {
             filterChain.doFilter(request, response);

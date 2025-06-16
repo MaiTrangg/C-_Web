@@ -43,9 +43,16 @@ public class OrderService {
         }
 
         // Tính tổng tiền đơn hàng
-        BigDecimal totalAmount = cartItems.stream()
-                .map(item -> item.getProductVariant().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//        BigDecimal totalAmount = cartItems.stream()
+//                .map(item -> item.getProductVariant().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalAmount = request.getDiscountedAmount();
+
+        if (totalAmount == null) {
+            totalAmount = cartItems.stream()
+                    .map(item -> item.getProductVariant().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
 
         // Tạo order mới
         Order order = Order.builder()
@@ -92,6 +99,13 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public List<Order> getOrdersByUserId(int userId) {
+        return orderRepository.findByUser_UserID(userId);
+    }
+
+    public Order getOrderByIdAndUserId(Long orderId, int userId) {
+        return orderRepository.findByIdAndUser_UserID(orderId, userId).orElse(null);
+    }
 
 
 }

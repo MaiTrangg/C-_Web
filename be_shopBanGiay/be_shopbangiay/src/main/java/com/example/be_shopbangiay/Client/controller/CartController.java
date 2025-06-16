@@ -1,9 +1,12 @@
 package com.example.be_shopbangiay.Client.controller;
 
+import com.example.be_shopbangiay.Client.dto.ApplyVoucherResponse;
 import com.example.be_shopbangiay.Client.dto.CartItemDTO;
 import com.example.be_shopbangiay.Client.dto.CartItemRequest;
 import com.example.be_shopbangiay.Client.dto.CustomUserDetails;
+import com.example.be_shopbangiay.Client.entity.Voucher;
 import com.example.be_shopbangiay.Client.service.CartService;
+import com.example.be_shopbangiay.Client.service.VoucherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -67,6 +70,29 @@ public class CartController {
             return custom.getUserID();
         }
         throw new IllegalArgumentException("Invalid user details");
+    }
+
+    private final VoucherService voucherService;
+
+    // API áp dụng voucher
+    @GetMapping("/apply-voucher")
+    public ResponseEntity<?> applyVoucher(@AuthenticationPrincipal UserDetails userDetails,
+                                          @RequestParam String code) {
+        Integer userId = extractUserIdFromUserDetails(userDetails);
+        Voucher voucher = voucherService.getVoucherByCode(code)
+                .orElseThrow(() -> new RuntimeException("Voucher không tồn tại"));
+
+        if (!voucherService.isVoucherValid(voucher)) {
+            return ResponseEntity.badRequest().body("Voucher đã hết hạn");
+        }
+
+        double totalCart = cartService.calculateTotalCart(userId);
+        double discountAmount = totalCart * voucher.getDiscountPercent() / 100.0;
+        double finalAmount = totalCart - discountAmount;
+
+        ApplyVoucherResponse response = new ApplyVoucherResponse(totalCart, discountAmount, finalAmount, voucher.getDiscountPercent());
+
+        return ResponseEntity.ok(response);
     }
 
 }

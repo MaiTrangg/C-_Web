@@ -14,5 +14,7 @@ public class OrderItemResponse {
     private String imageUrl;
     private BigDecimal price;
     private Integer quantity;
+
+
 }
 

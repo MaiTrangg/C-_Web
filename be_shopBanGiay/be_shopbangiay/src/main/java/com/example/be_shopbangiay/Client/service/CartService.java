@@ -12,13 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CartService {
+public class    CartService {
 
     private final CartItemRepository cartItemRepository;
     private final CartItemMapper cartItemMapper;
@@ -70,5 +71,16 @@ public class CartService {
         }
         cartItemRepository.deleteById(id);
     }
+
+    // tính tổng cart
+    public double calculateTotalCart(Integer userId) {
+        return cartItemRepository.findByUser_UserID(userId)
+                .stream()
+                .map(item -> item.getProductVariant().getPrice()
+                        .multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .doubleValue();  // vì bạn muốn trả về double
+    }
+
 }
 

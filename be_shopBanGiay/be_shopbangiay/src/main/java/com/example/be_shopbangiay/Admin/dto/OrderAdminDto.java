@@ -1,20 +1,25 @@
-package com.example.be_shopbangiay.Client.dto;
+package com.example.be_shopbangiay.Admin.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-// OrderRequest.java (DTO nhận từ frontend)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderRequest {
+public class OrderAdminDto {
+    private Long id;
+    private Integer userId;
     private String receiverName;
     private String phone;
     private String shippingAddress;
+    private String status;
     private String paymentMethod;
-    private String note;
-    private BigDecimal discountedAmount;
+    private BigDecimal totalAmount;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
+

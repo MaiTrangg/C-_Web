@@ -1,9 +1,14 @@
 package com.example.be_shopbangiay.Client.controller;
 
+import com.example.be_shopbangiay.Admin.dto.OrderAdminDto;
+import com.example.be_shopbangiay.Admin.dto.OrderItemAdminDto;
 import com.example.be_shopbangiay.Client.dto.UserDto;
+import com.example.be_shopbangiay.Client.entity.Order;
 import com.example.be_shopbangiay.Client.entity.User;
 import com.example.be_shopbangiay.Client.security.JwtUtil;
 import com.example.be_shopbangiay.Client.service.EmailService;
+import com.example.be_shopbangiay.Client.service.OrderItemService;
+import com.example.be_shopbangiay.Client.service.OrderService;
 import com.example.be_shopbangiay.Client.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 //@Controller
 @CrossOrigin(origins = "http://localhost:3000")
@@ -32,6 +38,9 @@ public class UserController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private OrderService orderService;
 
     // test trên REST api
     @CrossOrigin(origins = "http://localhost:3000")
@@ -214,6 +223,91 @@ public class UserController {
         return ResponseEntity.ok("User updated successfully");
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/orders")
+    public ResponseEntity<?> getUserOrders(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid Authorization header");
+        }
 
+        String token = authHeader.substring(7);
+
+        if (!jwtUtil.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
+
+        String username = jwtUtil.extractUsername(token);
+
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        // Lấy danh sách đơn hàng của user
+        List<Order> orders = orderService.getOrdersByUserId(user.getUserID());
+
+        List<OrderAdminDto> dtoList = orders.stream().map(order -> mapOrderToDto(order, user)).collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtoList);
+    }
+
+    private OrderAdminDto mapOrderToDto(Order order, User user) {
+        return new OrderAdminDto(
+                order.getId(),
+                user.getUserID(),
+                order.getReceiverName(),
+                order.getPhone(),
+                order.getShippingAddress(),
+                order.getStatus(),
+                order.getPaymentMethod(),
+                order.getTotalAmount(),
+                order.getCreatedAt(),
+                order.getUpdatedAt()
+        );
+    }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/ordersDetail")
+    public ResponseEntity<?> getUserOrdersByToken(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam("orderId") Long orderId) {
+
+        // Kiểm tra token
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid Authorization header");
+        }
+
+        String token = authHeader.substring(7);
+        if (!jwtUtil.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
+
+        // Lấy user từ token
+        String username = jwtUtil.extractUsername(token);
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        // Lấy đơn hàng theo orderId + userId để đảm bảo bảo mật
+        Order order = orderService.getOrderByIdAndUserId(orderId, user.getUserID());
+        if (order == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
+        }
+
+        // Lấy danh sách sản phẩm trong đơn hàng đó
+        List<OrderItemAdminDto> orderItemDtos = order.getOrderItems().stream()
+                .filter(item -> item.getProductVariant() != null && item.getProductVariant().getProduct() != null)
+                .map(item -> new OrderItemAdminDto(
+                        item.getId(),
+                        item.getProductVariant().getProduct().getName(),
+                        item.getColor(),
+                        item.getSize(),
+                        item.getQuantity(),
+                        item.getPrice()
+                ))
+                .toList();
+
+        return ResponseEntity.ok(orderItemDtos);
+    }
 
 }

@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-                    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+                    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(Arrays.asList("*"));
                     config.setAllowCredentials(true);
                     return config;
@@ -65,8 +65,20 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/facebook").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/cart/delete/**").authenticated()
                         .requestMatchers("/oauth2/**", "/login/**", "/oauth2/success").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/user/infoUser").permitAll()
+//                        .requestMatchers(HttpMethod.PUT, "/api/user/update").permitAll()
+                       .requestMatchers(HttpMethod.GET, "/api/user/infoUser").authenticated()
+                       .requestMatchers(HttpMethod.PUT, "/api/user/update").authenticated()
+                       .requestMatchers(HttpMethod.GET, "/api/user/orders").authenticated()
+                       .requestMatchers(HttpMethod.GET, "/api/user/ordersDetail").authenticated()
+                       .requestMatchers(HttpMethod.GET, "/api/cart/apply-voucher").authenticated()
+                       .requestMatchers(HttpMethod.GET, "/api/voucher/list").permitAll()
+                       .requestMatchers(HttpMethod.GET, "/api/voucher/check").authenticated()
 
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+
+
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
 //                        .requestMatchers("/api/cart/add").authenticated()
 
 

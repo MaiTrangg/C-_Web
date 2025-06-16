@@ -1,8 +1,10 @@
+
     // CustomersPage.jsx page ne
     import React, { useEffect, useState } from 'react';
     import { FaEdit, FaTrash, FaSave } from 'react-icons/fa';
     import Swal from 'sweetalert2';
     import './CustomersPage.css';
+
 
     const API_URL = 'https://localhost:8443/api/admin';
 

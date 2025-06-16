@@ -10,4 +10,7 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT c.id FROM Category c WHERE c.parentCategory.id = :parentId")
     List<Long> findChildCategoryIds(@Param("parentId") Long parentId);
+
+    List<Category> findByIsActiveTrue();
+
 }

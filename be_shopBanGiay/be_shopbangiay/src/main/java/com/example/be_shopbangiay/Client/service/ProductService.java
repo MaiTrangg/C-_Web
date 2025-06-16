@@ -2,6 +2,7 @@ package com.example.be_shopbangiay.Client.service;
 
 import com.example.be_shopbangiay.Client.dto.ProductDTO;
 import com.example.be_shopbangiay.Client.entity.Product;
+import com.example.be_shopbangiay.Client.entity.ProductVariant;
 import com.example.be_shopbangiay.Client.mapper.ProductMapper;
 import com.example.be_shopbangiay.Client.repository.CategoryRepository;
 import com.example.be_shopbangiay.Client.repository.ProductRepository;
@@ -21,10 +22,23 @@ public class ProductService {
     ProductMapper productMapper;
     CategoryRepository categoryRepository;
     public List<ProductDTO> getAllProducts() {
-        return productRepository.findAll()
+        return productRepository.findActiveProductsWithActiveVariants()
                 .stream()
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
+//        return productRepository.findByIsActiveTrue()  // Lấy tất cả sản phẩm đang active
+//                .stream()
+//                .map(product -> {
+//                    // Lọc chỉ những variant đang active
+//                    product.setVariants(
+//                            product.getVariants()
+//                                    .stream()
+//                                    .filter(ProductVariant::getIsActive)
+//                                    .collect(Collectors.toList())
+//                    );
+//                    return productMapper.toProductDTO(product);
+//                })
+//                .collect(Collectors.toList());
     }
 
 
@@ -33,13 +47,13 @@ public class ProductService {
         categoryIds.add(categoryId);
         categoryIds.addAll(categoryRepository.findChildCategoryIds(categoryId));
 
-        return productRepository.findByCategoryIdIn(categoryIds).stream()
+        return productRepository.findActiveProductsWithActiveVariantsByCategoryIds(categoryIds).stream()
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
     }
 
     public ProductDTO getProductsByProductId(Long productId) {
-        Product product = productRepository.findById(productId)
+        Product product = productRepository.findActiveProductWithVariantsById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
       return productMapper.toProductDTO(product);
@@ -48,7 +62,7 @@ public class ProductService {
 
     // Tìm kiếm đơn giản
     public List<ProductDTO> searchProductsByName(String name) {
-        List<Product> products = productRepository.findByNameContainingIgnoreCaseAndIsActiveTrue(name);
+        List<Product> products = productRepository.searchActiveProductsWithVariantsByName(name);
         return products.stream().map(productMapper::toProductDTO).collect(Collectors.toList());
     }
 }

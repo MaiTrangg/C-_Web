@@ -167,6 +167,7 @@ public class UserController {
         return ResponseEntity.ok("Password reset successful");
     }
 
+
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/infoUser")
     public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String authHeader) {

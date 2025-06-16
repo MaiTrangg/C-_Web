@@ -1,6 +1,7 @@
 package com.example.be_shopbangiay.Client.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,9 +24,13 @@ public class Category {
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Category parentCategory;
+    @Column(name = "is_active")
+    Boolean isActive;
+
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonManagedReference
     private List<Product> products;
 
 

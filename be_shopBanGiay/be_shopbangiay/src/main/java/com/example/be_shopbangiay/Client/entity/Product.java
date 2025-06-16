@@ -1,5 +1,6 @@
 package com.example.be_shopbangiay.Client.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,7 +31,8 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonBackReference
     Category category;
 
      BigDecimal price;

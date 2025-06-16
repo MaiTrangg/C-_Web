@@ -5,6 +5,7 @@ const Navbar = () => {
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
     const [role, setRole] = useState('');
+
     const [language, setLanguage] = useState('vi');
 
 
@@ -15,6 +16,7 @@ const Navbar = () => {
             try {
                 const parsedUser = JSON.parse(storedUser);
                 setUsername(parsedUser.username);
+
                 // setRole(parsedUser.role);
                 setRole(parsedUser.role || '');
             } catch (e) {
@@ -29,6 +31,7 @@ const Navbar = () => {
 
     useEffect(() => {
         syncUser();
+
         const savedLang = localStorage.getItem('language');
         if (savedLang) setLanguage(savedLang);
 
@@ -43,6 +46,7 @@ const Navbar = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('isGoogleLogin');
         setUsername('');
+
         setRole('');
         navigate('/login');
     };
@@ -112,12 +116,15 @@ const Navbar = () => {
                                         </div>
                                     </div>
                                     <a href="contact.html" className="nav-item nav-link">Contact</a>
+
                                     {username && role.toUpperCase() === 'ADMIN' && (
+
                                         <Link to="/admin" className="nav-item nav-link">Dashboard</Link>
                                     )}
                                 </div>
 
                                 <div className="navbar-nav ml-auto py-0">
+
                                     {/* Dropdown chọn ngôn ngữ */}
                                     <div className="nav-item dropdown mr-3">
                                         <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">
@@ -179,6 +186,7 @@ const Navbar = () => {
 
 
                                 </div>
+
                             </div>
                         </nav>
 

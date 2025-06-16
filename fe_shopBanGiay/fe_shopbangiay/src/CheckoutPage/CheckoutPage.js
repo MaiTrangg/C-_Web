@@ -30,6 +30,8 @@ const CheckoutPage = () => {
     const subtotal = cart.reduce((total, item) => total + item.productVariant.price * item.quantity, 0);
     const shippingAddress = `${addressDetail}, ${selectedWardName}, ${selectedDistrictName}, ${selectedProvinceName}`;
     const { setCart, setTotalQuantity, fetchCart } = useContext(CartContext);
+    const discountedAmount = location.state?.discountedAmount || subtotal;
+
 
     useEffect(() => {
         axios.get("https://provinces.open-api.vn/api/?depth=1")
@@ -61,7 +63,8 @@ const CheckoutPage = () => {
             receiverName,
             phone,
             shippingAddress,
-            paymentMethod
+            paymentMethod,
+            discountedAmount: Math.round(discountedAmount)
         };
 
         if (paymentMethod === "COD") {
@@ -90,14 +93,15 @@ const CheckoutPage = () => {
                 });
         } else if (paymentMethod === "VNPAY") {
             const data = {
-                amount: Math.round(subtotal),  // số nguyên
+                amount: Math.round(discountedAmount),  // số nguyên
                 bankCode: "NCB",
                 language: "vn",
                 orderRequest: {
                     receiverName: receiverName,
                     phone: phone,
                     shippingAddress: shippingAddress,
-                    paymentMethod: "VNPAY"
+                    paymentMethod: "VNPAY",
+                    discountedAmount: Math.round(discountedAmount)
                 }};
             // Tạo URL thanh toán VNPay từ backend
             axios.post("/api/payment/create_payment",
@@ -302,6 +306,14 @@ const CheckoutPage = () => {
                                     <h6 className="font-weight-medium">Subtotal</h6>
                                     <h6 className="font-weight-medium">{subtotal.toFixed(2)}đ</h6>
                                 </div>
+
+                                {discountedAmount < subtotal && (
+                                    <div className="d-flex justify-content-between mb-3 pt-1">
+                                        <h6 className="font-weight-medium">Discount</h6>
+                                        <h6 className="font-weight-medium">- {(subtotal - discountedAmount).toFixed(2)}đ</h6>
+                                    </div>
+                                )}
+
                                 <div className="d-flex justify-content-between">
                                     <h6 className="font-weight-medium">Shipping</h6>
                                     <h6 className="font-weight-medium">Miễn phí shipping</h6>
@@ -310,7 +322,7 @@ const CheckoutPage = () => {
                             <div className="card-footer border-secondary bg-transparent">
                                 <div className="d-flex justify-content-between mt-2">
                                     <h5 className="font-weight-bold">Total</h5>
-                                    <h5 className="font-weight-bold">{subtotal.toFixed(2)}đ</h5>
+                                    <h5 className="font-weight-bold">{discountedAmount.toFixed(2)}đ</h5>
                                 </div>
                             </div>
                         </div>

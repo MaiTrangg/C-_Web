@@ -2,31 +2,31 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-import translationVI from './locales/vi/translation.json';
 import translationEN from './locales/en/translation.json';
+import translationVI from './locales/vi/translation.json';
 import translationJA from './locales/ja/translation.json';
 
-const resources = {
-    vi: { translation: translationVI },
-    en: { translation: translationEN },
-    ja: { translation: translationJA }
-};
-
 i18n
-    .use(LanguageDetector) // phát hiện ngôn ngữ từ localStorage / trình duyệt
+    .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-        resources,
-        fallbackLng: 'vi', // nếu không tìm thấy → dùng tiếng Việt
-
+        resources: {
+            en: { translation: translationEN },
+            vi: { translation: translationVI },
+            ja: { translation: translationJA },
+        },
+        lng: localStorage.getItem('language') || 'vi',
+        fallbackLng: 'vi',
+        interpolation: { escapeValue: false },
         detection: {
             order: ['localStorage', 'navigator'],
-            caches: ['localStorage']
+            caches: ['localStorage'],
         },
-
-        interpolation: {
-            escapeValue: false // React đã xử lý
-        }
     });
+
+const savedLang = localStorage.getItem('language');
+if (savedLang) {
+    i18n.changeLanguage(savedLang);
+}
 
 export default i18n;

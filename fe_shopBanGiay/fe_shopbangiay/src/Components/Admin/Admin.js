@@ -5,6 +5,7 @@ import Sidebar from '../Admin/Sidebar/Sidebar';
 import Header from '../Admin/Header/Header';
 import Dashboard from '../Admin/Dashboard/Dashboard';
 import CustomersPage from './ManageCustomer/CustomersPage';
+import OrdersPage from './ManageOrder/OrdersPage';
 
 function Admin() {
     const [activePage, setActivePage] = useState('Dashboard');
@@ -13,6 +14,8 @@ function Admin() {
         switch (activePage) {
             case 'Customers':
                 return <CustomersPage />;
+            case 'Orders':
+                return <OrdersPage />;
             case 'Dashboard':
             default:
                 return <Dashboard />;

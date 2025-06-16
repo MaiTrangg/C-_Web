@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const NavbarOnly = () => {
+    const { t, i18n } = useTranslation();
+
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
     const [role, setRole] = useState('');
@@ -30,6 +33,7 @@ const NavbarOnly = () => {
         return () => window.removeEventListener('storage', handleStorage);
     }, []);
 
+
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -53,44 +57,70 @@ const NavbarOnly = () => {
 
                 <div className="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div className="navbar-nav mr-auto py-0">
-                        <Link to="/home" className="nav-item nav-link">Home</Link>
-                        <Link to="/shop" className="nav-item nav-link">Shop</Link>
-                        <a href="/detail" className="nav-item nav-link">Shop Detail</a>
+                        <Link to="/home" className="nav-item nav-link">{t('Home')}</Link>
+                        <Link to="/shop" className="nav-item nav-link">{t('Shop')}</Link>
+                        <a href="/detail" className="nav-item nav-link">{t('Shop Detail')}</a>
                         <div className="nav-item dropdown">
-                            <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                            <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">{t('Pages')}</a>
                             <div className="dropdown-menu rounded-0 m-0">
-                                <a href="/cart" className="dropdown-item">Shopping Cart</a>
-                                <a href="/checkout" className="dropdown-item">Checkout</a>
+                                <a href="/cart" className="dropdown-item">{t('Shopping Cart')}</a>
+                                <a href="/checkout" className="dropdown-item">{t('Checkout')}</a>
                                 {username && role.toUpperCase() === 'ADMIN' && (
-                                    <Link to="/admin" className="nav-item nav-link">Dashboard</Link>
+                                    <Link to="/admin" className="nav-item nav-link">{t('Dashboard')}</Link>
                                 )}
                             </div>
                         </div>
-                        <a href="/contact" className="nav-item nav-link">Contact</a>
+                        <a href="/contact" className="nav-item nav-link">{t('Contact')}</a>
                     </div>
 
                     <div className="navbar-nav ml-auto py-0">
+                        {/* Dropdown ngôn ngữ */}
+                        <div className="nav-item dropdown">
+                            <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">
+                                <img
+                                    src={`/img/${i18n.language === 'vi' ? 'vi' : i18n.language === 'en' ? 'eng' : 'ja'}.jpg`}
+                                    alt="Lang"
+                                    style={{ width: 24 }}
+                                />
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right rounded-0 shadow">
+                                <button onClick={() => i18n.changeLanguage('vi')} className="dropdown-item">
+                                    <img src="/img/vi.jpg" alt="vi" style={{ width: 24, marginRight: 8 }} />
+                                    Tiếng Việt
+                                </button>
+                                <button onClick={() => i18n.changeLanguage('en')} className="dropdown-item">
+                                    <img src="/img/eng.jpg" alt="en" style={{ width: 24, marginRight: 8 }} />
+                                    English
+                                </button>
+                                <button onClick={() => i18n.changeLanguage('ja')} className="dropdown-item">
+                                    <img src="/img/ja.jpg" alt="ja" style={{ width: 24, marginRight: 8 }} />
+                                    日本語
+                                </button>
+                            </div>
+                        </div>
+
                         {username ? (
                             <div className="nav-item dropdown">
                                 <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">
-                                    👋 Chào, <strong>{username}</strong>
+                                    👋 {t('Hello')}, <strong>{username}</strong>
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-right rounded-0 shadow">
-                                    <Link to="/profile" className="dropdown-item">Thông tin người dùng</Link>
-                                    <Link to="/orders" className="dropdown-item">Lịch sử đơn hàng</Link>
+                                    <Link to="/profile" className="dropdown-item">{t('User Profile')}</Link>
+                                    <Link to="/orders" className="dropdown-item">{t('Order History')}</Link>
+                                    <Link to="/coupons" className="dropdown-item">{t('Coupon')}</Link>
                                     <div className="dropdown-divider"></div>
                                     <button
                                         onClick={handleLogout}
                                         className="dropdown-item text-danger"
                                     >
-                                        Đăng xuất
+                                        {t('Logout')}
                                     </button>
                                 </div>
                             </div>
                         ) : (
                             <>
-                                <Link to="/login" className="nav-item nav-link">Login</Link>
-                                <Link to="/register" className="nav-item nav-link">Register</Link>
+                                <Link to="/login" className="nav-item nav-link">{t('Login')}</Link>
+                                <Link to="/register" className="nav-item nav-link">{t('Register')}</Link>
                             </>
                         )}
                     </div>
@@ -101,3 +131,4 @@ const NavbarOnly = () => {
 };
 
 export default NavbarOnly;
+

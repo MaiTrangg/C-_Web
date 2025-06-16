@@ -1,0 +1,279 @@
+/* OrdersPage.css */
+.orders-page {
+    padding: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f9f9fb;
+    min-height: 100vh;
+}
+
+.breadcrumbs {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.table-container {
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+table thead tr {
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+table th, table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+table th:first-child, table td:first-child {
+    border-left: 4px solid transparent;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #555;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.icon-btn:hover {
+    color: #007bff;
+    transform: scale(1.1);
+}
+
+.icon-btn.delete:hover {
+    color: #dc3545;
+}
+
+.status-dropdown {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: none;
+    outline: none;
+}
+
+.status-pending     { background-color: #fef3c7; color: #b45309; }
+.status-confirmed   { background-color: #e0f2fe; color: #0369a1; }
+.status-shipping    { background-color: #c7e5c3; color: #34af37; }
+.status-success     { background-color: #d1fae5; color: #047857; }
+.status-cancelled   { background-color: #fee2e2; color: #b91c1c; }
+
+.payment-label {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    display: inline-block;
+    min-width: 70px;
+    text-align: center;
+}
+
+.payment-cod {
+    background-color: #e6f4ea;
+    color: #2d8a3e;
+    border: 1px solid #b1dfbb;
+}
+
+.payment-vnpay {
+    background-color: #e7f0ff;
+    color: #2261c4;
+    border: 1px solid #accaef;
+}
+
+.payment-default {
+    background-color: #f5f5f5;
+    color: #555;
+    border: 1px solid #ccc;
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-height: 80vh;
+    overflow-y: auto;
+    width: 700px;
+    position: relative;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.order-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.order-items-table th {
+    background-color: #e0d3ae;
+}
+
+.order-items-table th,
+.order-items-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+@keyframes fadeIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.status-dropdown-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Các màu trạng thái */
+.status-dropdown-wrapper.status-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+.status-dropdown-wrapper.status-confirmed {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+.status-dropdown-wrapper.status-shipping {
+    background-color: #d1fae5;
+    color: #047857;
+}
+.status-dropdown-wrapper.status-success {
+    background-color: #ecfdf5;
+    color: #065f46;
+}
+.status-dropdown-wrapper.status-cancelled {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.status-dropdown-wrapper select {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-weight: 500;
+    color: inherit;
+    cursor: pointer;
+    appearance: none;
+    padding: 0;
+    font-size: 14px;
+}
+
+/* --- Lọc đơn hàng --- */
+.filter-form {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.filter-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #333;
+}
+
+.filter-form input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-top: 4px;
+    transition: all 0.2s ease-in-out;
+}
+
+.filter-form input:focus {
+    border-color: #3f51b5;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.1);
+}
+
+.filter-form button {
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-form button:hover {
+    background-color: #303f9f;
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+    margin-left: 0;
+    padding-left: 10px;
+}
+
+
+
+
+
+
+
+

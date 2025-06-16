@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import * as Components from './Components';
 import FacebookLoginButton from "./FacebookLoginButton";
-import { useContext } from 'react';
 import { CartContext } from '../../contexts/CartContext';
+import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 const API_URL = 'https://localhost:8443/api/user';
 
@@ -18,24 +19,24 @@ const Login = ({ toggle }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [isGoogleLogin, setIsGoogleLogin] = useState(false);
     const navigate = useNavigate();
-
-
     const { setCart, setTotalQuantity, fetchCart } = useContext(CartContext);
+    const { t } = useTranslation();
 
-
-
-    //  Xử lý Google OAuth2
+    // Luôn dùng ngôn ngữ hiện tại nếu có
+    const syncLanguage = () => {
+        const lang = localStorage.getItem('i18nextLng') || 'vi';
+        i18n.changeLanguage(lang);
+        localStorage.removeItem('language');
+    };
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
-
         if (token) {
             localStorage.setItem('token', token);
             localStorage.setItem('isGoogleLogin', 'true');
             const decoded = jwtDecode(token);
             const oauthUsername = decoded.username || decoded.sub || 'User';
-
 
             localStorage.setItem('user', JSON.stringify({
                 username: oauthUsername,
@@ -43,22 +44,19 @@ const Login = ({ toggle }) => {
                 role: decoded.role || 'user'
             }));
 
-            console.log('Decoded from Google login:', decoded);
+            syncLanguage(); // 🔄 đồng bộ ngôn ngữ
 
             setIsGoogleLogin(true);
-
             window.history.replaceState({}, document.title, window.location.pathname);
 
             Swal.fire({
                 icon: 'success',
-                title: `Welcome, ${oauthUsername}!`,
-                text: 'Google login successful!',
-                confirmButtonText: 'Go to Home'
-            }).then(() => {
-                navigate('/home');
-            });
+                title: `${t('login.welcome')}, ${oauthUsername}!`,
+                text: t('login.googleSuccess'),
+                confirmButtonText: t('login.goHome')
+            }).then(() => navigate('/home'));
         }
-    }, [navigate]);
+    }, [navigate, t]);
 
     useEffect(() => {
         const googleLogin = localStorage.getItem('isGoogleLogin') === 'true';
@@ -70,153 +68,116 @@ const Login = ({ toggle }) => {
         setError('');
         setIsLoading(true);
 
-        const loginData = { username, password };
-
         try {
             const response = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(loginData),
+                body: JSON.stringify({ username, password }),
                 credentials: 'include',
             });
 
-            const responseBody = await response.json();
+            const data = await response.json();
 
             if (response.ok) {
+                syncLanguage(); // 🔄 đồng bộ ngôn ngữ
+
                 Swal.fire({
                     icon: 'success',
-                    title: 'Login successful!',
-                    text: `Welcome back, ${username}!`,
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        navigate('/home');
-                    }
-                });
+                    title: t('login.success'),
+                    text: `${t('login.welcomeBack')}, ${username}!`,
+                    confirmButtonText: t('ok')
+                }).then(() => navigate('/home'));
 
-                localStorage.setItem('token', responseBody.token);
+                localStorage.setItem('token', data.token);
                 localStorage.setItem('isGoogleLogin', 'false');
+                localStorage.setItem('user', JSON.stringify(data.user));
                 fetchCart();
-
-                const user = responseBody.user;
-                localStorage.setItem('user', JSON.stringify({
-                    username: user.username,
-                    email: user.email,
-                    role: user.role
-                }));
-
                 setUsername('');
                 setPassword('');
             } else {
-                console.error('Login Error:', responseBody);
-                setError(responseBody || `Error: ${response.status}`);
+                setError(data || `Error: ${response.status}`);
             }
         } catch (err) {
-            console.error('Fetch Error:', err);
-            if (!isGoogleLogin) {
-                setError('Unable to connect. Please check your network.');
-            }
+            console.error('Login error:', err);
+            if (!isGoogleLogin) setError(t('login.networkError'));
         } finally {
             setIsLoading(false);
         }
     };
-    //Truyen prop cho login Facebook
+
     const handleFacebookLoginSuccess = (data) => {
         if (data.token) {
-            const decoded = jwtDecode(data.token);  // sửa ở đây
+            const decoded = jwtDecode(data.token);
             const fbUsername = decoded.username || decoded.sub || 'User';
+
+            syncLanguage(); // 🔄 đồng bộ ngôn ngữ
+
             Swal.fire({
                 icon: 'success',
-                title: `Welcome, ${fbUsername}!`,
-                text: 'Facebook login successful!',
-                confirmButtonText: 'Go to Home',
+                title: `${t('login.welcome')}, ${fbUsername}!`,
+                text: t('login.facebookSuccess'),
+                confirmButtonText: t('login.goHome'),
             }).then(() => {
                 localStorage.setItem('token', data.token);
-
-
-
-                localStorage.setItem(
-                    'user',
-                    JSON.stringify({
-                        username: fbUsername,
-                        email: decoded.email || '',
-                        role: decoded.role || 'user',
-                    })
-                );
-
-                console.log('Decoded from Facebook login:', decoded);
+                localStorage.setItem('user', JSON.stringify({
+                    username: fbUsername,
+                    email: decoded.email || '',
+                    role: decoded.role || 'user',
+                }));
                 navigate('/home');
             });
         } else {
             Swal.fire({
                 icon: 'error',
-                title: 'Facebook login failed!',
-                text: data.message || 'Unknown error',
+                title: t('login.facebookFail'),
+                text: data.message || t('unknownError'),
             });
         }
     };
 
-
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.removeItem('isGoogleLogin');
-        setCart([]); // reset giỏ hàng
-        setTotalQuantity(0); // reset tổng số lượng
+        localStorage.clear();
+        setCart([]);
+        setTotalQuantity(0);
         setUsername('');
         setPassword('');
         setIsGoogleLogin(false);
 
         Swal.fire({
             icon: 'info',
-            title: 'Logged out',
-            text: isGoogleLogin
-                ? 'You have been logged out from Google session.'
-                : 'You have been logged out.',
-            confirmButtonText: 'OK'
-        }).then(() => {
-            navigate('/login');
-        });
+            title: t('logout.title'),
+            text: isGoogleLogin ? t('logout.google') : t('logout.normal'),
+            confirmButtonText: t('ok')
+        }).then(() => navigate('/login'));
     };
 
     return (
         <Components.SignInContainer signinIn={true}>
             <Components.Form onSubmit={handleLogin}>
-                <Components.Title>Sign in</Components.Title>
+                <Components.Title>{t('login.title')}</Components.Title>
 
                 <Components.SocialContainer>
                     <Components.SocialButton
                         provider="google"
                         type="button"
-                        onClick={() => {
-
-                            //  Gọi tới endpoint OAuth2 của backend
-
-                            window.location.href = 'https://localhost:8443/oauth2/authorization/google';
-                        }}
+                        onClick={() => window.location.href = 'https://localhost:8443/oauth2/authorization/google'}
                     >
                         <i className="fab fa-google"></i>
                     </Components.SocialButton>
-
-                    {/*<Components.SocialButton provider="facebook" onClick={() => alert('Login with Facebook')}>*/}
-                    {/*    <i className="fab fa-facebook-f"></i>*/}
-                    {/*</Components.SocialButton>*/}
-                    <FacebookLoginButton
-                        onFacebookLoginSuccess={handleFacebookLoginSuccess} />
-
+                    <FacebookLoginButton onFacebookLoginSuccess={handleFacebookLoginSuccess} />
                 </Components.SocialContainer>
 
-                {/* Chỉ dành cho đăng nhập thường */}
                 <Components.Input
                     type="text"
-                    placeholder="User name"
+                    placeholder={t('login.username')}
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
-                <div style={{ position: 'relative' }}>
+
+                <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
                     <Components.Input
                         type={showPassword ? 'text' : 'password'}
-                        placeholder="Password"
+                        placeholder={t('login.password')}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         style={{ paddingRight: '40px' }}
@@ -237,14 +198,15 @@ const Login = ({ toggle }) => {
                     </span>
                 </div>
 
-                <Components.Anchor href="/forgot-password">Forgot your password?</Components.Anchor>
+                <Components.Anchor href="/forgot-password">
+                    {t('login.forgotPassword')}
+                </Components.Anchor>
 
-                {/* Nút đăng nhập thường */}
                 <Components.Button type="submit" disabled={isLoading}>
-                    {isLoading ? 'Signing in...' : 'Sign In'}
+                    {isLoading ? t('login.signingIn') : t('login.signIn')}
                 </Components.Button>
 
-                {error && <div style={{ color: 'red' }}>{error}</div>}
+                {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
 
                 {localStorage.getItem('token') && (
                     <button
@@ -258,13 +220,12 @@ const Login = ({ toggle }) => {
                             cursor: 'pointer'
                         }}
                     >
-                        Logout current user
+                        {t('logout.button')}
                     </button>
                 )}
             </Components.Form>
         </Components.SignInContainer>
     );
 };
-// login cua truc
-export default Login;
 
+export default Login;

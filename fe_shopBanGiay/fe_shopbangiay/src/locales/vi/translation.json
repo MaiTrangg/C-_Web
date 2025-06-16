@@ -1,0 +1,120 @@
+{
+  "Home": "Trang chủ",
+  "Shop": "Cửa hàng",
+  "Shop Detail": "Chi tiết sản phẩm",
+  "Pages": "Trang",
+  "Shopping Cart": "Giỏ hàng",
+  "Checkout": "Thanh toán",
+  "Dashboard": "Quản lý",
+  "Contact": "Liên hệ",
+  "Hello": "Xin chào",
+  "User Profile": "Thông tin người dùng",
+  "Order History": "Lịch sử đơn hàng",
+  "Coupon": "Mã giảm giá",
+  "Logout": "Đăng xuất",
+  "Login": "Đăng nhập",
+  "Register": "Đăng ký",
+
+  "login": {
+    "title": "Đăng nhập",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "signIn": "Đăng nhập",
+    "signingIn": "Đang đăng nhập...",
+    "forgotPassword": "Quên mật khẩu?",
+    "googleSuccess": "Đăng nhập bằng Google thành công!",
+    "facebookSuccess": "Đăng nhập bằng Facebook thành công!",
+    "facebookFail": "Đăng nhập Facebook thất bại!",
+    "welcome": "Chào mừng",
+    "welcomeBack": "Chào mừng quay lại",
+    "networkError": "Không thể kết nối mạng",
+    "goHome": "Về trang chủ",
+    "success": "Thành công"
+  },
+  "logout": {
+    "title": "Đăng xuất",
+    "google": "Bạn đã đăng xuất khỏi phiên Google.",
+    "normal": "Bạn đã đăng xuất.",
+    "button": "Đăng xuất"
+  },
+  "ok": "OK",
+  "unknownError": "Lỗi không xác định",
+
+  "register": {
+    "title": "Tạo tài khoản",
+    "username": "Tên đăng nhập",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "password": "Mật khẩu",
+    "signUp": "Đăng ký",
+    "signingUp": "Đang đăng ký...",
+    "usernameInvalid": "Tên đăng nhập phải từ 2-20 ký tự, không chứa ký tự đặc biệt.",
+    "emailInvalid": "Email không hợp lệ.",
+    "phoneInvalid": "Số điện thoại phải gồm 10 chữ số.",
+    "passwordShort": "Mật khẩu phải có ít nhất 8 ký tự.",
+    "passwordWeak": "Mật khẩu yếu: cần chữ in hoa hoặc * /",
+    "successTitle": "Đăng ký thành công!",
+    "successText": "Tài khoản của bạn đã được tạo.",
+    "failText": "Đăng ký thất bại",
+    "networkError": "Không thể kết nối. Vui lòng kiểm tra mạng."
+  },
+
+  "auth": {
+    "welcomeBackTitle": "Chào mừng trở lại!",
+    "welcomeBackDesc": "Hãy đăng nhập bằng thông tin cá nhân của bạn để tiếp tục.",
+    "helloFriendTitle": "Xin chào, bạn!",
+    "helloFriendDesc": "Nhập thông tin cá nhân của bạn để bắt đầu hành trình với chúng tôi.",
+    "signIn": "Đăng nhập",
+    "signUp": "Đăng ký"
+  },
+
+
+  "userProfile": {
+    "title": "Thông tin người dùng",
+    "username": "Tên đăng nhập",
+    "email": "Email",
+    "telephone": "Số điện thoại",
+    "role": "Vai trò",
+    "save": "Lưu thay đổi",
+    "loading": "Đang tải thông tin...",
+    "notFound": "Không tìm thấy thông tin người dùng.",
+    "success": "Cập nhật thành công!",
+    "fail": "Cập nhật thất bại",
+    "error": "Lỗi khi gửi yêu cầu cập nhật."
+  },
+
+  "coupon": {
+    "title": "Danh sách mã giảm giá",
+    "discount": "Giảm",
+    "minimumOrder": "Đơn tối thiểu",
+    "noMin": "Không yêu cầu",
+    "expiry": "Hạn sử dụng",
+    "apply": "Dùng mã",
+    "copied": "Đã sao chép mã",
+    "codeCopied": "Mã đã được sao chép",
+    "noAvailable": "Hiện chưa có mã giảm giá nào khả dụng"
+  },
+
+  "orderHistory": {
+    "title": "Lịch sử đơn hàng",
+    "loading": "Đang tải dữ liệu...",
+    "error": "Không thể tải dữ liệu đơn hàng.",
+    "noOrders": "Bạn chưa có đơn hàng nào.",
+    "orderId": "Mã đơn",
+    "date": "Ngày mua",
+    "total": "Tổng tiền",
+    "status": "Trạng thái",
+    "action": "Hành động",
+    "viewDetails": "Xem chi tiết",
+    "hideDetails": "Ẩn chi tiết",
+    "loadingDetails": "Đang tải chi tiết...",
+    "product": "Sản phẩm",
+    "color": "Màu",
+    "size": "Size",
+    "quantity": "Số lượng",
+    "price": "Giá",
+    "noItems": "Không có sản phẩm nào."
+  }
+
+
+}

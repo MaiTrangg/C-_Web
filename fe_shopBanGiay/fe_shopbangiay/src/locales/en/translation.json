@@ -1,0 +1,120 @@
+{
+  "Home": "Home",
+  "Shop": "Shop",
+  "Shop Detail": "Shop Detail",
+  "Pages": "Pages",
+  "Shopping Cart": "Shopping Cart",
+  "Checkout": "Checkout",
+  "Dashboard": "Dashboard",
+  "Contact": "Contact",
+  "Hello": "Hello",
+  "User Profile": "User Profile",
+  "Order History": "Order History",
+  "Coupon": "Coupon",
+  "Logout": "Logout",
+  "Login": "Login",
+  "Register": "Register",
+
+  "login": {
+    "title": "Sign In",
+    "username": "Username",
+    "password": "Password",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "forgotPassword": "Forgot your password?",
+    "googleSuccess": "Google login successful!",
+    "facebookSuccess": "Facebook login successful!",
+    "facebookFail": "Facebook login failed!",
+    "welcome": "Welcome",
+    "welcomeBack": "Welcome back",
+    "networkError": "Unable to connect to the network",
+    "goHome": "Go to Home",
+    "success": "Success"
+  },
+  "logout": {
+    "title": "Logout",
+    "google": "You have been logged out from Google session.",
+    "normal": "You have been logged out.",
+    "button": "Logout"
+  },
+  "ok": "OK",
+  "unknownError": "Unknown error",
+
+  "register": {
+    "title": "Create Account",
+    "username": "Username",
+    "email": "Email",
+    "phone": "Phone Number",
+    "password": "Password",
+    "signUp": "Sign Up",
+    "signingUp": "Signing Up...",
+    "usernameInvalid": "Username must be 2-20 characters and contain no special characters.",
+    "emailInvalid": "Invalid email format.",
+    "phoneInvalid": "Phone number must be exactly 10 digits.",
+    "passwordShort": "Password must be at least 8 characters.",
+    "passwordWeak": "Weak password: must include at least one uppercase letter or one of these: * or /",
+    "successTitle": "Registration Successful!",
+    "successText": "Your account has been created.",
+    "failText": "Registration failed",
+    "networkError": "Unable to connect. Please check your network."
+  },
+
+  "auth": {
+    "welcomeBackTitle": "Welcome Back!",
+    "welcomeBackDesc": "To keep connected with us please login with your personal info",
+    "helloFriendTitle": "Hello, Friend!",
+    "helloFriendDesc": "Enter your personal details and start journey with us",
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  },
+
+
+  "userProfile": {
+    "title": "User Information",
+    "username": "Username",
+    "email": "Email",
+    "telephone": "Telephone",
+    "role": "Role",
+    "save": "Save Changes",
+    "loading": "Loading user info...",
+    "notFound": "User not found.",
+    "success": "Update successful!",
+    "fail": "Update failed",
+    "error": "Error sending update request."
+  },
+
+  "coupon": {
+    "title": "Available Coupons",
+    "discount": "Discount",
+    "minimumOrder": "Minimum Order",
+    "noMin": "No minimum",
+    "expiry": "Expires on",
+    "apply": "Apply Code",
+    "copied": "Copied!",
+    "codeCopied": "Coupon code copied",
+    "noAvailable": "No available coupons at the moment"
+  },
+
+  "orderHistory": {
+    "title": "Order History",
+    "loading": "Loading data...",
+    "error": "Unable to load your order data.",
+    "noOrders": "You have no orders yet.",
+    "orderId": "Order ID",
+    "date": "Purchase Date",
+    "total": "Total Amount",
+    "status": "Status",
+    "action": "Action",
+    "viewDetails": "View Details",
+    "hideDetails": "Hide Details",
+    "loadingDetails": "Loading order details...",
+    "product": "Product",
+    "color": "Color",
+    "size": "Size",
+    "quantity": "Quantity",
+    "price": "Price",
+    "noItems": "No items found."
+  }
+
+
+}

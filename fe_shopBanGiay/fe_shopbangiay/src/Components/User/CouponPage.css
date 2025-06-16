@@ -1,0 +1,83 @@
+.coupon-container {
+    padding: 40px 20px;
+    background: linear-gradient(to bottom right, #fdfdfd, #f3f3f3);
+    min-height: 80vh;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #222;
+}
+
+.voucher-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.voucher-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+}
+
+.voucher-card:hover {
+    transform: translateY(-5px);
+}
+
+.voucher-store {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #555;
+}
+
+.store-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+}
+
+.voucher-info h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ff5722;
+    margin-bottom: 8px;
+}
+
+.voucher-info p {
+    margin: 3px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.apply-btn {
+    margin-top: 15px;
+    background: linear-gradient(135deg, #ff5722, #e64a19);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: all 0.3s ease;
+}
+
+.apply-btn:hover {
+    background: #d84315;
+}

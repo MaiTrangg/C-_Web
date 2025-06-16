@@ -20,11 +20,24 @@ import UserProfile from './Components/User/UserProfile';
 import OrderHistory from './Components/User/OrderHistory';
 
 import {CartProvider} from "./contexts/CartContext";
+import { useEffect } from 'react';
+import i18n from './i18n';
 
-
+import PrivateRoute from './Components/User/PrivateRoute';
+import Unauthorized from './Components/User/Unauthorized';
+import CouponPage from './Components/User/CouponPage';
 
 
 function App() {
+    useEffect(() => {
+        const lang = localStorage.getItem('i18nextLng') || 'vi';
+        i18n.changeLanguage(lang);
+        localStorage.setItem('i18nextLng', lang);
+        localStorage.removeItem('language');
+    }, []);
+
+
+
     return (
 
         <CartProvider>
@@ -34,7 +47,7 @@ function App() {
                      <Route path="/home" element={<HomePage />} />
                      <Route path="/shop" element={<ShopPage />} />
                      <Route path="/cart" element={<CartPage />} />
-                    <Route path="/checkout" element={<CheckoutPage/>} />
+                     <Route path="/checkout" element={<CheckoutPage/>} />
                      <Route path="/productDetail" element={<ProductDetail />} />
                      <Route path="/login" element={<AuthPage />} />
                      <Route path="/register" element={<AuthPage />} />
@@ -42,12 +55,21 @@ function App() {
                      <Route path="/productDetail/:productId" element={<ProductDetail />} />
                      <Route path="/reset-password" element={<ResetPassword />} />
                      <Route path="/forgot-password" element={<ForgotPassword />} />
-                     <Route path="/admin" element={<Admin />} />
+
+                     {/*<Route path="/admin" element={<Admin />} />*/}
+                     <Route path="/admin" element={
+                         <PrivateRoute allowedRole="ADMIN">
+                             <Admin />
+                         </PrivateRoute>
+                     } />
+
+                    
 
                      <Route path="/profile" element={<UserProfile />} />
                      <Route path="/orders" element={<OrderHistory />} />
+                     <Route path="/coupons" element={<CouponPage />} />
 
-
+                     <Route path="/unauthorized" element={<Unauthorized />} />
 
                 </Routes>
             </BrowserRouter>

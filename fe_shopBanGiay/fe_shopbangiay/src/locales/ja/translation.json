@@ -1,0 +1,119 @@
+{
+  "Home": "ホーム",
+  "Shop": "ショップ",
+  "Shop Detail": "商品詳細",
+  "Pages": "ページ",
+  "Shopping Cart": "ショッピングカート",
+  "Checkout": "チェックアウト",
+  "Dashboard": "ダッシュボード",
+  "Contact": "お問い合わせ",
+  "Hello": "こんにちは",
+  "User Profile": "ユーザー情報",
+  "Order History": "注文履歴",
+  "Logout": "ログアウト",
+  "Login": "ログイン",
+  "Register": "登録",
+
+  "login": {
+    "title": "ログイン",
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "signIn": "ログイン",
+    "signingIn": "ログイン中...",
+    "forgotPassword": "パスワードを忘れましたか？",
+    "googleSuccess": "Googleでのログイン成功！",
+    "facebookSuccess": "Facebookでのログイン成功！",
+    "facebookFail": "Facebookログインに失敗しました！",
+    "welcome": "ようこそ",
+    "welcomeBack": "お帰りなさい",
+    "networkError": "ネットワークに接続できません",
+    "goHome": "ホームに戻る",
+    "success": "成功"
+  },
+  "logout": {
+    "title": "ログアウト",
+    "google": "Googleセッションからログアウトしました。",
+    "normal": "ログアウトしました。",
+    "button": "ログアウト"
+  },
+  "ok": "OK",
+  "unknownError": "不明なエラー",
+
+  "register": {
+    "title": "アカウント作成",
+    "username": "ユーザー名",
+    "email": "メールアドレス",
+    "phone": "電話番号",
+    "password": "パスワード",
+    "signUp": "登録",
+    "signingUp": "登録中...",
+    "usernameInvalid": "ユーザー名は2〜20文字で、特殊文字を含めないでください。",
+    "emailInvalid": "メール形式が正しくありません。",
+    "phoneInvalid": "電話番号は10桁である必要があります。",
+    "passwordShort": "パスワードは8文字以上である必要があります。",
+    "passwordWeak": "弱いパスワード：大文字または * / のいずれかを含めてください。",
+    "successTitle": "登録成功！",
+    "successText": "アカウントが作成されました。",
+    "failText": "登録に失敗しました",
+    "networkError": "接続できません。ネットワークを確認してください。"
+  },
+
+  "auth": {
+    "welcomeBackTitle": "お帰りなさい！",
+    "welcomeBackDesc": "引き続きご利用いただくには、個人情報でログインしてください。",
+    "helloFriendTitle": "こんにちは！",
+    "helloFriendDesc": "個人情報を入力して、私たちとの旅を始めましょう。",
+    "signIn": "ログイン",
+    "signUp": "新規登録"
+  },
+
+
+  "userProfile": {
+    "title": "ユーザー情報",
+    "username": "ユーザー名",
+    "email": "メール",
+    "telephone": "電話番号",
+    "role": "役割",
+    "save": "変更を保存",
+    "loading": "ユーザー情報を読み込み中...",
+    "notFound": "ユーザーが見つかりません。",
+    "success": "更新が成功しました！",
+    "fail": "更新に失敗しました",
+    "error": "更新リクエストの送信中にエラーが発生しました。"
+  },
+
+  "coupon": {
+    "title": "利用可能なクーポン",
+    "discount": "割引",
+    "minimumOrder": "最低注文金額",
+    "noMin": "制限なし",
+    "expiry": "有効期限",
+    "apply": "クーポンを使う",
+    "copied": "コピーしました！",
+    "codeCopied": "クーポンコードをコピーしました",
+    "noAvailable": "現在利用可能なクーポンはありません"
+  },
+
+  "orderHistory": {
+    "title": "注文履歴",
+    "loading": "データを読み込んでいます...",
+    "error": "注文データを読み込めませんでした。",
+    "noOrders": "まだ注文はありません。",
+    "orderId": "注文ID",
+    "date": "購入日",
+    "total": "合計金額",
+    "status": "ステータス",
+    "action": "操作",
+    "viewDetails": "詳細を見る",
+    "hideDetails": "詳細を隠す",
+    "loadingDetails": "注文の詳細を読み込み中...",
+    "product": "商品",
+    "color": "色",
+    "size": "サイズ",
+    "quantity": "数量",
+    "price": "価格",
+    "noItems": "商品が見つかりません。"
+  }
+
+
+}

@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import NavbarOnly from '../Header/NavbarOnly';
 import Footer from '../Footer/Footer';
 import './UserProfile.css';
+import i18n from '../../i18n';
 
-// trang user profile
 const UserProfile = () => {
+    const { t } = useTranslation();
+
     const [user, setUser] = useState(null);
     const [editUser, setEditUser] = useState({ username: '', email: '', telephone: '', role: '' });
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const lang = localStorage.getItem('i18nextLng') || 'vi';
+        localStorage.setItem('i18nextLng', lang);
+        localStorage.removeItem('language'); // dọn sạch nếu có key cũ
+        if (lang !== i18n.language) {
+            i18n.changeLanguage(lang);
+        }
+    }, []);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -50,14 +62,14 @@ const UserProfile = () => {
             });
 
             if (res.ok) {
-                alert("Cập nhật thành công!");
+                alert(t('userProfile.updateSuccess'));
                 setUser({ ...user, ...editUser });
             } else {
                 const err = await res.text();
-                alert("Cập nhật thất bại: " + err);
+                alert(t('userProfile.updateFail') + ': ' + err);
             }
         } catch (err) {
-            alert("Lỗi khi gửi yêu cầu cập nhật.");
+            alert(t('userProfile.updateError'));
             console.error(err);
         }
     };
@@ -67,13 +79,13 @@ const UserProfile = () => {
             <NavbarOnly />
             <div className="container user-profile-container">
                 {loading ? (
-                    <p>Đang tải thông tin...</p>
+                    <p>{t('userProfile.loading')}</p>
                 ) : user ? (
                     <div className="user-card">
-                        <h2>👤 Thông tin người dùng</h2>
+                        <h2>👤 {t('userProfile.title')}</h2>
 
                         <div className="form-group mb-3">
-                            <label>Tên đăng nhập:</label>
+                            <label>{t('userProfile.username')}:</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -83,7 +95,7 @@ const UserProfile = () => {
                         </div>
 
                         <div className="form-group mb-3">
-                            <label>Email:</label>
+                            <label>{t('userProfile.email')}:</label>
                             <input
                                 type="email"
                                 className="form-control"
@@ -94,7 +106,7 @@ const UserProfile = () => {
                         </div>
 
                         <div className="form-group mb-3">
-                            <label>Số điện thoại:</label>
+                            <label>{t('userProfile.telephone')}:</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -105,7 +117,7 @@ const UserProfile = () => {
                         </div>
 
                         <div className="form-group mb-4">
-                            <label>Vai trò:</label>
+                            <label>{t('userProfile.role')}:</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -115,11 +127,11 @@ const UserProfile = () => {
                         </div>
 
                         <button className="btn btn-primary" onClick={handleSave}>
-                            💾 Lưu thay đổi
+                            💾 {t('userProfile.save')}
                         </button>
                     </div>
                 ) : (
-                    <div className="alert alert-warning">Không tìm thấy thông tin người dùng.</div>
+                    <div className="alert alert-warning">{t('userProfile.notFound')}</div>
                 )}
             </div>
             <Footer />
@@ -128,4 +140,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-

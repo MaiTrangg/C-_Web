@@ -4,6 +4,7 @@ import com.example.be_shopbangiay.Admin.dto.ProductUpdateRequest;
 import com.example.be_shopbangiay.Client.dto.ProductDTO;
 import com.example.be_shopbangiay.Client.entity.Category;
 import com.example.be_shopbangiay.Client.entity.Product;
+import com.example.be_shopbangiay.Client.entity.ProductVariant;
 import com.example.be_shopbangiay.Client.mapper.ProductMapper;
 import com.example.be_shopbangiay.Client.repository.CategoryRepository;
 import com.example.be_shopbangiay.Client.repository.ProductRepository;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,26 @@ public class AD_ProductService {
     ProductRepository productRepository;
     CategoryRepository categoryRepository;
     ProductMapper productMapper;
+
+    public List<ProductDTO> getAllProducts() {
+//        return productRepository.findActiveProductsWithActiveVariants()
+//                .stream()
+//                .map(productMapper::toProductDTO)
+//                .collect(Collectors.toList());
+        return productRepository.findByIsActiveTrue()  // Lấy tất cả sản phẩm đang active
+                .stream()
+                .map(product -> {
+                    // Lọc chỉ những variant đang active
+                    product.setVariants(
+                            product.getVariants()
+                                    .stream()
+                                    .filter(ProductVariant::getIsActive)
+                                    .collect(Collectors.toList())
+                    );
+                    return productMapper.toProductDTO(product);
+                })
+                .collect(Collectors.toList());
+    }
     public ProductDTO add(ProductUpdateRequest reqProduct) {
         Category category = categoryRepository.findById(reqProduct.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục"));

@@ -23,7 +23,7 @@ public class AD_ProductController {
 
     @GetMapping
     public List<ProductDTO> getProductList(){
-        return productService.getAllProducts();
+        return ad_productService.getAllProducts();
     }
     @PostMapping("/add")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductUpdateRequest reqProduct) {
